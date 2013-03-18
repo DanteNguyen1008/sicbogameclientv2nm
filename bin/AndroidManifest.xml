@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.sicbogameexample"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.sicbogameexample.SplashScreenAcivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.sicbogameexample.SicBoGameActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="SicBoGameActivity" >
+        </activity>
+        <!--
+        <activity
+            android:name="com.example.sicbogameexample.SicBoGameActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.sicbogameexample.SplashScreenAcivity"
+            android:label="@string/app_name" >
+        </activity>
+        -->
+        <activity
+            android:name="com.example.sicbogameexample.LoginScreen"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_login_screen" >
+        </activity>
+        <activity
+            android:name="com.example.sicbogameexample.RegisterScreen"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_register_screen" >
+        </activity>
+        <activity
+            android:name="com.example.sicbogameexample.ViewHistoryActivity"
+            android:label="@string/title_activity_view_history" >
+        </activity>
+    </application>
+
+</manifest>

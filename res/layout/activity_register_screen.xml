@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterScreen" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/lbUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="User name" >
+            </TextView>
+
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtUsername"
+                android:text="" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirm Password" >
+            </TextView>
+
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtConfirmPassword"
+                android:inputType="textPassword"
+                android:text="" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="text|textEmailAddress"
+                android:text="" />
+
+        </LinearLayout>
+        
+        <Button 
+            android:layout_width="wrap_content"
+           	android:layout_height="wrap_content"
+            android:id="@+id/btnSubmit"
+            android:text="Register"
+            ></Button>
+        <Button 
+            android:layout_width="wrap_content"
+           	android:layout_height="wrap_content"
+            android:id="@+id/btnLogin"
+            android:text="Login"
+            ></Button>
+    </LinearLayout>
+
+</RelativeLayout>
