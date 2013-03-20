@@ -9,65 +9,90 @@ import org.json.JSONObject;
 
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class LoginScreen extends Activity implements OnClickListener {
-	EditText txtUsername;
-	EditText txtPassword;
-	Button btnSubmit;
-	Button btnRegister;
+	EditText edt_username;
+	EditText edt_password;
+	Button btn_sign_in;
+	TextView txtCreatAccount;
+	TextView txtForgotPassword,txtChangePassword;
 	List<Object> dataList;
 	String[] responseName = { "username", "password" };
+	ConnectionAsync connectionAsync;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login_screen);
 		GameEntity.connectionHandler = new ConnectionHandler();
-		txtUsername = (EditText) findViewById(R.id.txtUsername);
-		txtPassword = (EditText) findViewById(R.id.txtPassword);
-		btnSubmit = (Button) findViewById(R.id.btnSubmit);
-		btnSubmit.setOnClickListener(this);
-		btnRegister = (Button) findViewById(R.id.btnRegister);
-		btnRegister.setOnClickListener(this);
+		
+		edt_username = (EditText) findViewById(R.id.edt_username);
+		edt_password = (EditText) findViewById(R.id.edt_password);
+		btn_sign_in = (Button) findViewById(R.id.btn_sign_in);
+		btn_sign_in.setOnClickListener(this);
+		txtCreatAccount=(TextView)findViewById(R.id.txt_create_account);
+		txtForgotPassword=(TextView)findViewById(R.id.txt_forgot_password);
+		txtChangePassword=(TextView)findViewById(R.id.txt_change_password);
+		edt_username.setOnClickListener(this);
+		txtForgotPassword.setOnClickListener(this);
+		txtCreatAccount.setOnClickListener(this);
+		txtChangePassword.setOnClickListener(this);
+		
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_login_screen, menu);
+		//getMenuInflater().inflate(R.menu.activity_login_screen, menu);
 		return true;
 	}
-
+	
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		if (arg0.equals(btnSubmit)) {
-
-			ConnectionAsync connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password" };
-			String[] paramsValue = { txtUsername.getText().toString().trim(),
-					txtPassword.getText().toString().trim()};
-			Object[] params = { GameEntity.connectionHandler, this,
-					GameEntity.SIGNIN_TASK, paramsName, paramsValue };
-			connectionAsync.execute(params);
-
-		}else if(arg0.equals(btnRegister))
+		switch(arg0.getId())
 		{
+		case R.id.txt_create_account:
 			Intent intent = new Intent(this, RegisterScreen.class);
 			this.startActivity(intent);
 			finish();
+			break;
+		case R.id.btn_sign_in:
+			 connectionAsync = new ConnectionAsync();
+			String[] paramsName = { "username", "password" };
+			String[] paramsValue = { edt_username.getText().toString().trim(),
+					edt_password.getText().toString().trim()};
+			Object[] params = { GameEntity.connectionHandler, this,
+					GameEntity.SIGNIN_TASK, paramsName, paramsValue };
+			connectionAsync.execute(params);
+			break;
+		case R.id.txt_forgot_password:
+			
+			Intent itent=new Intent(LoginScreen.this,ResetPassword.class);
+			startActivity(itent);
+			break;
+		case R.id.txt_change_password:
+			Intent itent2=new Intent(LoginScreen.this,ChangePassword.class);
+			startActivity(itent2);
+			
+			break;
 		}
+		
 	}
 
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
@@ -100,14 +125,15 @@ public class LoginScreen extends Activity implements OnClickListener {
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
-
+           
+				
 				// Create user and move to game scene
-				if (result.getBoolean("signin_success")) {					
+			if (result.getBoolean("is_success")) {					
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
-					GameEntity.userComponent = new UserComponent(txtUsername.getText().toString(),
+					GameEntity.userComponent = new UserComponent(edt_username.getText().toString(),
 							(String) result.get("email"),
-							result.getDouble("current_balance"));
+							result.getDouble("balance"));
 					activity.startActivity(intent);
 					activity.finish();
 				} else {

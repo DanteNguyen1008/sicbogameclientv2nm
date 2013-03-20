@@ -1,106 +1,118 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RegisterScreen" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
+    <RelativeLayout
+        android:id="@+id/rela1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp" >
+        
+        <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="70dp" 
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
+        android:layout_marginLeft="-5dp"
+        />
 
-        <LinearLayout
+        <ImageButton
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="-7dp"
+            android:layout_marginRight="-5dp"
+            android:layout_toRightOf="@+id/btn_back" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/lbUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User name" >
-            </TextView>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rela1"
+        android:layout_marginTop="-5dp"
+        android:background="#BDBDBD" >
 
-            <EditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtUsername"
-                android:text="" />
-        </LinearLayout>
+        <EditText
+            android:id="@+id/edt_username"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:hint="User Name"
+             android:textColor="#848484"
+            android:padding="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/rounded_edit_password"
+            android:ems="10"
+            android:inputType="textPersonName" >
+        </EditText>
+
+        <EditText
+            android:id="@+id/edt_password"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:hint="Password"
+             android:textColor="#848484"
+            android:padding="5dp"
+            android:layout_below="@+id/edt_username"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edit_password"
+            android:ems="10"
+            android:inputType="textPersonName" >
+        </EditText>
         
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+         <EditText
+            android:id="@+id/edt_confirm_password"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/edt_password"
+             android:hint="Confirm Password"
+             android:textColor="#848484"
+            android:padding="5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edit_password"
+            android:ems="10"
+            android:inputType="textPersonName" >
+        </EditText>
+          <EditText
+            android:id="@+id/edt_email"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+             android:hint="Email"
+             android:textColor="#848484"
+            android:padding="5dp"
+            android:layout_below="@+id/edt_confirm_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edit_password"
+            android:ems="10"
+            android:inputType="textEmailAddress" >
+        </EditText>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Password" >
-            </TextView>
-
-            <EditText
-                android:id="@+id/txtPassword"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:text="" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password" >
-            </TextView>
-
-            <EditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/txtConfirmPassword"
-                android:inputType="textPassword"
-                android:text="" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email" >
-            </TextView>
-
-            <EditText
-                android:id="@+id/txtEmail"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:inputType="text|textEmailAddress"
-                android:text="" />
-
-        </LinearLayout>
-        
-        <Button 
-            android:layout_width="wrap_content"
-           	android:layout_height="wrap_content"
-            android:id="@+id/btnSubmit"
+        <EditText
+            android:id="@+id/edt_full_name"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+             android:hint="Full name"
+             android:textColor="#848484"
+            android:padding="5dp"
+            android:layout_below="@+id/edt_email"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_edit_password"
+            android:ems="10"
+            android:inputType="textEmailAddress" >
+        </EditText>
+          
+          <Button
+            android:id="@+id/btn_register"
+            android:layout_width="280dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/edt_full_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_btn_sign_in"
             android:text="Register"
-            ></Button>
-        <Button 
-            android:layout_width="wrap_content"
-           	android:layout_height="wrap_content"
-            android:id="@+id/btnLogin"
-            android:text="Login"
-            ></Button>
-    </LinearLayout>
+            android:textColor="#EFFBFB"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 </RelativeLayout>

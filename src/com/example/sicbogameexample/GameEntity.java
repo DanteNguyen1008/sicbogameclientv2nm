@@ -12,10 +12,13 @@ public class GameEntity {
 	public final static int CAMERA_WIDTH = 800;
 	public final static int CAMERA_HEIGHT = 480;
 
-	public final static String SIGNIN_TASK = "signin";
-	public final static String SIGNUP_TASK = "signup";
-	public final static String SIGNOUT_TASK = "signout";
+	public final static String SIGNIN_TASK = "sign_in";
+	public final static String SIGNUP_TASK = "sign_up";
+	public final static String SIGNOUT_TASK = "sign_out";
+	public final static String CHANGE_PASSWORD_TASK="change_password";
+	public final static String FORGOT_PASSWORD_TASK="forgot_password";
 	public final static String STARTGAME_TASK = "play_bet";
+	
 	public final static String VIEW_HISTORY = "view_history";
 
 	public static SceneManager sceneManager;
