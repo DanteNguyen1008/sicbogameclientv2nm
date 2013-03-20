@@ -33,7 +33,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login_screen);
-		GameEntity.connectionHandler = new ConnectionHandler();
+		GameEntity.getInstance().connectionHandler = new ConnectionHandler();
 		txtUsername = (EditText) findViewById(R.id.txtUsername);
 		txtPassword = (EditText) findViewById(R.id.txtPassword);
 		btnSubmit = (Button) findViewById(R.id.btnSubmit);
@@ -58,7 +58,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 			String[] paramsName = { "username", "password" };
 			String[] paramsValue = { txtUsername.getText().toString().trim(),
 					txtPassword.getText().toString().trim()};
-			Object[] params = { GameEntity.connectionHandler, this,
+			Object[] params = { GameEntity.getInstance().connectionHandler, this,
 					GameEntity.SIGNIN_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 
@@ -105,7 +105,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 				if (result.getBoolean("signin_success")) {					
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
-					GameEntity.userComponent = new UserComponent(txtUsername.getText().toString(),
+					GameEntity.getInstance().userComponent = new UserComponent(txtUsername.getText().toString(),
 							(String) result.get("email"),
 							result.getDouble("current_balance"));
 					activity.startActivity(intent);

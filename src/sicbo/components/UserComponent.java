@@ -47,4 +47,5 @@ public class UserComponent {
 	public String username;
 	public String email;
 	public BalanceHandle balance;
+	public long actionTime;
 }

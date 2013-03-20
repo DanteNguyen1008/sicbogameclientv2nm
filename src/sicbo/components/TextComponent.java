@@ -30,25 +30,25 @@ public class TextComponent extends AbItemComponent {
 
 	public void increaseBetRemain(double amount)
 	{
-		GameEntity.betAmountRemain += amount;
-		this.text.setText(GameEntity.betAmountRemain+"");
+		GameEntity.getInstance().betAmountRemain += amount;
+		this.text.setText(GameEntity.getInstance().betAmountRemain+"");
 	}
 	
 	public void decreaseBetRemain(double amount)
 	{
-		GameEntity.betAmountRemain -= amount;
-		this.text.setText(GameEntity.betAmountRemain+"");
+		GameEntity.getInstance().betAmountRemain -= amount;
+		this.text.setText(GameEntity.getInstance().betAmountRemain+"");
 	}
 	
 	public void updateBetRemain(double amount)
 	{
-		GameEntity.betAmountRemain = amount;
-		this.text.setText(GameEntity.betAmountRemain+"");
+		GameEntity.getInstance().betAmountRemain = amount;
+		this.text.setText(GameEntity.getInstance().betAmountRemain+"");
 	}
 	
 	public void updateBalance(UserComponent.UserAction action, double amount)
 	{
-		this.text.setText(GameEntity.userComponent.updateBalance(action, amount)+ "");
+		this.text.setText(GameEntity.getInstance().userComponent.updateBalance(action, amount)+ "");
 	}
 
 }

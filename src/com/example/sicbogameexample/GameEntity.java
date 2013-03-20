@@ -1,46 +1,101 @@
 package com.example.sicbogameexample;
 
-import org.andengine.engine.options.EngineOptions;
-import org.andengine.entity.scene.Scene;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.engine.options.EngineOptions;
+import org.andengine.entity.IEntity;
+import org.andengine.entity.IEntityFactory;
+import org.andengine.entity.particle.ParticleSystem;
+import org.andengine.entity.particle.SpriteParticleSystem;
+import org.andengine.entity.particle.emitter.PointParticleEmitter;
+import org.andengine.entity.particle.initializer.ColorParticleInitializer;
+import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
+import org.andengine.entity.particle.modifier.AlphaParticleModifier;
+import org.andengine.entity.particle.modifier.RotationParticleModifier;
+import org.andengine.entity.primitive.Rectangle;
+import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.menu.MenuScene;
+import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.TextureOptions;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.util.color.Color;
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+
+import sicbo.components.BetComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.GameComponent;
+import sicbo.components.HistoryComponent;
+import sicbo.components.PatternComponent;
+import sicbo.components.ShakeEventListener;
+import sicbo.components.TimoutCheckAsyns;
 import sicbo.components.UserComponent;
+import sicbo.components.AbItemComponent.ItemType;
 import sicbo_networks.ConnectionHandler;
 
 public class GameEntity {
+	// Implement single ton
+	private static GameEntity INSTANCE = null;
+
+	protected GameEntity() {
+
+	}
+
+	public static GameEntity getInstance() {
+		if (INSTANCE == null)
+			INSTANCE = new GameEntity();
+		return INSTANCE;
+	}
+
+	// Final static fields
 	public final static int CAMERA_WIDTH = 800;
 	public final static int CAMERA_HEIGHT = 480;
-
 	public final static String SIGNIN_TASK = "signin";
 	public final static String SIGNUP_TASK = "signup";
 	public final static String SIGNOUT_TASK = "signout";
 	public final static String STARTGAME_TASK = "play_bet";
 	public final static String VIEW_HISTORY = "view_history";
+	public static final double REMAIN_FIXED = 100;
+	public final static int miniCoiWidth = 31;
+	public final static int miniCoinHeight = 31;
+	public SceneManager sceneManager;
 
-	public static SceneManager sceneManager;
+	// Scene fields
+	public Scene splashScene;
+	public Scene GameScene;
+	public Scene helpScene;
+	public Scene historyScene;
+	public Scene animatedSene;
+	
+	public int currentScreen;
+	public EngineOptions engineOptions;
+	public GameComponent currentGame;
 
-	public static ConnectionHandler connectionHandler;
+	// Connection field object
+	public ConnectionHandler connectionHandler;
+	public int currentCoint = CoinComponent.COINTID_1;
+	public UserComponent userComponent;
+	public double betAmountRemain = REMAIN_FIXED;
+	public boolean isMusicEnable = true;
 
-	public static int currentScreen;
-
-	public static Scene splashScene;
-	public static Scene GameScene;
-	public static Scene helpScene;
-	public static Scene historyScene;
-	public static Scene animatedSene;
-
-	public static EngineOptions engineOptions;
-
-	public static GameComponent currentGame;
-
-	public static int currentCoint = CoinComponent.COINTID_1;
-
+	// Enum
 	public enum GameAction {
 		BETING, REBET, RESET
 	}
 
-	public static GameAction gameAction = GameAction.BETING;
+	public GameAction gameAction = GameAction.BETING;
 
 	// Pattern ID
 	public enum PatternType {
@@ -64,11 +119,560 @@ public class GameEntity {
 		}
 	}
 
-	public static UserComponent userComponent;
+	public ShakeEventListener mSensorListener;
 
-	public static final double REMAIN_FIXED = 100;
-	public static double betAmountRemain = REMAIN_FIXED;
+	// Game auto action
+	public void checkUserTimeout() {
+		TimoutCheckAsyns checkTimeOut = new TimoutCheckAsyns();
+		Object[] params = { sceneManager.gameScene.getActivity() };
+		checkTimeOut.execute(params);
+	}
+
+	/**
+	 * User acction
+	 * 
+	 * */
+
+	/**
+	 * Enable and disable music This variable will be reference in MSComponent
+	 * when handle music or sound
+	 */
+	public void enableMusic() {
+		if (!isMusicEnable) {
+			isMusicEnable = true;
+			sceneManager.gameScene.backgroundMusic.resume();
+		} else {
+			sceneManager.gameScene.backgroundMusic.pause();
+			isMusicEnable = false;
+		}
+
+	}
+
+	/**
+	 * Bet function, when user click on a pattern, the method will be call
+	 * called from click action in pattern
+	 * 
+	 * @param X
+	 * @param Y
+	 * @param pattern
+	 */
+	public void bet(float X, float Y, PatternComponent pattern) {
+		if (userComponent.balance.balance - currentCoint < 0) {
+			displayConfirmDialog("You do not enough money", 170, 200);
+		} else if (betAmountRemain - currentCoint < 0) {
+			displayConfirmDialog("You can not bet over 100 zenny", 170, 200);
+		} else {
+			if (gameAction.equals(GameEntity.GameAction.RESET)) {
+				// GameEntity.sceneManager.gameScene.coinList.clear();
+				clearAllCoinList();
+			}
+			Y -= 5 * pattern.coinList.size();
+			CoinComponent coin = new CoinComponent(currentCoint,
+					GameEntity.miniCoiWidth, GameEntity.miniCoinHeight, "", X,
+					Y, pattern.getEngine().getTextureManager(),
+					pattern.getContext(), pattern.getEngine(), currentCoint,
+					pattern, ItemType.NORMAL_ITEM);
+			pattern.scene.registerTouchArea(coin.getSprite());
+			pattern.scene.attachChild(coin.getSprite());
+			for (int i = 0; i < sceneManager.gameScene.textList.size(); i++) {
+				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+					sceneManager.gameScene.textList.get(i).updateBalance(
+							UserComponent.UserAction.DECREASE_BALANCE,
+							currentCoint);
+				} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+					sceneManager.gameScene.textList.get(i).decreaseBetRemain(
+							currentCoint);
+				}
+			}
+			pattern.coinList.add(coin);
+			gameAction = GameEntity.GameAction.BETING;
+			if (sceneManager.gameScene.betSound != null)
+				sceneManager.gameScene.betSound.play();
+		}
+	}
+
+	/**
+	 * Clear all coin list
+	 */
+	private void clearAllCoinList() {
+		for (int i = 0; i < sceneManager.gameScene.patternList.size(); i++) {
+			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0) {
+				sceneManager.gameScene.patternList.get(i).coinList.clear();
+			}
+		}
+
+	}
+
+	public void buttonPlaySoudEffect() {
+		sceneManager.gameScene.buttonPlaySound();
+	}
+
+	/**
+	 * This method called when user click "clear" or "reset" button Called from
+	 * Button component class - click action
+	 */
+	public void clearBet() {
+
+		if (gameAction.equals(GameAction.REBET)
+				|| gameAction.equals(GameAction.BETING)) {
+			double amoutUpdate = 0;
+			for (int j = 0; j < sceneManager.gameScene.patternList.size(); j++) {
+				for (int i = 0; i < sceneManager.gameScene.patternList.get(j).coinList
+						.size(); i++) {
+					sceneManager.gameScene.patternList.get(j).coinList.get(i)
+							.removeCoin();
+					amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
+							.get(i).getCoinID();
+					sceneManager.gameScene.getScene().unregisterTouchArea(
+							sceneManager.gameScene.patternList.get(j).coinList
+									.get(i).getSprite());
+				}
+			}
+
+			for (int i = 0; i < sceneManager.gameScene.textList.size(); i++) {
+				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+					sceneManager.gameScene.textList.get(i).updateBalance(
+							UserComponent.UserAction.INCREASE_BALANCE,
+							amoutUpdate);
+				} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+					sceneManager.gameScene.textList.get(i).updateBetRemain(
+							REMAIN_FIXED);
+				}
+			}
+			gameAction = GameEntity.GameAction.RESET;
+		}
+	}
+
+	/**
+	 * This method called when user click "rebet" button Called from Button
+	 * component class - click action
+	 */
+	public void rebet() {
+		if (GameEntity.getInstance().gameAction
+				.equals(GameEntity.GameAction.RESET)) {
+			double amoutUpdate = 0;
+			for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
+					.size(); j++) {
+				for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
+						.get(j).coinList.size(); i++) {
+					GameEntity.getInstance().sceneManager.gameScene.patternList
+							.get(j).coinList.get(i).reBuildCoin();
+					amoutUpdate += GameEntity.getInstance().sceneManager.gameScene.patternList
+							.get(j).coinList.get(i).getCoinID();
+					GameEntity.getInstance().sceneManager.gameScene
+							.getScene()
+							.registerTouchArea(
+									GameEntity.getInstance().sceneManager.gameScene.patternList
+											.get(j).coinList.get(i).getSprite());
+				}
+			}
+
+			for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.textList
+					.size(); i++) {
+				if (GameEntity.getInstance().sceneManager.gameScene.textList
+						.get(i).getiID() == 1) {
+					GameEntity.getInstance().sceneManager.gameScene.textList
+							.get(i).updateBalance(
+									UserComponent.UserAction.DECREASE_BALANCE,
+									amoutUpdate);
+				} else if (GameEntity.getInstance().sceneManager.gameScene.textList
+						.get(i).getiID() == 3) {
+					GameEntity.getInstance().sceneManager.gameScene.textList
+							.get(i).decreaseBetRemain(amoutUpdate);
+				}
+			}
+			GameEntity.getInstance().gameAction = GameEntity.GameAction.REBET;
+		}
+	}
+
+	/**
+	 * This method will be call after user click next game button Called from
+	 * button action click
+	 */
+	public void updateAfterBet() {
+		// clearAllBet();
+
+		for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
+				.size(); j++) {
+			for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
+					.get(j).coinList.size(); i++) {
+
+				GameEntity.getInstance().sceneManager.gameScene.patternList
+						.get(j).coinList.get(i).removeCoin();
+				GameEntity.getInstance().sceneManager.gameScene
+						.getScene()
+						.unregisterTouchArea(
+								GameEntity.getInstance().sceneManager.gameScene.patternList
+										.get(j).coinList.get(i).getSprite());
+
+			}
+		}
+
+		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.textList
+				.size(); i++) {
+			if (GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
+					.getiID() == 1) {
+				GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
+						.updateBalance(
+								UserComponent.UserAction.UPDATE_BALANCE,
+								GameEntity.getInstance().userComponent
+										.getBalance());
+			} else if (GameEntity.getInstance().sceneManager.gameScene.textList
+					.get(i).getiID() == 3) {
+				GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
+						.updateBetRemain(GameEntity.REMAIN_FIXED);
+			}
+		}
+
+		GameEntity.getInstance().sceneManager.gameScene.betList.clear();
+		GameEntity.getInstance().gameAction = GameEntity.GameAction.RESET;
+	}
+
+	/**
+	 * When user click start game or shake phone, this method will be call
+	 * Called from Button action click and Shake phone method on game scene
+	 */
+	public void startGame() {
+		boolean isBet = false;
+		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
+				.size(); i++) {
+			if (GameEntity.getInstance().sceneManager.gameScene.patternList
+					.get(i).coinList.size() > 0
+					&& !GameEntity.getInstance().gameAction
+							.equals(GameEntity.GameAction.RESET)) {
+				for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
+						.get(i).coinList.size(); j++) {
+					GameEntity.getInstance().sceneManager.gameScene.betList
+							.add(new BetComponent(
+									GameEntity.getInstance().sceneManager.gameScene.patternList
+											.get(i).coinList.get(j).pattern.patternType
+											.getValue(),
+									GameEntity.getInstance().sceneManager.gameScene.patternList
+											.get(i).coinList.get(j).getCoinID()));
+				}
+				isBet = true;
+			}
+		}
+
+		if (!isBet) {
+			displayConfirmDialog("You must bet before start game", 170, 200);
+		} else {
+			sortBetList();
+			ConnectionAsync connectionAsync = new ConnectionAsync();
+			sceneManager.gameScene.disableAllTouch();
+			int paramsSize = sceneManager.gameScene.betList.size();
+			String[] paramsName1 = new String[paramsSize];
+			String[] paramsValue1 = new String[paramsSize];
+			String[] paramsName2 = new String[paramsSize];
+			String[] paramsValue2 = new String[paramsSize];
+
+			for (int i = 0; i < paramsSize; i++) {
+				paramsName1[i] = "betspots";
+				paramsValue1[i] = sceneManager.gameScene.betList.get(i).betPatternID
+						+ "";
+				paramsName2[i] = "betamounts";
+				paramsValue2[i] = sceneManager.gameScene.betList.get(i).betAmount
+						+ "";
+			}
+
+			String[] paramsName = new String[paramsName1.length
+					+ paramsName2.length];
+			System.arraycopy(paramsName1, 0, paramsName, 0, paramsName2.length);
+			System.arraycopy(paramsName2, 0, paramsName, paramsName1.length,
+					paramsName2.length);
+
+			String[] paramsValue = new String[paramsValue1.length
+					+ paramsValue2.length];
+			System.arraycopy(paramsValue1, 0, paramsValue, 0,
+					paramsValue2.length);
+			System.arraycopy(paramsValue2, 0, paramsValue, paramsValue1.length,
+					paramsValue2.length);
+
+			Object[] params = { GameEntity.getInstance().connectionHandler,
+					sceneManager.gameScene.getActivity(),
+					GameEntity.STARTGAME_TASK, paramsName, paramsValue };
+			sceneManager.gameScene.disableAllTouch();
+			GameEntity.getInstance().mSensorListener.stopRegisterShake();
+			connectionAsync.execute(params);
+		}
+
+	}
+
+	private int sortBetList() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.betList
+				.size(); i++) {
+			for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.betList
+					.size(); j++) {
+				if (GameEntity.getInstance().sceneManager.gameScene.betList
+						.get(i).betPatternID == GameEntity.getInstance().sceneManager.gameScene.betList
+						.get(j).betPatternID
+						&& i != j) {
+					GameEntity.getInstance().sceneManager.gameScene.betList
+							.get(i).betAmount += GameEntity.getInstance().sceneManager.gameScene.betList
+							.get(j).betAmount;
+					GameEntity.getInstance().sceneManager.gameScene.betList
+							.remove(j);
+					j--;
+				}
+			}
+		}
+		return GameEntity.getInstance().sceneManager.gameScene.betList.size();
+	}
+
+	/**
+	 * This method will be call when user click view history button Called from
+	 * Button Action click - button component class
+	 */
+	public void viewHistory() {
+		ConnectionAsync connectionAsync = new ConnectionAsync();
+		Object[] params = { GameEntity.getInstance().connectionHandler,
+				sceneManager.gameScene.getActivity(), GameEntity.VIEW_HISTORY,
+				null, null };
+		connectionAsync.execute(params);
+	}
 	
-	public final static int miniCoiWidth = 31;
-	public final static int miniCoinHeight = 31;
+	/**
+	 * Go to profile activity
+	 */
+	public void viewProfile()
+	{
+		
+	}
+	
+	/**
+	 * Go to help page activity
+	 */
+	public void viewHelp()
+	{
+		
+	}
+
+	/**
+	 * This method will be call when user click exit button Called from Button
+	 * Action click - button component class
+	 */
+	public void exitGame() {
+		ConnectionAsync connectionAsync = new ConnectionAsync();
+		Object[] params = { GameEntity.getInstance().connectionHandler,
+				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
+				null, null };
+		connectionAsync.execute(params);
+		GameEntity.getInstance().betAmountRemain = GameEntity.REMAIN_FIXED;
+		sceneManager.gameScene.unLoadScene();
+		sceneManager.activity.finish();
+		GameEntity.getInstance().sceneManager = null;
+	}
+
+	/**
+	 * This method will be call when user timeout Called from GameEntity
+	 * checkTimeout method
+	 */
+	public void exitGameTimeOut() {
+		ConnectionAsync connectionAsync = new ConnectionAsync();
+		Object[] params = { GameEntity.getInstance().connectionHandler,
+				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
+				null, null };
+		connectionAsync.execute(params);
+		// unLoadScene();
+		sceneManager.gameScene.getActivity().finish();
+		GameEntity.getInstance().sceneManager = null;
+	}
+
+	/**
+	 * @author Admin this class is the portal to sent and receive request
+	 *         response with server
+	 */
+	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
+		ConnectionHandler connectionHandler;
+		BaseGameActivity activity;
+
+		@Override
+		protected void onPreExecute() {
+
+		}
+
+		@Override
+		protected Integer doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			connectionHandler = (ConnectionHandler) params[0];
+			activity = (BaseGameActivity) params[1];
+			try {
+				connectionHandler.requestToServer((String) params[2],
+						(String[]) params[3], (Object[]) params[4]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Integer value) {
+			try {
+				// dataList = connectionHandler.parseData(responseName);
+				JSONObject result = connectionHandler.getResult();
+
+				if (GameEntity.getInstance().connectionHandler.getTaskID()
+						.equals("res_play")) {
+					// move to animation scene
+					if (result.getBoolean("is_success")) {
+						onReceiveStartGame(result);
+					} else {
+						Log.d("Bet error", "Something wrong???");
+					}
+				} else if (GameEntity.getInstance().connectionHandler
+						.getTaskID().equals("res_history")) {
+					onReceiveViewHistory(result, activity);
+				} else if (GameEntity.getInstance().connectionHandler
+						.getTaskID().equals("res_signout")) {
+					onReceiveSignout();
+				}
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * @param result
+	 * @throws JSONException
+	 *             This method called when receive response game result from
+	 *             Server
+	 */
+	public void onReceiveStartGame(JSONObject result) throws JSONException {
+		// Temp data
+		ArrayList<PatternType> winPattern = new ArrayList<GameEntity.PatternType>();
+		winPattern.add(PatternType.Big);
+		winPattern.add(PatternType.Small);
+		winPattern.add(PatternType.Double1);
+		winPattern.add(PatternType.Double3);
+
+		GameEntity.getInstance().currentGame.setGame(
+				result.getBoolean("iswin"), result.getInt("dice1"),
+				result.getInt("dice2"), result.getInt("dice3"),
+				result.getDouble("current_balance"),
+				result.getDouble("totalbetamount"),
+				result.getDouble("totalwinamount"), winPattern);
+		GameEntity.getInstance().userComponent.balance.balance = GameEntity
+				.getInstance().currentGame.newBalance;
+		// GameEntity.getInstance().sceneManager.setScene(SceneType.ANIMATION);
+		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
+				.playAnimation();
+	}
+
+	/**
+	 * @param result
+	 * @param activity
+	 * @throws JSONException
+	 *             This method called when receive history list from server
+	 */
+	public void onReceiveViewHistory(JSONObject result, Activity activity)
+			throws JSONException {
+		for (int i = 0; i < result.getInt("historyamount"); i++) {
+			GameEntity.getInstance().userComponent.historyList
+					.add(new HistoryComponent(result.getJSONObject(i + "")
+							.getBoolean("iswin"), result.getJSONObject(i + "")
+							.getString("betdate"), result.getJSONObject(i + "")
+							.getDouble("balance")));
+		}
+
+		Intent intent = new Intent(activity, ViewHistoryActivity.class);
+		activity.startActivity(intent);
+	}
+
+	public void onReceiveSignout() {
+
+	}
+
+	// Dialog display
+	// Error display
+	public void displayYesNoDialog(String errorContent, int posX, int posY) {
+		sceneManager.gameScene.yesnoDialog.displayDialog(
+				sceneManager.gameScene, errorContent, posX, posY);
+	}
+
+	public void displayConfirmDialog(String errorContent, int posX, int posY) {
+		sceneManager.gameScene.confirmDialog.displayDialog(
+				sceneManager.gameScene, errorContent, posX, posY);
+	}
+	
+	
+
+	// test particle
+	public void createFireWork(final float posX, final float posY,
+			final int width, final int height,
+			final Color color, int mNumPart,int mTimePart) {
+		
+		PointParticleEmitter particleEmitter = new PointParticleEmitter(posX,
+				posY);
+		
+		/*
+		IEntityFactory<Sprite> recFact = new IEntityFactory<Sprite>() {
+
+			@Override
+			public Sprite create(float pX, float pY) {
+				BitmapTextureAtlas atlastBig = new BitmapTextureAtlas(
+						sceneManager.activity.getTextureManager(), width, height,
+						TextureOptions.BILINEAR);
+
+				ITextureRegion atlasRegionBig = BitmapTextureAtlasTextureRegionFactory
+						.createFromAsset(atlastBig, sceneManager.activity, fireworkBG, 0, 0);
+
+				Sprite sprite = new Sprite(posX, posY, atlasRegionBig, sceneManager.activity
+						.getEngine().getVertexBufferObjectManager());
+
+				atlastBig.load();
+				return sprite;
+			}
+
+		};*/
+		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
+
+			@Override
+			public Rectangle create(float pX, float pY) {
+				Rectangle rect = new Rectangle(posX, posY, 10, 10,
+						sceneManager.activity.getVertexBufferObjectManager());
+				rect.setColor(color);
+				return rect;
+			}
+
+		};
+		final ParticleSystem<Rectangle> particleSystem = new ParticleSystem<Rectangle>(
+				recFact, particleEmitter, 500, 500, mNumPart);
+
+		particleSystem
+				.addParticleInitializer(new VelocityParticleInitializer<Rectangle>(
+						-50, 50, -50, 50));
+		/*
+		particleSystem
+				.addParticleInitializer(new ColorParticleInitializer<Rectangle>(
+						color));
+		*/
+		particleSystem.addParticleModifier(new AlphaParticleModifier<Rectangle>(0,
+				0.6f * mTimePart, 1, 0));
+		particleSystem
+				.addParticleModifier(new RotationParticleModifier<Rectangle>(0,
+						mTimePart, 0, 360));
+
+		sceneManager.gameScene.getScene().attachChild(particleSystem);
+		sceneManager.gameScene.getScene().registerUpdateHandler(new TimerHandler(mTimePart,
+				new ITimerCallback() {
+					@Override
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						particleSystem.detachSelf();
+						sceneManager.gameScene.getScene().sortChildren();
+						sceneManager.gameScene.getScene().unregisterUpdateHandler(pTimerHandler);
+					}
+				}));
+
+	}
 }

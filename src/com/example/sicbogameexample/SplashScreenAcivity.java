@@ -59,7 +59,7 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 		// TODO Auto-generated method stub
 		initSplashScene();
 
-		pOnCreateSceneCallback.onCreateSceneFinished(GameEntity.splashScene);
+		pOnCreateSceneCallback.onCreateSceneFinished(GameEntity.getInstance().splashScene);
 	}
 
 	public void loadScenes() {
@@ -80,7 +80,7 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 	// ===========================================================
 
 	private void initSplashScene() {
-		GameEntity.splashScene = new Scene();
+		GameEntity.getInstance().splashScene = new Scene();
 		splash = new Sprite(0, 0, splashTextureRegion,
 				mEngine.getVertexBufferObjectManager()) {
 			@Override
@@ -94,8 +94,8 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 		splash.setPosition(
 				(GameEntity.CAMERA_WIDTH - splash.getWidth()) * 0.5f,
 				(GameEntity.CAMERA_HEIGHT - splash.getHeight()) * 0.5f);
-		GameEntity.splashScene.registerTouchArea(splash);
-		GameEntity.splashScene.attachChild(splash);
+		GameEntity.getInstance().splashScene.registerTouchArea(splash);
+		GameEntity.getInstance().splashScene.attachChild(splash);
 	}
 
 	@Override

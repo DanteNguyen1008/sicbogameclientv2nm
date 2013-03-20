@@ -107,7 +107,7 @@ public class RegisterScreen extends Activity implements OnClickListener {
 				if (result.getBoolean("is_success")) {					
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
-					GameEntity.userComponent = new UserComponent(txtUsername.getText().toString(),
+					GameEntity.getInstance().userComponent = new UserComponent(txtUsername.getText().toString(),
 							txtEmail.getText().toString(),
 							0);
 					activity.startActivity(intent);

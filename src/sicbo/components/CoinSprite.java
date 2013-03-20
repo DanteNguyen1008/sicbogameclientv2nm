@@ -63,16 +63,18 @@ public class CoinSprite extends GenericPool<Sprite> {
 					
 					break;
 				case TouchEvent.ACTION_UP:
-					GameEntity.sceneManager.gameScene.getScene().unregisterTouchArea(this);
+					GameEntity.getInstance().sceneManager.gameScene.getScene().unregisterTouchArea(this);
 					this.detachSelf();
-					for (int i = 0; i < GameEntity.sceneManager.gameScene.textList.size(); i++) {
-						if (GameEntity.sceneManager.gameScene.textList.get(i).getiID() == 1) {
-							GameEntity.sceneManager.gameScene.textList.get(i).updateBalance(UserComponent.UserAction.INCREASE_BALANCE,coinID);
-						}else if(GameEntity.sceneManager.gameScene.textList.get(i).getiID() == 3)
+					for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.textList.size(); i++) {
+						if (GameEntity.getInstance().sceneManager.gameScene.textList.get(i).getiID() == 1) {
+							GameEntity.getInstance().sceneManager.gameScene.textList.get(i).updateBalance(UserComponent.UserAction.INCREASE_BALANCE,coinID);
+						}else if(GameEntity.getInstance().sceneManager.gameScene.textList.get(i).getiID() == 3)
 						{
-							GameEntity.sceneManager.gameScene.textList.get(i).increaseBetRemain(coinID);
+							GameEntity.getInstance().sceneManager.gameScene.textList.get(i).increaseBetRemain(coinID);
 						}
 					}
+					if(GameEntity.getInstance().sceneManager.gameScene != null)
+						GameEntity.getInstance().sceneManager.gameScene.releaseBetSound.play();
 					coinComponent.deleteItSeft();
 					break;
 				}

@@ -69,7 +69,7 @@ public class DialogComponent extends AbItemComponent {
 						break;
 					case TouchEvent.ACTION_UP:
 						this.setScale(1f);
-						disableDialog(GameEntity.sceneManager.gameScene);
+						disableDialog(GameEntity.getInstance().sceneManager.gameScene);
 						break;
 					}
 					return true;
@@ -144,7 +144,7 @@ public class DialogComponent extends AbItemComponent {
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
 					// disableDialog(ConfigClass.sceneManager.gameScene);
-					GameEntity.sceneManager.gameScene.exitGame();
+					GameEntity.getInstance().exitGame();
 					break;
 				}
 				return true;
@@ -168,7 +168,7 @@ public class DialogComponent extends AbItemComponent {
 					break;
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
-					disableDialog(GameEntity.sceneManager.gameScene);
+					disableDialog(GameEntity.getInstance().sceneManager.gameScene);
 					break;
 				}
 				return true;

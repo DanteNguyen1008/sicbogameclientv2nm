@@ -72,7 +72,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		llhistoryTitle.addView(tvBalanceTitle, componentParamsTitle);
 		llhistoryTitle.addView(tvDateCreateTitle, componentParamsTitle);
 		llHistoryList.addView(llhistoryTitle, llhistoryParamsTitle);
-		for (int i = 0; i < GameEntity.userComponent.historyList.size(); i++) {
+		for (int i = 0; i < GameEntity.getInstance().userComponent.historyList.size(); i++) {
 			// Create linear each line
 			LinearLayout llhistory = new LinearLayout(this);
 			if(i%2 == 0)
@@ -89,14 +89,14 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 			// Add content for line
 			// Win or lose
 			TextView tvIsWin = new TextView(this);
-			if (GameEntity.userComponent.historyList.get(i).isWin)
+			if (GameEntity.getInstance().userComponent.historyList.get(i).isWin)
 				tvIsWin.setText("Win");
 			else
 				tvIsWin.setText("Lose");
 
 			// Balance
 			TextView tvBalance = new TextView(this);
-			tvBalance.setText("" + GameEntity.userComponent.historyList.get(i).balance);
+			tvBalance.setText("" + GameEntity.getInstance().userComponent.historyList.get(i).balance);
 
 			// Date Create
 			TextView tvDateCreate = new TextView(this);
@@ -107,7 +107,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 					"MM/dd/yyyy' 'HH:MM");
 					*/
 			
-			tvDateCreate.setText(convertSecondsToDate(Long.parseLong(GameEntity.userComponent.historyList.get(i).betDate), "dd/MM/yyyy hh:mm:ss"));
+			tvDateCreate.setText(convertSecondsToDate(Long.parseLong(GameEntity.getInstance().userComponent.historyList.get(i).betDate), "dd/MM/yyyy hh:mm:ss"));
 
 			LinearLayout.LayoutParams componentParams = new LinearLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -147,7 +147,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.equals(btnBack)) {
-			GameEntity.userComponent.historyList.clear();
+			GameEntity.getInstance().userComponent.historyList.clear();
 			Intent intent = new Intent(this, SicBoGameActivity.class);
 			this.startActivity(intent);
 			finish();

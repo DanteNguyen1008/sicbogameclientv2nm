@@ -15,7 +15,7 @@ public class GameComponent {
 	public ArrayList<PatternType> winPatterns;
 
 	public void setGame(boolean isWin, int dice1, int dice2, int dice3,
-			double newBalance, double totalBetAmount, double totalWinAmount) {
+			double newBalance, double totalBetAmount, double totalWinAmount, ArrayList<PatternType> winPatterns) {
 		this.isWin = isWin;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
@@ -23,5 +23,6 @@ public class GameComponent {
 		this.newBalance = newBalance;
 		this.totalBetAmount = totalBetAmount;
 		this.totalWinAmount = totalWinAmount;
+		this.winPatterns = winPatterns;
 	}
 }
