@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class RegisterScreen extends BaseActivity implements OnClickListener {
@@ -25,6 +26,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	EditText edtConfirmPassword;
 	EditText edtEmail, edtFullName;
 	Button btnRegister;
+	ImageButton imgBack;
 	ConnectionHandler connectionHandler;
 
 	@Override
@@ -38,6 +40,8 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		edtEmail = (EditText) findViewById(R.id.edt_email);
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
 		btnRegister = (Button) findViewById(R.id.btn_register);
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
 
 	}
@@ -52,8 +56,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
-		if (v.getId() == R.id.btn_register) {
+       switch(v.getId())
+       {
+       case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
 			String[] paramsName = { "username", "password", "email", "fullname" };
 			String[] paramsValue = { edtUsername.getText().toString().trim(),
@@ -63,6 +68,10 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			Object[] params = { connectionHandler, this,
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
+			break;
+       case R.id.btn_back:
+    	   this.finish();
+    	   break;
 		}
 	}
 
@@ -105,12 +114,14 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				// Create user and move to game scene
+
 				if (result.getBoolean("is_success")) {
-					GameEntity.userComponent = new UserComponent(edtUsername
+					GameEntity.getInstance().userComponent = new UserComponent(edtUsername
 							.getText().toString(), edtEmail.getText()
 							.toString(), 0);
 					progressDialog.dismiss();
 					createDialog();
+
 
 				} else {
 					Toast.makeText(activity, result.getString("message"),

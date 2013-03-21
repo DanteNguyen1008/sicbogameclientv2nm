@@ -5,20 +5,24 @@
 
     <RelativeLayout
         android:id="@+id/rela1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
+        
         android:layout_height="50dp" >
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="70dp"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="-5dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_back"
+            android:background="#1B0A2A"
+            />
 
         <ImageButton
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="-7dp"
-            android:layout_marginRight="-5dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/btn_login"
+            android:background="#1B0A2A"
             android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
 
@@ -93,16 +97,6 @@
             android:textColor="#045FB4"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/txt_change_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
-            android:text="Change Password?"
-            android:textColor="#045FB4"
-            android:textSize="14sp" />
     </RelativeLayout>
 
 </RelativeLayout>

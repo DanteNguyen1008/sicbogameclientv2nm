@@ -17,20 +17,19 @@ public class SceneManager {
 	}
 
 	private SceneType currentScene;
-	private BaseGameActivity activity;
+	public BaseGameActivity activity;
 	private Engine engine;
 	private Camera camera;
 	private ProgressDialog pd = null;
 
 	public GameScene gameScene;
-
 	// public AnimationScene animationScene;
 
 	public SceneManager(BaseGameActivity activity, Engine engine, Camera camera) {
 		this.activity = activity;
 		this.engine = engine;
 		this.camera = camera;
-		GameEntity.currentGame = new GameComponent();
+		GameEntity.getInstance().currentGame = new GameComponent();
 		gameScene = new GameScene(engine, camera, activity);
 	}
 
@@ -60,9 +59,6 @@ public class SceneManager {
 	public void setScene(SceneType nextScene) {
 		// Clear current scene
 		switch (getCurrentScene()) {
-		case ANIMATION:
-			// animationScene.unLoadScene();
-			break;
 		case GAME:
 			// May be clear all bet
 			break;
@@ -75,12 +71,6 @@ public class SceneManager {
 		switch (nextScene) {
 		case GAME:
 			engine.setScene(gameScene.getScene());
-			break;
-		case ANIMATION:
-			// animationScene.loadResource();
-			// animationScene.loadScene();
-			// animationScene.setScene(animationScene.getScene());
-
 			break;
 		case HISTORY:
 

@@ -9,16 +9,18 @@
         
         <ImageButton
         android:id="@+id/btn_back"
-        android:layout_width="70dp" 
+        android:layout_width="wrap_content" 
         android:layout_height="fill_parent"
-        android:layout_marginLeft="-5dp"
+         android:src="@drawable/btn_back"
+            android:background="#1B0A2A"
+       
         />
 
         <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginLeft="-7dp"
-            android:layout_marginRight="-5dp"
+            android:src="@drawable/btn_register"
+            android:background="#1B0A2A"
             android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
 

@@ -137,7 +137,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener{
 			String[] paramsName = {"email"};
 			String[] paramsValue =  {edtEmail.getText().toString().trim()};
 					
-			Object[] params = { GameEntity.connectionHandler, this,
+			Object[] params = { GameEntity.getInstance().connectionHandler, this,
 					GameEntity.FORGOT_PASSWORD_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 	}

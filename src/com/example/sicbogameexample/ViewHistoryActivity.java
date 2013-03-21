@@ -37,12 +37,13 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.table_history);
 		tblHistory=(TableLayout)findViewById(R.id.table_history);
-		historyGame=GameEntity.userComponent.historyList;
+		historyGame=GameEntity.getInstance().userComponent.historyList;
 		size=historyGame.size();
 		initializeHeaderRow(tblHistory);
 		fillRow();
 	}
 		
+
   private void fillRow()
   {
 	  int textColor = Color.BLACK;
@@ -56,7 +57,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		    TableRow headerRow = new TableRow(this);
 		    addTextToRowWithValues(headerRow, convertSecondsToDate(Long.parseLong(historyGame.get(i).betDate), "dd/MM/yyyy hh:mm:ss"), textColor, textSize);
 		    addTextToRowWithValues(headerRow, result, textColor, textSize);
-		    addTextToRowWithValues(headerRow, String.valueOf(GameEntity.userComponent.historyList.get(i).balance), textColor, textSize);
+		    addTextToRowWithValues(headerRow, String.valueOf(historyGame.get(i).balance), textColor, textSize);
 	        
 	        tblHistory.addView(headerRow);
 	  }
@@ -81,7 +82,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	        textView.setText(text);
 	        tableRow.addView(textView);
 	    }
-	
+
 	public String convertSecondsToDate(long seconds, String dateFormat)
 	{
 		long dateInMillis = seconds * 1000;
@@ -106,8 +107,13 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
+
 		/*if (arg0.equals(btnBack)) {
 			GameEntity.userComponent.historyList.clear();
+=======
+		if (arg0.equals(btnBack)) {
+			GameEntity.getInstance().userComponent.historyList.clear();
+>>>>>>> upstream/master
 			Intent intent = new Intent(this, SicBoGameActivity.class);
 			this.startActivity(intent);
 			finish();

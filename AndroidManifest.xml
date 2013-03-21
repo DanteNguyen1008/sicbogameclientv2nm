@@ -56,8 +56,15 @@
         <activity 
             android:name="com.example.sicbogameexample.ChangePassword">
         </activity>
+          <activity 
+              android:name="com.example.sicbogameexample.HelpActivity">
+              
+          </activity>
+        <activity android:name="com.example.sicbogameexample.WebviewHelpPage">
+        </activity>
+        <activity android:name="com.example.sicbogameexample.ProfileActivity">
             
-        
+        </activity>
         <activity 
             android:name="com.example.sicbogameexample.ResetPassword"
             android:configChanges="orientation|screenSize"></activity>
@@ -71,5 +78,5 @@
             android:label="@string/title_activity_view_history" >
         </activity>
     </application>
-
+<uses-permission android:name="android.permission.INTERNE"/>T
 </manifest>

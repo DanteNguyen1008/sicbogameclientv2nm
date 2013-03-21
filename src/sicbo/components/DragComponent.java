@@ -55,7 +55,7 @@ public class DragComponent extends AbItemComponent {
 						mGrabbed = false;
 						this.setScale(1.2f);
 						dropTempDrag();
-						GameEntity.currentCoint = getCoinID();
+						GameEntity.getInstance().currentCoint = getCoinID();
 						specifyDragOnItem(pSceneTouchEvent.getX() - getiWidth()
 								/ 2,
 								pSceneTouchEvent.getY() - getiHeight() / 2,
@@ -73,26 +73,26 @@ public class DragComponent extends AbItemComponent {
 
 	private void specifyDragOnItem(float X, float Y,
 			TouchEvent pSceneTouchEvent, int touchEventType) {
-		for (int i = 0; i < GameEntity.sceneManager.gameScene.patternList
+		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
 				.size(); i++) {
-			if (GameEntity.sceneManager.gameScene.patternList.get(i)
+			if (GameEntity.getInstance().sceneManager.gameScene.patternList.get(i)
 					.getiItemType() == ItemType.TOUCHABLE_ITEM) {
-				if ((GameEntity.sceneManager.gameScene.patternList.get(i)
-						.getPositionX() < X && X < (GameEntity.sceneManager.gameScene.patternList
-						.get(i).getPositionX() + GameEntity.sceneManager.gameScene.patternList
+				if ((GameEntity.getInstance().sceneManager.gameScene.patternList.get(i)
+						.getPositionX() < X && X < (GameEntity.getInstance().sceneManager.gameScene.patternList
+						.get(i).getPositionX() + GameEntity.getInstance().sceneManager.gameScene.patternList
 						.get(i).getiWidth()))
-						&& (GameEntity.sceneManager.gameScene.patternList
-								.get(i).getPositionY() < Y && Y < (GameEntity.sceneManager.gameScene.patternList
-								.get(i).getPositionY() + GameEntity.sceneManager.gameScene.patternList
+						&& (GameEntity.getInstance().sceneManager.gameScene.patternList
+								.get(i).getPositionY() < Y && Y < (GameEntity.getInstance().sceneManager.gameScene.patternList
+								.get(i).getPositionY() + GameEntity.getInstance().sceneManager.gameScene.patternList
 								.get(i).getiHeight()))) {
-					GameEntity.sceneManager.gameScene.patternList
+					GameEntity.getInstance().sceneManager.gameScene.patternList
 							.get(i)
 							.getSprite()
 							.onAreaTouched(
 									TouchEvent.obtain(X, Y, touchEventType, 0,
 											pSceneTouchEvent.getMotionEvent()),
 									X, Y);
-					GameEntity.sceneManager.gameScene.patternList
+					GameEntity.getInstance().sceneManager.gameScene.patternList
 					.get(i)
 					.getSprite()
 					.onAreaTouched(

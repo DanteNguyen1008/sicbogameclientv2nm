@@ -8,8 +8,10 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import sicbo.components.ShakeEventListener;
 import sicbo.components.UserComponent;
 
+import android.os.Bundle;
 import android.view.KeyEvent;
 
 import com.example.sicbogameexample.SceneManager.SceneType;
@@ -25,6 +27,14 @@ public class SicBoGameActivity extends BaseGameActivity {
 	private Camera camera;
 	public UserComponent userComponent;
 
+	// shake phone object
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		GameEntity.getInstance().mSensorListener = new ShakeEventListener(this);
+	}
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
@@ -34,9 +44,29 @@ public class SicBoGameActivity extends BaseGameActivity {
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
 				camera);
-		//engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-
+		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+		engineOptions.getAudioOptions().setNeedsMusic(true);
+		engineOptions.getAudioOptions().setNeedsSound(true);
 		return engineOptions;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		GameEntity.getInstance().mSensorListener.registerShake();
+		if (GameEntity.getInstance().sceneManager != null)
+			GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+					.resume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onStop();
+		GameEntity.getInstance().mSensorListener.stopRegisterShake();
+		if (GameEntity.getInstance().sceneManager != null)
+			GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+					.pause();
+
 	}
 
 	@Override
@@ -45,8 +75,9 @@ public class SicBoGameActivity extends BaseGameActivity {
 			throws Exception {
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		GameEntity.sceneManager = new SceneManager(this, mEngine, camera);
-		if (GameEntity.sceneManager.setGameScene()) {
+		GameEntity.getInstance().sceneManager = new SceneManager(this, mEngine,
+				camera);
+		if (GameEntity.getInstance().sceneManager.setGameScene()) {
 
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 		} else {
@@ -60,9 +91,9 @@ public class SicBoGameActivity extends BaseGameActivity {
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws Exception {
 		// TODO Auto-generated method stub
-		GameEntity.sceneManager.setCurrentScene(SceneType.GAME);
+		GameEntity.getInstance().sceneManager.setCurrentScene(SceneType.GAME);
 		pOnCreateSceneCallback
-				.onCreateSceneFinished(GameEntity.sceneManager.gameScene
+				.onCreateSceneFinished(GameEntity.getInstance().sceneManager.gameScene
 						.getScene());
 	}
 
@@ -70,7 +101,10 @@ public class SicBoGameActivity extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		// TODO Auto-generated method stub
-
+		GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.play();
+		GameEntity.getInstance().userComponent.actionTime = System
+				.currentTimeMillis();
+		// GameEntity.getInstance().checkUserTimeout();
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
@@ -84,10 +118,11 @@ public class SicBoGameActivity extends BaseGameActivity {
 
 	@Override
 	public void onBackPressed() {
-		GameEntity.sceneManager.gameScene.yesnoDialog
-		.displayDialog(
-				GameEntity.sceneManager.gameScene,
-				"Do you want to exit?", 200, 300);
+		/*
+		 * GameEntity.getInstance().displayYesNoDialog("Do you want to exit?",
+		 * 200, 300);
+		 */
+		GameEntity.getInstance().sceneManager.gameScene.displayMenu();
 	}
 
 }

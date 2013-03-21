@@ -6,9 +6,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.sicbogameexample.LoginScreen.ConnectionAsync;
-
-import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,12 +15,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ChangePassword extends Activity implements OnClickListener{
 	
 	EditText edtCurrentPassword,edtNewPassword,edtConfirmPassword;
-	Button btnOk,btnCancel;
+	Button btnOk;
+	ImageButton imgBack;
 	ConnectionAsync connectionAsync;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +33,10 @@ public class ChangePassword extends Activity implements OnClickListener{
 		edtNewPassword=(EditText)findViewById(R.id.edt_new_password);
 		edtConfirmPassword=(EditText)findViewById(R.id.edt_confirm_password);
 		btnOk=(Button)findViewById(R.id.btn_ok);
-		btnCancel=(Button)findViewById(R.id.btn_cancel);
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
 		btnOk.setOnClickListener(this);
-		btnCancel.setOnClickListener(this);
+		
 	
 	}
 	@Override
@@ -53,12 +53,12 @@ public class ChangePassword extends Activity implements OnClickListener{
 			String[] paramsName = { "old_pass", "new_pass" };
 			String[] paramsValue = { edtCurrentPassword.getText().toString().trim(),
 					edtNewPassword.getText().toString().trim()};
-			Object[] params = { GameEntity.connectionHandler, this,
+			Object[] params = { GameEntity.getInstance().connectionHandler, this,
 					GameEntity.SIGNIN_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 			}
 			break;
-		case R.id.btn_cancel:
+		case R.id.btn_back:
 			this.finish();
 		break;
 		

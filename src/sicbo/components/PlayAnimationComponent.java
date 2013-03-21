@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
@@ -74,102 +73,84 @@ public class PlayAnimationComponent implements IAnimationListener {
 		// Load animation component
 		animatedItemList = new ArrayList<AnimationComponent>();
 
-		//Load dice
-		//Left dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1,
-				6, "dice1.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1,
-				6, "dice2.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1,
-				6, "dice3.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1,
-				6, "dice4.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1,
-				6, "dice5.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1,
-				6, "dice6.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_LEFT, scene.getScene(),
-				null));
-		
-		//Middle dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1,
-				6, "dice1.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1,
-				6, "dice2.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1,
-				6, "dice3.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1,
-				6, "dice4.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1,
-				6, "dice5.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1,
-				6, "dice6.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_MIDDLE, scene.getScene(),
-				null));
-		
-		//Right dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1,
-				6, "dice1.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1,
-				6, "dice2.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1,
-				6, "dice3.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1,
-				6, "dice4.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1,
-				6, "dice5.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1,
-				6, "dice6.png", -500, -500, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
-				null));
+		// Load dice
+		// Left dice
+		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
+				"dice1.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
+				"dice2.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
+				"dice3.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
+				"dice4.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
+				"dice5.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
+				"dice6.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_LEFT,
+				scene.getScene(), null));
+
+		// Middle dice
+		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
+				"dice1.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
+				"dice2.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
+				"dice3.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
+				"dice4.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
+				"dice5.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
+				"dice6.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_MIDDLE,
+				scene.getScene(), null));
+
+		// Right dice
+		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
+				"dice1.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
+				"dice2.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
+				"dice3.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
+				"dice4.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
+				"dice5.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
+		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
+				"dice6.png", -500, -500, scene.getEngine().getTextureManager(),
+				scene.getActivity(), scene.getEngine(), ItemType.DICE_RIGHT,
+				scene.getScene(), null));
 
 		// Win animation
 		animatedItemList.add(new AnimationComponent(1, 238, 237, 64, 64, 3, 3,
@@ -212,16 +193,19 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 		for (int i = 0; i < animatedItemList.size(); i++) {
 			if (animatedItemList.get(i).getiItemType() == ItemType.DICE_MIDDLE
-					&& animatedItemList.get(i).getiID() == GameEntity.currentGame.dice2) {
+					&& animatedItemList.get(i).getiID() == GameEntity
+							.getInstance().currentGame.dice2) {
 				animatedItemList.get(i).animatedSprite.animate(200, 0, this);
 				animatedItemList.get(i).animatedSprite.setPosition(330, 200);
 			} else if (animatedItemList.get(i).getiItemType() == ItemType.DICE_LEFT
-					&& animatedItemList.get(i).getiID() == GameEntity.currentGame.dice1) {
+					&& animatedItemList.get(i).getiID() == GameEntity
+							.getInstance().currentGame.dice1) {
 				animatedItemList.get(i).animatedSprite.animate(200, false);
 
 				animatedItemList.get(i).animatedSprite.setPosition(200, 200);
 			} else if (animatedItemList.get(i).getiItemType() == ItemType.DICE_RIGHT
-					&& animatedItemList.get(i).getiID() == GameEntity.currentGame.dice3) {
+					&& animatedItemList.get(i).getiID() == GameEntity
+							.getInstance().currentGame.dice3) {
 				animatedItemList.get(i).animatedSprite.animate(200, false);
 
 				animatedItemList.get(i).animatedSprite.setPosition(470, 200);
@@ -230,15 +214,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 		background.getSprite().setPosition(0, 0);
 		background.getSprite().setZIndex(999);
 		background.getSprite().getParent().sortChildren();
-		
-		//Display win pattern.
-		for (int i = 0; i < scene.patternList.size(); i++) {
-			
-		}
+
 	}
 
 	public void stopAnimation() {
 		background.getSprite().setPosition(-800, -480);
+		GameEntity.getInstance().mSensorListener.registerShake();
 		hideResultText();
 	}
 
@@ -293,46 +274,54 @@ public class PlayAnimationComponent implements IAnimationListener {
 				buttonAnimatedList.get(0).tiledSprite);
 		background.getSprite().setZIndex(0);
 		background.getSprite().getParent().sortChildren();
+
+		displayWinPatterns(false);
+
+	}
+
+	private void displayWinPatterns(boolean isDisplay) {
+		// Display win pattern.
+		for (int i = 0; i < scene.patternList.size(); i++) {
+			for (int j = 0; j < GameEntity.getInstance().currentGame.winPatterns
+					.size(); j++) {
+				if (scene.patternList.get(i).patternType == GameEntity
+						.getInstance().currentGame.winPatterns.get(j)) {
+					if (isDisplay) {
+						scene.patternList.get(i).getSprite().setAlpha(0.5f);
+
+					} else {
+						scene.patternList.get(i).getSprite().setAlpha(1f);
+						/*
+						 * if (!GameEntity.getInstance().currentGame.isWin)
+						 * scene.playWinSound(false); else
+						 * scene.playLoseSound(false);
+						 */
+					}
+
+				}
+			}
+		}
+
 	}
 
 	private void displayResultText() {
 		// TODO Auto-generated method stub
 		String resultString = "You lose";
 		String totalBetString = "Total money you bet : "
-				+ GameEntity.currentGame.totalBetAmount;
+				+ GameEntity.getInstance().currentGame.totalBetAmount;
 		String totalWinString = "Total money you get : "
-				+ GameEntity.currentGame.totalWinAmount;
-		if (GameEntity.currentGame.isWin) {
+				+ GameEntity.getInstance().currentGame.totalWinAmount;
+		if (GameEntity.getInstance().currentGame.isWin) {
 			// Win
+			scene.playWinSound(true);
 			resultString = "You win";
-			for (int i = 0; i < animatedItemList.size(); i++) {
-				if (animatedItemList.get(i).getiItemType() == ItemType.WIN_ANIMATION) {
-					
-					animatedItemList.get(i).animatedSprite.animate(100, true);
-					if (animatedItemList.get(i).getiID() == 1) {
-						animatedItemList.get(i).setPositionX(100);
-						animatedItemList.get(i).setPositionY(100);
-					}
-					if (animatedItemList.get(i).getiID() == 2) {
-						animatedItemList.get(i).setPositionX(150);
-						animatedItemList.get(i).setPositionY(30);
-					}
-					if (animatedItemList.get(i).getiID() == 3) {
-						animatedItemList.get(i).setPositionX(500);
-						animatedItemList.get(i).setPositionY(30);
-					}
-					if (animatedItemList.get(i).getiID() == 4) {
-						animatedItemList.get(i).setPositionX(600);
-						animatedItemList.get(i).setPositionY(100);
-					}
-					animatedItemList.get(i).animatedSprite.setPosition(animatedItemList.get(i).getPositionX(),
-							animatedItemList.get(i).getPositionY());
-				}
-			}
+			displayWinPatterns(true);
+			// displayFireWork();
 		} else {
 			// Lose
+			scene.playLoseSound(true);
 		}
-
+		displayFireWork();
 		for (int i = 0; i < displayTextList.size(); i++) {
 			if (displayTextList.get(i).getiID() == 1) {
 				displayTextList.get(i).text.setText(resultString);
@@ -352,5 +341,25 @@ public class PlayAnimationComponent implements IAnimationListener {
 		scene.getScene().registerTouchArea(
 				buttonAnimatedList.get(0).tiledSprite);
 
+	}
+
+	private void displayFireWork() {
+		GameEntity.getInstance().createFireWork(50, 50, 32, 32, Color.RED, 20,
+				3);
+
+		GameEntity.getInstance().createFireWork(50, 50, 32, 32, Color.BLUE, 10,
+				3);
+
+		GameEntity.getInstance().createFireWork(300, 50, 32, 32, Color.GREEN,
+				20, 3);
+
+		GameEntity.getInstance().createFireWork(300, 50, 32, 32, Color.PINK,
+				10, 3);
+
+		GameEntity.getInstance().createFireWork(400, 240, 32, 32, Color.YELLOW,
+				20, 3);
+
+		GameEntity.getInstance().createFireWork(400, 240, 32, 32, Color.CYAN,
+				10, 3);
 	}
 }

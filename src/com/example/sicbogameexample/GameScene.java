@@ -1,9 +1,9 @@
 package com.example.sicbogameexample;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
+import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.util.FPSLogger;
@@ -11,33 +11,29 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import sicbo.components.AnimationComponent;
 import sicbo.components.BetComponent;
 import sicbo.components.ButtonComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.DialogComponent;
 import sicbo.components.DragComponent;
-import sicbo.components.HistoryComponent;
 import sicbo.components.ItemComponent;
+import sicbo.components.MSComponent;
+import sicbo.components.MyMenuScene;
+import sicbo.components.MSComponent.MStype;
+import sicbo.components.ParticleSystemComponent;
 import sicbo.components.PatternComponent;
 import sicbo.components.PlayAnimationComponent;
 import sicbo.components.TextComponent;
 import sicbo.components.AbItemComponent.ItemType;
-import sicbo_networks.ConnectionHandler;
+import sicbo.components.ShakeEventListener.OnShakeListener;
 
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity.GameAction;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
-public class GameScene extends MyScene {
+public class GameScene extends MyScene implements OnShakeListener {
 
 	public ItemComponent background;
 	public DialogComponent confirmDialog;
@@ -51,8 +47,18 @@ public class GameScene extends MyScene {
 	public ArrayList<DragComponent> dragList;
 	public ArrayList<TextComponent> textList;
 	public ArrayList<BetComponent> betList;
+	public ArrayList<ParticleSystemComponent> fireworkList;
+
+	// Music and Sound
+	public MSComponent backgroundMusic;
+	public MSComponent betSound;
+	public MSComponent releaseBetSound;
+	public MSComponent winSound;
+	public MSComponent loseSound;
 
 	// DialogComponent loadingDialog;
+	// Menu
+	MyMenuScene menuScene;
 
 	public GameScene(Engine engine, Camera camera, BaseGameActivity activity) {
 		super(engine, camera, activity);
@@ -64,6 +70,9 @@ public class GameScene extends MyScene {
 		dragList = new ArrayList<DragComponent>();
 		textList = new ArrayList<TextComponent>();
 		betList = new ArrayList<BetComponent>();
+		fireworkList = new ArrayList<ParticleSystemComponent>();
+		GameEntity.getInstance().mSensorListener.setOnShakeListener(this);
+
 	}
 
 	private void loadDialog(Font mFont) {
@@ -86,20 +95,54 @@ public class GameScene extends MyScene {
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32,
 				Color.WHITE_ABGR_PACKED_INT);
 		mChangableFont.load();
-		textList.add(new TextComponent(1, 512, 512, GameEntity.userComponent
-				.getBalance() + "", 281, 380, getEngine().getTextureManager(),
-				getActivity(), getEngine(), ItemType.TEXT, 1, Color.WHITE,
-				mChangableFont));
-		/*
-		 * textList.add(new TextComponent(2, 170, 20, "Max bet's 100 Zenny",
-		 * -60, 395, getEngine().getTextureManager(), getActivity(),
-		 * getEngine(), ItemType.TEXT, 0.5f, Color.WHITE, mChangableFont));
-		 */
-		textList.add(new TextComponent(3, 100, 23, GameEntity.betAmountRemain
-				+ "", 612, 380, getEngine().getTextureManager(), getActivity(),
+		textList.add(new TextComponent(1, 512, 512,
+				GameEntity.getInstance().userComponent.getBalance() + "", 281,
+				380, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.TEXT, 1, Color.WHITE, mChangableFont));
+		textList.add(new TextComponent(3, 100, 23,
+				GameEntity.getInstance().betAmountRemain + "", 612, 380,
+				getEngine().getTextureManager(), getActivity(), getEngine(),
+				ItemType.TEXT, 1, Color.WHITE, mChangableFont));
 
 		loadDialog(mChangableFont);
+	}
+
+	private void loadMenuScene() {
+		menuScene = new MyMenuScene(1, 800, 480, "dialogbackground.png", 0, 0,
+				getActivity().getTextureManager(), getActivity(), getActivity()
+						.getEngine(), ItemType.NORMAL_ITEM);
+		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
+				"menu_resume.jpg", 300, 50, getEngine().getTextureManager(),
+				getActivity(), getEngine(), ItemType.MENU_RESUME, getScene(),
+				SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
+				"menu_profile.jpg", 300, 120, getEngine().getTextureManager(),
+				getActivity(), getEngine(), ItemType.MENU_PROFILE, getScene(),
+				SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
+				"menu_help.jpg", 300, 190, getEngine().getTextureManager(),
+				getActivity(), getEngine(), ItemType.MENU_HELP, getScene(),
+				SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
+				"menu_exit.jpg", 300, 260, getEngine().getTextureManager(),
+				getActivity(), getEngine(), ItemType.MENU_EXIT, getScene(),
+				SceneType.GAME));
+
+	}
+
+	private void loadMusicAndSound() {
+		SoundFactory.setAssetBasePath("mfx/");
+		MusicFactory.setAssetBasePath("mfx/");
+		backgroundMusic = new MSComponent(1, "themesong.mp3", MStype.MUSIC,
+				getEngine(), getActivity(), true);
+		betSound = new MSComponent(2, "betcoin.wav", MStype.SOUND, getEngine(),
+				getActivity());
+		releaseBetSound = new MSComponent(3, "pickcoin.mp3", MStype.SOUND,
+				getEngine(), getActivity());
+		winSound = new MSComponent(4, "cheer.mp3", MStype.SOUND, getEngine(),
+				getActivity());
+		loseSound = new MSComponent(5, "fail.mp3", MStype.SOUND, getEngine(),
+				getActivity());
 	}
 
 	private void loadResourceItemList() {
@@ -328,11 +371,6 @@ public class GameScene extends MyScene {
 				671, 434, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.BUTTON_ROLL, getScene(),
 				SceneType.ANIMATION));
-		/*
-		 * buttonList.add(new ButtonComponent(59, 139, 30, 2, 1, "btnexit.png",
-		 * 725, 445, getEngine().getTextureManager(), getActivity(),
-		 * getEngine(), ItemType.BUTTON_EXIT, getScene(), SceneType.ANIMATION));
-		 */
 		buttonList.add(new ButtonComponent(59, 129, 46, 1, 1, "resetbtn.png",
 				277, 434, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.BUTTON_CLEAR, getScene(),
@@ -354,6 +392,13 @@ public class GameScene extends MyScene {
 
 	}
 
+	public void loadFireworkResource() {
+		fireworkList.add(new ParticleSystemComponent(1, 32, 32,
+				"particle_point.png", -800, -480, getEngine()
+						.getTextureManager(), getActivity(), getEngine(),
+				ItemType.NORMAL_ITEM, Color.RED, 20, 2, getScene()));
+	}
+
 	@Override
 	public void loadResource() {
 		// TODO Auto-generated method stub
@@ -367,7 +412,11 @@ public class GameScene extends MyScene {
 		loadResourcePatternList();
 		loadResourceButtonList();
 		loadText();
+		loadMusicAndSound();
+		// loadParticleObject();
+		// loadFireworkResource();
 		playAnimationComponent.loadResource();
+		loadMenuScene();
 	}
 
 	@Override
@@ -418,6 +467,14 @@ public class GameScene extends MyScene {
 
 		getScene().setTouchAreaBindingOnActionMoveEnabled(true);
 		getScene().setTouchAreaBindingOnActionDownEnabled(true);
+
+		// add partical
+		// getScene().attachChild(particleSystem);
+		// menuScene.attachMenu(getScene());
+
+		getScene().attachChild(menuScene.getSprite());
+		menuScene.registerTouch(getScene());
+
 	}
 
 	@Override
@@ -443,7 +500,7 @@ public class GameScene extends MyScene {
 
 		for (int i = 0; i < patternList.size(); i++) {
 			getScene().registerTouchArea(patternList.get(i).getSprite());
-			if (GameEntity.gameAction != GameAction.RESET) {
+			if (GameEntity.getInstance().gameAction != GameAction.RESET) {
 				for (int j = 0; j < patternList.get(i).coinList.size(); j++) {
 					getScene().registerTouchArea(
 							patternList.get(i).coinList.get(j).getSprite());
@@ -456,13 +513,8 @@ public class GameScene extends MyScene {
 			getScene().registerTouchArea(dragList.get(i).getSprite());
 		}
 		for (int i = 0; i < buttonList.size(); i++) {
-			// itemList.get(i).setScale(1.5f);
 			getScene().registerTouchArea(buttonList.get(i).tiledSprite);
 		}
-		/*
-		 * for (int i = 0; i < coinList.size(); i++) {
-		 * getScene().registerTouchArea(coinList.get(i).getSprite()); }
-		 */
 	}
 
 	@Override
@@ -471,138 +523,46 @@ public class GameScene extends MyScene {
 		getScene().detachChildren();
 	}
 
-	public void startGame() {
-		ConnectionAsync connectionAsync = new ConnectionAsync();
+	int shakeCount = 0;
+
+	@Override
+	public void onShake() {
+		// TODO Auto-generated method stub
+		if (shakeCount >= 3) {
+			GameEntity.getInstance().startGame();
+			shakeCount = 0;
+		}
+		shakeCount++;
+	}
+
+	public void buttonPlaySound() {
+		if (releaseBetSound != null)
+			releaseBetSound.play();
+	}
+
+	public void playWinSound(boolean isPlay) {
+
+		winSound.play();
+
+	}
+
+	public void playLoseSound(boolean isPlay) {
+		if (loseSound != null) {
+			if (isPlay)
+				loseSound.play();
+			else
+				loseSound.stop();
+		}
+	}
+
+	public void displayMenu() {
 		disableAllTouch();
-		int paramsSize = betList.size();
-		String[] paramsName1 = new String[paramsSize];
-		String[] paramsValue1 = new String[paramsSize];
-		String[] paramsName2 = new String[paramsSize];
-		String[] paramsValue2 = new String[paramsSize];
-
-		for (int i = 0; i < paramsSize; i++) {
-			paramsName1[i] = "betspots";
-			paramsValue1[i] = betList.get(i).betPatternID + "";
-			paramsName2[i] = "betamounts";
-			paramsValue2[i] = betList.get(i).betAmount + "";
-		}
-
-		String[] paramsName = new String[paramsName1.length
-				+ paramsName2.length];
-		System.arraycopy(paramsName1, 0, paramsName, 0, paramsName2.length);
-		System.arraycopy(paramsName2, 0, paramsName, paramsName1.length,
-				paramsName2.length);
-
-		String[] paramsValue = new String[paramsValue1.length
-				+ paramsValue2.length];
-		System.arraycopy(paramsValue1, 0, paramsValue, 0, paramsValue2.length);
-		System.arraycopy(paramsValue2, 0, paramsValue, paramsValue1.length,
-				paramsValue2.length);
-
-		Object[] params = { GameEntity.connectionHandler, getActivity(),
-				GameEntity.STARTGAME_TASK, paramsName, paramsValue };
-		disableAllTouch();
-		connectionAsync.execute(params);
+		menuScene.displayMenu();
 	}
 
-	public void viewHistory() {
-		ConnectionAsync connectionAsync = new ConnectionAsync();
-		Object[] params = { GameEntity.connectionHandler, getActivity(),
-				GameEntity.VIEW_HISTORY, null, null };
-		connectionAsync.execute(params);
-	}
-
-	public void exitGame() {
-		ConnectionAsync connectionAsync = new ConnectionAsync();
-		Object[] params = { GameEntity.connectionHandler, getActivity(),
-				GameEntity.SIGNOUT_TASK, null, null };
-		connectionAsync.execute(params);
-		GameEntity.betAmountRemain = GameEntity.REMAIN_FIXED;
-		// GameEntity.sceneManager.animationScene.unLoadScene();
-		unLoadScene();
-		getActivity().finish();
-	}
-
-	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
-		ConnectionHandler connectionHandler;
-		BaseGameActivity activity;
-
-		@Override
-		protected void onPreExecute() {
-
-		}
-
-		@Override
-		protected Integer doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			connectionHandler = (ConnectionHandler) params[0];
-			activity = (BaseGameActivity) params[1];
-			try {
-				connectionHandler.requestToServer((String) params[2],
-						(String[]) params[3], (Object[]) params[4]);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Integer value) {
-			try {
-				// dataList = connectionHandler.parseData(responseName);
-				JSONObject result = connectionHandler.getResult();
-
-				if (GameEntity.connectionHandler.getTaskID().equals("res_play")) {
-					// move to animation scene
-					if (result.getBoolean("is_success")) {
-						GameEntity.currentGame.setGame(
-								result.getBoolean("iswin"),
-								result.getInt("dice1"), result.getInt("dice2"),
-								result.getInt("dice3"),
-								result.getDouble("current_balance"),
-								result.getDouble("totalbetamount"),
-								result.getDouble("totalwinamount"));
-						GameEntity.userComponent.balance.balance = GameEntity.currentGame.newBalance;
-						// GameEntity.sceneManager.setScene(SceneType.ANIMATION);
-						GameEntity.sceneManager.gameScene.playAnimationComponent
-								.playAnimation();
-
-					} else {
-						Log.d("Bet error", "Something wrong???");
-					}
-				} else if (GameEntity.connectionHandler.getTaskID().equals(
-						"res_history")) {
-
-					for (int i = 0; i < result.getInt("historyamount"); i++) {
-						GameEntity.userComponent.historyList
-								.add(new HistoryComponent(result.getJSONObject(
-										i + "").getBoolean("iswin"), result
-										.getJSONObject(i + "").getString(
-												"betdate"), result
-										.getJSONObject(i + "").getDouble(
-												"balance")));
-					}
-
-					Intent intent = new Intent(activity,
-							ViewHistoryActivity.class);
-					activity.startActivity(intent);
-				} else if (GameEntity.connectionHandler.getTaskID().equals(
-						"res_signout")) {
-
-				}
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+	public void hideMenu() {
+		enableAllTouch();
+		menuScene.hideMenu();
 	}
 
 }

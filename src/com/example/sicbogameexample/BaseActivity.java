@@ -23,9 +23,9 @@ public class BaseActivity extends Activity{
 	void createProgressDialog()
 	  {
 		 progressDialog= new ProgressDialog(this);
-		 progressDialog.setIndeterminate(true);
+		/* progressDialog.setIndeterminate(true);
 		 progressDialog.setIndeterminateDrawable(getResources().getDrawable(R.anim.progress_dialog_anim));
-		 progressDialog.setCancelable(false);
+		 progressDialog.setCancelable(false);*/
 		 progressDialog.setMessage("Reset password! Please wait...!");
 		 progressDialog.show();
 	  }
