@@ -28,35 +28,36 @@ public final class R {
         public static final int rounded_edit_password=0x7f02000b;
     }
     public static final class id {
-        public static final int ScrollView11=0x7f070019;
-        public static final int btnBack=0x7f070014;
-        public static final int btn_back=0x7f070002;
-        public static final int btn_bitcoin=0x7f07000e;
-        public static final int btn_change_password=0x7f07000d;
-        public static final int btn_ok=0x7f070006;
-        public static final int btn_register=0x7f070011;
-        public static final int btn_reset=0x7f070013;
-        public static final int btn_sign_in=0x7f07000a;
-        public static final int edt_confirm_password=0x7f070005;
-        public static final int edt_current_password=0x7f070003;
-        public static final int edt_email=0x7f07000f;
-        public static final int edt_email_reset=0x7f070012;
-        public static final int edt_full_name=0x7f070010;
-        public static final int edt_new_password=0x7f070004;
-        public static final int edt_password=0x7f070009;
-        public static final int edt_username=0x7f070008;
-        public static final int llHistoryList=0x7f070015;
-        public static final int ll_country=0x7f070018;
-        public static final int menu_help=0x7f070017;
-        public static final int menu_profile=0x7f070016;
-        public static final int rela1=0x7f070001;
-        public static final int table_history=0x7f07001a;
-        public static final int tbl_history=0x7f07001b;
-        public static final int txt_active_account=0x7f070000;
-        public static final int txt_create_account=0x7f07000b;
-        public static final int txt_forgot_password=0x7f07000c;
-        public static final int txt_help=0x7f070007;
-        public static final int webbiew_help=0x7f07001c;
+        public static final int ScrollView11=0x7f080019;
+        public static final int btnBack=0x7f080014;
+        public static final int btn_back=0x7f080002;
+        public static final int btn_bitcoin=0x7f08000e;
+        public static final int btn_change_password=0x7f08000d;
+        public static final int btn_ok=0x7f080006;
+        public static final int btn_register=0x7f080011;
+        public static final int btn_reset=0x7f080013;
+        public static final int btn_sign_in=0x7f08000a;
+        public static final int edt_confirm_password=0x7f080005;
+        public static final int edt_current_password=0x7f080003;
+        public static final int edt_email=0x7f08000f;
+        public static final int edt_email_reset=0x7f080012;
+        public static final int edt_full_name=0x7f080010;
+        public static final int edt_new_password=0x7f080004;
+        public static final int edt_password=0x7f080009;
+        public static final int edt_username=0x7f080008;
+        public static final int llHistoryList=0x7f080015;
+        public static final int ll_country=0x7f080018;
+        public static final int menu_help=0x7f080017;
+        public static final int menu_profile=0x7f080016;
+        public static final int menu_settings=0x7f08001d;
+        public static final int rela1=0x7f080001;
+        public static final int table_history=0x7f08001a;
+        public static final int tbl_history=0x7f08001b;
+        public static final int txt_active_account=0x7f080000;
+        public static final int txt_create_account=0x7f08000b;
+        public static final int txt_forgot_password=0x7f08000c;
+        public static final int txt_help=0x7f080007;
+        public static final int webbiew_help=0x7f08001c;
     }
     public static final class layout {
         public static final int activity_active_account=0x7f030000;
@@ -75,6 +76,14 @@ public final class R {
         public static final int table_history=0x7f03000d;
         public static final int view_history=0x7f03000e;
         public static final int webview_help=0x7f03000f;
+    }
+    public static final class menu {
+        public static final int activity_login_screen=0x7f070000;
+        public static final int activity_register_screen=0x7f070001;
+        public static final int activity_sic_bo_game=0x7f070002;
+        public static final int activity_splash_screen=0x7f070003;
+        public static final int activity_splash_screen_acivity=0x7f070004;
+        public static final int activity_view_history=0x7f070005;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
@@ -96,6 +105,17 @@ public final class R {
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         
+
+        Base application theme for API 11+. This theme completely replaces
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+    
+ API 11 theme customizations can go here. 
+
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
+    
+ API 14 theme customizations can go here. 
          */
         public static final int AppBaseTheme=0x7f060000;
         /**  Application theme. 

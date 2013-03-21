@@ -45,7 +45,7 @@
         <activity
             android:name="com.example.sicbogameexample.SplashScreenAcivity"
             android:label="@string/app_name" >
-        </activity>
+        </activity>
 
         -->
         <activity
@@ -78,5 +78,4 @@
             android:label="@string/title_activity_view_history" >
         </activity>
     </application>
-<uses-permission android:name="android.permission.INTERNE"/>T
 </manifest>

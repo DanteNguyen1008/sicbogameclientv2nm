@@ -11,18 +11,12 @@ import sicbo.components.HistoryComponent;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class ViewHistoryActivity extends Activity implements OnClickListener {

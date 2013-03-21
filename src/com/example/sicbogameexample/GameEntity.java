@@ -6,23 +6,14 @@ import java.util.ArrayList;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.IEntityFactory;
 import org.andengine.entity.particle.ParticleSystem;
-import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.emitter.PointParticleEmitter;
-import org.andengine.entity.particle.initializer.ColorParticleInitializer;
 import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
 import org.andengine.entity.particle.modifier.AlphaParticleModifier;
 import org.andengine.entity.particle.modifier.RotationParticleModifier;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 import org.apache.http.client.ClientProtocolException;
@@ -58,22 +49,21 @@ public class GameEntity {
 			INSTANCE = new GameEntity();
 		return INSTANCE;
 	}
-	
+
 	public final String runableTextContent = "Maximum bet is 100 Z - You can click back button to open menu - You can Shake phone to start game";
 
 	// Final static fields
 	public final static int CAMERA_WIDTH = 800;
 	public final static int CAMERA_HEIGHT = 480;
 
-
 	public final static String SIGNIN_TASK = "sign_in";
 	public final static String SIGNUP_TASK = "sign_up";
 	public final static String SIGNOUT_TASK = "sign_out";
-	public final static String CHANGE_PASSWORD_TASK="change_password";
-	public final static String FORGOT_PASSWORD_TASK="forgot_password";
+	public final static String CHANGE_PASSWORD_TASK = "change_password";
+	public final static String FORGOT_PASSWORD_TASK = "forgot_password";
 
 	public final static String STARTGAME_TASK = "play_bet";
-	
+
 	public final static String VIEW_HISTORY = "view_history";
 	public static final double REMAIN_FIXED = 100;
 	public final static int miniCoiWidth = 31;
@@ -87,7 +77,7 @@ public class GameEntity {
 	public Scene helpScene;
 	public Scene historyScene;
 	public Scene animatedSene;
-	
+
 	public int currentScreen;
 	public EngineOptions engineOptions;
 	public GameComponent currentGame;
@@ -204,8 +194,9 @@ public class GameEntity {
 	 * Clear all coin list
 	 */
 	private void clearAllCoinList() {
-		for (int i = 0; i < sceneManager.gameScene.patternList.size(); i++) {
-			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0) {
+		int listSize = sceneManager.gameScene.patternList.size();
+		for (int i = 0; i < listSize; i++) {
+			if (listSize > 0) {
 				sceneManager.gameScene.patternList.get(i).coinList.clear();
 			}
 		}
@@ -225,9 +216,11 @@ public class GameEntity {
 		if (gameAction.equals(GameAction.REBET)
 				|| gameAction.equals(GameAction.BETING)) {
 			double amoutUpdate = 0;
-			for (int j = 0; j < sceneManager.gameScene.patternList.size(); j++) {
-				for (int i = 0; i < sceneManager.gameScene.patternList.get(j).coinList
-						.size(); i++) {
+			int patternListSize = sceneManager.gameScene.patternList.size();
+			for (int j = 0; j < patternListSize; j++) {
+				int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
+						.size();
+				for (int i = 0; i < coinListSize; i++) {
 					sceneManager.gameScene.patternList.get(j).coinList.get(i)
 							.removeCoin();
 					amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
@@ -237,8 +230,8 @@ public class GameEntity {
 									.get(i).getSprite());
 				}
 			}
-
-			for (int i = 0; i < sceneManager.gameScene.textList.size(); i++) {
+			int textListSize = sceneManager.gameScene.textList.size();
+			for (int i = 0; i < textListSize; i++) {
 				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
 					sceneManager.gameScene.textList.get(i).updateBalance(
 							UserComponent.UserAction.INCREASE_BALANCE,
@@ -257,40 +250,34 @@ public class GameEntity {
 	 * component class - click action
 	 */
 	public void rebet() {
-		if (GameEntity.getInstance().gameAction
-				.equals(GameEntity.GameAction.RESET)) {
+		if (gameAction.equals(GameEntity.GameAction.RESET)) {
 			double amoutUpdate = 0;
-			for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
-					.size(); j++) {
-				for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
-						.get(j).coinList.size(); i++) {
-					GameEntity.getInstance().sceneManager.gameScene.patternList
-							.get(j).coinList.get(i).reBuildCoin();
-					amoutUpdate += GameEntity.getInstance().sceneManager.gameScene.patternList
-							.get(j).coinList.get(i).getCoinID();
-					GameEntity.getInstance().sceneManager.gameScene
-							.getScene()
-							.registerTouchArea(
-									GameEntity.getInstance().sceneManager.gameScene.patternList
-											.get(j).coinList.get(i).getSprite());
+			int patternListSize = sceneManager.gameScene.patternList.size();
+			for (int j = 0; j < patternListSize; j++) {
+				int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
+						.size();
+				for (int i = 0; i < coinListSize; i++) {
+					sceneManager.gameScene.patternList.get(j).coinList.get(i)
+							.reBuildCoin();
+					amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
+							.get(i).getCoinID();
+					sceneManager.gameScene.getScene().registerTouchArea(
+							sceneManager.gameScene.patternList.get(j).coinList
+									.get(i).getSprite());
 				}
 			}
-
-			for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.textList
-					.size(); i++) {
-				if (GameEntity.getInstance().sceneManager.gameScene.textList
-						.get(i).getiID() == 1) {
-					GameEntity.getInstance().sceneManager.gameScene.textList
-							.get(i).updateBalance(
-									UserComponent.UserAction.DECREASE_BALANCE,
-									amoutUpdate);
-				} else if (GameEntity.getInstance().sceneManager.gameScene.textList
-						.get(i).getiID() == 3) {
-					GameEntity.getInstance().sceneManager.gameScene.textList
-							.get(i).decreaseBetRemain(amoutUpdate);
+			int textListSize = sceneManager.gameScene.textList.size();
+			for (int i = 0; i < textListSize; i++) {
+				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+					sceneManager.gameScene.textList.get(i).updateBalance(
+							UserComponent.UserAction.DECREASE_BALANCE,
+							amoutUpdate);
+				} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+					sceneManager.gameScene.textList.get(i).decreaseBetRemain(
+							amoutUpdate);
 				}
 			}
-			GameEntity.getInstance().gameAction = GameEntity.GameAction.REBET;
+			gameAction = GameEntity.GameAction.REBET;
 		}
 	}
 
@@ -300,41 +287,34 @@ public class GameEntity {
 	 */
 	public void updateAfterBet() {
 		// clearAllBet();
+		int patternListSize = sceneManager.gameScene.patternList.size();
+		for (int j = 0; j < patternListSize; j++) {
+			int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
+					.size();
+			for (int i = 0; i < coinListSize; i++) {
 
-		for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
-				.size(); j++) {
-			for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
-					.get(j).coinList.size(); i++) {
-
-				GameEntity.getInstance().sceneManager.gameScene.patternList
-						.get(j).coinList.get(i).removeCoin();
-				GameEntity.getInstance().sceneManager.gameScene
-						.getScene()
-						.unregisterTouchArea(
-								GameEntity.getInstance().sceneManager.gameScene.patternList
-										.get(j).coinList.get(i).getSprite());
-
+				sceneManager.gameScene.patternList.get(j).coinList.get(i)
+						.removeCoin();
+				sceneManager.gameScene.getScene().unregisterTouchArea(
+						sceneManager.gameScene.patternList.get(j).coinList.get(
+								i).getSprite());
 			}
 		}
 
-		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.textList
-				.size(); i++) {
-			if (GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
-					.getiID() == 1) {
-				GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
-						.updateBalance(
-								UserComponent.UserAction.UPDATE_BALANCE,
-								GameEntity.getInstance().userComponent
-										.getBalance());
-			} else if (GameEntity.getInstance().sceneManager.gameScene.textList
-					.get(i).getiID() == 3) {
-				GameEntity.getInstance().sceneManager.gameScene.textList.get(i)
-						.updateBetRemain(GameEntity.REMAIN_FIXED);
+		int textListSize = sceneManager.gameScene.textList.size();
+		for (int i = 0; i < textListSize; i++) {
+			if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+				sceneManager.gameScene.textList.get(i).updateBalance(
+						UserComponent.UserAction.UPDATE_BALANCE,
+						userComponent.getBalance());
+			} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+				sceneManager.gameScene.textList.get(i).updateBetRemain(
+						GameEntity.REMAIN_FIXED);
 			}
 		}
 
-		GameEntity.getInstance().sceneManager.gameScene.betList.clear();
-		GameEntity.getInstance().gameAction = GameEntity.GameAction.RESET;
+		sceneManager.gameScene.betList.clear();
+		gameAction = GameEntity.GameAction.RESET;
 	}
 
 	/**
@@ -343,21 +323,18 @@ public class GameEntity {
 	 */
 	public void startGame() {
 		boolean isBet = false;
-		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.patternList
-				.size(); i++) {
-			if (GameEntity.getInstance().sceneManager.gameScene.patternList
-					.get(i).coinList.size() > 0
-					&& !GameEntity.getInstance().gameAction
-							.equals(GameEntity.GameAction.RESET)) {
-				for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.patternList
-						.get(i).coinList.size(); j++) {
-					GameEntity.getInstance().sceneManager.gameScene.betList
-							.add(new BetComponent(
-									GameEntity.getInstance().sceneManager.gameScene.patternList
-											.get(i).coinList.get(j).pattern.patternType
-											.getValue(),
-									GameEntity.getInstance().sceneManager.gameScene.patternList
-											.get(i).coinList.get(j).getCoinID()));
+		int patternListSize = sceneManager.gameScene.patternList.size();
+		for (int i = 0; i < patternListSize; i++) {
+			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0
+					&& !gameAction.equals(GameEntity.GameAction.RESET)) {
+				int coinListSize = sceneManager.gameScene.patternList.get(i).coinList
+						.size();
+				for (int j = 0; j < coinListSize; j++) {
+					sceneManager.gameScene.betList.add(new BetComponent(
+							sceneManager.gameScene.patternList.get(i).coinList
+									.get(j).pattern.patternType.getValue(),
+							sceneManager.gameScene.patternList.get(i).coinList
+									.get(j).getCoinID()));
 				}
 				isBet = true;
 			}
@@ -397,11 +374,11 @@ public class GameEntity {
 			System.arraycopy(paramsValue2, 0, paramsValue, paramsValue1.length,
 					paramsValue2.length);
 
-			Object[] params = { GameEntity.getInstance().connectionHandler,
+			Object[] params = { connectionHandler,
 					sceneManager.gameScene.getActivity(),
 					GameEntity.STARTGAME_TASK, paramsName, paramsValue };
 			sceneManager.gameScene.disableAllTouch();
-			GameEntity.getInstance().mSensorListener.stopRegisterShake();
+			mSensorListener.stopRegisterShake();
 			connectionAsync.execute(params);
 		}
 
@@ -409,24 +386,18 @@ public class GameEntity {
 
 	private int sortBetList() {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < GameEntity.getInstance().sceneManager.gameScene.betList
-				.size(); i++) {
-			for (int j = 0; j < GameEntity.getInstance().sceneManager.gameScene.betList
-					.size(); j++) {
-				if (GameEntity.getInstance().sceneManager.gameScene.betList
-						.get(i).betPatternID == GameEntity.getInstance().sceneManager.gameScene.betList
-						.get(j).betPatternID
-						&& i != j) {
-					GameEntity.getInstance().sceneManager.gameScene.betList
-							.get(i).betAmount += GameEntity.getInstance().sceneManager.gameScene.betList
+		for (int i = 0; i < sceneManager.gameScene.betList.size(); i++) {
+			for (int j = 0; j < sceneManager.gameScene.betList.size(); j++) {
+				if (sceneManager.gameScene.betList.get(i).betPatternID == sceneManager.gameScene.betList
+						.get(j).betPatternID && i != j) {
+					sceneManager.gameScene.betList.get(i).betAmount += sceneManager.gameScene.betList
 							.get(j).betAmount;
-					GameEntity.getInstance().sceneManager.gameScene.betList
-							.remove(j);
+					sceneManager.gameScene.betList.remove(j);
 					j--;
 				}
 			}
 		}
-		return GameEntity.getInstance().sceneManager.gameScene.betList.size();
+		return sceneManager.gameScene.betList.size();
 	}
 
 	/**
@@ -435,26 +406,24 @@ public class GameEntity {
 	 */
 	public void viewHistory() {
 		ConnectionAsync connectionAsync = new ConnectionAsync();
-		Object[] params = { GameEntity.getInstance().connectionHandler,
+		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.VIEW_HISTORY,
 				null, null };
 		connectionAsync.execute(params);
 	}
-	
+
 	/**
 	 * Go to profile activity
 	 */
-	public void viewProfile()
-	{
-		
+	public void viewProfile() {
+
 	}
-	
+
 	/**
 	 * Go to help page activity
 	 */
-	public void viewHelp()
-	{
-		
+	public void viewHelp() {
+
 	}
 
 	/**
@@ -463,14 +432,14 @@ public class GameEntity {
 	 */
 	public void exitGame() {
 		ConnectionAsync connectionAsync = new ConnectionAsync();
-		Object[] params = { GameEntity.getInstance().connectionHandler,
+		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
 				null, null };
 		connectionAsync.execute(params);
-		GameEntity.getInstance().betAmountRemain = GameEntity.REMAIN_FIXED;
+		betAmountRemain = GameEntity.REMAIN_FIXED;
 		sceneManager.gameScene.unLoadScene();
 		sceneManager.activity.finish();
-		GameEntity.getInstance().sceneManager = null;
+		sceneManager = null;
 	}
 
 	/**
@@ -479,13 +448,13 @@ public class GameEntity {
 	 */
 	public void exitGameTimeOut() {
 		ConnectionAsync connectionAsync = new ConnectionAsync();
-		Object[] params = { GameEntity.getInstance().connectionHandler,
+		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
 				null, null };
 		connectionAsync.execute(params);
 		// unLoadScene();
 		sceneManager.gameScene.getActivity().finish();
-		GameEntity.getInstance().sceneManager = null;
+		sceneManager = null;
 	}
 
 	/**
@@ -528,19 +497,16 @@ public class GameEntity {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 
-				if (GameEntity.getInstance().connectionHandler.getTaskID()
-						.equals("res_play")) {
+				if (connectionHandler.getTaskID().equals("res_play_bet")) {
 					// move to animation scene
 					if (result.getBoolean("is_success")) {
 						onReceiveStartGame(result);
 					} else {
 						Log.d("Bet error", "Something wrong???");
 					}
-				} else if (GameEntity.getInstance().connectionHandler
-						.getTaskID().equals("res_history")) {
+				} else if (connectionHandler.getTaskID().equals("res_history")) {
 					onReceiveViewHistory(result, activity);
-				} else if (GameEntity.getInstance().connectionHandler
-						.getTaskID().equals("res_signout")) {
+				} else if (connectionHandler.getTaskID().equals("res_signout")) {
 					onReceiveSignout();
 				}
 
@@ -559,6 +525,7 @@ public class GameEntity {
 	 */
 	public void onReceiveStartGame(JSONObject result) throws JSONException {
 		// Temp data
+		/*
 		ArrayList<PatternType> winPattern = new ArrayList<GameEntity.PatternType>();
 		winPattern.add(PatternType.Big);
 		winPattern.add(PatternType.Small);
@@ -569,19 +536,17 @@ public class GameEntity {
 		winPattern.add(PatternType.Double6);
 		winPattern.add(PatternType.AllTriple);
 		winPattern.add(PatternType.SingleDice1);
-		winPattern.add(PatternType.SingleDice2);
+		winPattern.add(PatternType.SingleDice2);*/
 
-		GameEntity.getInstance().currentGame.setGame(
-				result.getBoolean("iswin"), result.getInt("dice1"),
-				result.getInt("dice2"), result.getInt("dice3"),
-				result.getDouble("current_balance"),
+		currentGame.setGame(result.getBoolean("is_win"),
+				result.getInt("dice1"), result.getInt("dice2"),
+				result.getInt("dice3"), result.getDouble("current_balance"),
 				result.getDouble("totalbetamount"),
-				result.getDouble("totalwinamount"), winPattern);
-		GameEntity.getInstance().userComponent.balance.balance = GameEntity
-				.getInstance().currentGame.newBalance;
-		// GameEntity.getInstance().sceneManager.setScene(SceneType.ANIMATION);
-		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
-				.playAnimation();
+				result.getDouble("totalwinamount"),
+				result.getString("winpatterns"));
+		userComponent.balance.balance = GameEntity.getInstance().currentGame.newBalance;
+		// sceneManager.setScene(SceneType.ANIMATION);
+		sceneManager.gameScene.playAnimationComponent.playAnimation();
 	}
 
 	/**
@@ -593,11 +558,10 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		for (int i = 0; i < result.getInt("historyamount"); i++) {
-			GameEntity.getInstance().userComponent.historyList
-					.add(new HistoryComponent(result.getJSONObject(i + "")
-							.getBoolean("iswin"), result.getJSONObject(i + "")
-							.getString("betdate"), result.getJSONObject(i + "")
-							.getDouble("balance")));
+			userComponent.historyList.add(new HistoryComponent(result
+					.getJSONObject(i + "").getBoolean("iswin"), result
+					.getJSONObject(i + "").getString("betdate"), result
+					.getJSONObject(i + "").getDouble("balance")));
 		}
 
 		Intent intent = new Intent(activity, ViewHistoryActivity.class);
@@ -619,37 +583,34 @@ public class GameEntity {
 		sceneManager.gameScene.confirmDialog.displayDialog(
 				sceneManager.gameScene, errorContent, posX, posY);
 	}
-	
-	
 
 	// test particle
 	public void createFireWork(final float posX, final float posY,
-			final int width, final int height,
-			final Color color, int mNumPart,int mTimePart) {
-		
+			final int width, final int height, final Color color, int mNumPart,
+			int mTimePart) {
+
 		PointParticleEmitter particleEmitter = new PointParticleEmitter(posX,
 				posY);
-		
+
 		/*
-		IEntityFactory<Sprite> recFact = new IEntityFactory<Sprite>() {
-
-			@Override
-			public Sprite create(float pX, float pY) {
-				BitmapTextureAtlas atlastBig = new BitmapTextureAtlas(
-						sceneManager.activity.getTextureManager(), width, height,
-						TextureOptions.BILINEAR);
-
-				ITextureRegion atlasRegionBig = BitmapTextureAtlasTextureRegionFactory
-						.createFromAsset(atlastBig, sceneManager.activity, fireworkBG, 0, 0);
-
-				Sprite sprite = new Sprite(posX, posY, atlasRegionBig, sceneManager.activity
-						.getEngine().getVertexBufferObjectManager());
-
-				atlastBig.load();
-				return sprite;
-			}
-
-		};*/
+		 * IEntityFactory<Sprite> recFact = new IEntityFactory<Sprite>() {
+		 * 
+		 * @Override public Sprite create(float pX, float pY) {
+		 * BitmapTextureAtlas atlastBig = new BitmapTextureAtlas(
+		 * sceneManager.activity.getTextureManager(), width, height,
+		 * TextureOptions.BILINEAR);
+		 * 
+		 * ITextureRegion atlasRegionBig =
+		 * BitmapTextureAtlasTextureRegionFactory .createFromAsset(atlastBig,
+		 * sceneManager.activity, fireworkBG, 0, 0);
+		 * 
+		 * Sprite sprite = new Sprite(posX, posY, atlasRegionBig,
+		 * sceneManager.activity .getEngine().getVertexBufferObjectManager());
+		 * 
+		 * atlastBig.load(); return sprite; }
+		 * 
+		 * };
+		 */
 		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
 
 			@Override
@@ -668,24 +629,25 @@ public class GameEntity {
 				.addParticleInitializer(new VelocityParticleInitializer<Rectangle>(
 						-50, 50, -50, 50));
 		/*
+		 * particleSystem .addParticleInitializer(new
+		 * ColorParticleInitializer<Rectangle>( color));
+		 */
 		particleSystem
-				.addParticleInitializer(new ColorParticleInitializer<Rectangle>(
-						color));
-		*/
-		particleSystem.addParticleModifier(new AlphaParticleModifier<Rectangle>(0,
-				0.6f * mTimePart, 1, 0));
+				.addParticleModifier(new AlphaParticleModifier<Rectangle>(0,
+						0.6f * mTimePart, 1, 0));
 		particleSystem
 				.addParticleModifier(new RotationParticleModifier<Rectangle>(0,
 						mTimePart, 0, 360));
 
 		sceneManager.gameScene.getScene().attachChild(particleSystem);
-		sceneManager.gameScene.getScene().registerUpdateHandler(new TimerHandler(mTimePart,
-				new ITimerCallback() {
+		sceneManager.gameScene.getScene().registerUpdateHandler(
+				new TimerHandler(mTimePart, new ITimerCallback() {
 					@Override
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						particleSystem.detachSelf();
 						sceneManager.gameScene.getScene().sortChildren();
-						sceneManager.gameScene.getScene().unregisterUpdateHandler(pTimerHandler);
+						sceneManager.gameScene.getScene()
+								.unregisterUpdateHandler(pTimerHandler);
 					}
 				}));
 
