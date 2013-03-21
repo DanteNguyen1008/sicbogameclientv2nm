@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -18,15 +17,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class RegisterScreen extends Activity implements OnClickListener {
-	EditText txtUsername;
-	EditText txtPassword;
-	EditText txtConfirmPassword;
-	EditText txtEmail;
-	Button btnSubmit;
-	Button btnLogin;
+public class RegisterScreen extends BaseActivity implements OnClickListener {
+	EditText edtUsername;
+	EditText edtPassword;
+	EditText edtConfirmPassword;
+	EditText edtEmail, edtFullName;
+	Button btnRegister;
+	ImageButton imgBack;
 	ConnectionHandler connectionHandler;
 
 	@Override
@@ -34,47 +34,58 @@ public class RegisterScreen extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register_screen);
 		connectionHandler = new ConnectionHandler();
-		txtUsername = (EditText) findViewById(R.id.txtUsername);
-		txtPassword = (EditText) findViewById(R.id.txtPassword);
-		txtConfirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
-		txtEmail = (EditText) findViewById(R.id.txtEmail);
-		btnSubmit = (Button) findViewById(R.id.btnSubmit);
-		btnLogin = (Button)findViewById(R.id.btnLogin);
+		edtUsername = (EditText) findViewById(R.id.edt_username);
+		edtPassword = (EditText) findViewById(R.id.edt_password);
+		edtConfirmPassword = (EditText) findViewById(R.id.edt_confirm_password);
+		edtEmail = (EditText) findViewById(R.id.edt_email);
+		edtFullName = (EditText) findViewById(R.id.edt_full_name);
+		btnRegister = (Button) findViewById(R.id.btn_register);
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
+		btnRegister.setOnClickListener(this);
 
-		btnSubmit.setOnClickListener(this);
-		btnLogin.setOnClickListener(this);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_register_screen, menu);
+		// getMenuInflater().inflate(R.menu.activity_register_screen, menu);
 		return true;
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		if (v.equals(btnSubmit)) {
+       switch(v.getId())
+       {
+       case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password", "email" };
-			String[] paramsValue = { txtUsername.getText().toString().trim(),
-					txtPassword.getText().toString().trim(),
-					txtEmail.getText().toString().trim() };
+			String[] paramsName = { "username", "password", "email", "fullname" };
+			String[] paramsValue = { edtUsername.getText().toString().trim(),
+					edtPassword.getText().toString().trim(),
+					edtEmail.getText().toString().trim(),
+					edtFullName.getText().toString().trim() };
 			Object[] params = { connectionHandler, this,
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
-		}else if(v.equals(btnLogin))
-		{
-			Intent intent = new Intent(this, LoginScreen.class);
-			this.startActivity(intent);
-			finish();
+			break;
+       case R.id.btn_back:
+    	   this.finish();
+    	   break;
 		}
 	}
 
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
 		Activity activity;
+
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			createProgressDialog();
+
+		}
 
 		@Override
 		protected Integer doInBackground(Object... params) {
@@ -102,18 +113,18 @@ public class RegisterScreen extends Activity implements OnClickListener {
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
-
 				// Create user and move to game scene
-				if (result.getBoolean("is_success")) {					
-					Intent intent = new Intent(activity,
-							SicBoGameActivity.class);
-					GameEntity.getInstance().userComponent = new UserComponent(txtUsername.getText().toString(),
-							txtEmail.getText().toString(),
-							0);
-					activity.startActivity(intent);
-					activity.finish();
+
+				if (result.getBoolean("is_success")) {
+					GameEntity.getInstance().userComponent = new UserComponent(edtUsername
+							.getText().toString(), edtEmail.getText()
+							.toString(), 0);
+					progressDialog.dismiss();
+					createDialog();
+
+
 				} else {
-					Toast.makeText(activity,result.getString("message"),
+					Toast.makeText(activity, result.getString("message"),
 							Toast.LENGTH_LONG).show();
 				}
 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--main.xml-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffccd0"
+    >
+    <TextView
+            android:text="History"
+            android:textColor="#b3000d"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="26dip"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:background="#ffb0b6"
+            android:layout_marginBottom="5dip"
+            android:typeface="sans"/>
+   
+    <LinearLayout android:id="@+id/ll_country"
+        android:layout_height="fill_parent" android:layout_width="fill_parent">
+        <ScrollView android:id="@+id/ScrollView11"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:fillViewport="true">
+            <LinearLayout android:layout_width="fill_parent"
+                android:layout_height="wrap_content" android:layout_margin="5dip">
+                <TableLayout 
+                    android:layout_width="fill_parent" android:layout_height="fill_parent"
+                   android:stretchColumns="*" android:id="@+id/table_history">
+                </TableLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
