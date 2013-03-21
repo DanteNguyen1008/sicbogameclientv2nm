@@ -58,6 +58,8 @@ public class GameEntity {
 			INSTANCE = new GameEntity();
 		return INSTANCE;
 	}
+	
+	public final String runableTextContent = "Maximum bet is 100 Z - You can click back button to open menu - You can Shake phone to start game";
 
 	// Final static fields
 	public final static int CAMERA_WIDTH = 800;
@@ -77,7 +79,8 @@ public class GameEntity {
 	public final static int miniCoiWidth = 31;
 	public final static int miniCoinHeight = 31;
 	public SceneManager sceneManager;
-
+	public boolean isResultDisplay = false;
+	public boolean isAnimationRunning = false;
 	// Scene fields
 	public Scene splashScene;
 	public Scene GameScene;
@@ -560,7 +563,13 @@ public class GameEntity {
 		winPattern.add(PatternType.Big);
 		winPattern.add(PatternType.Small);
 		winPattern.add(PatternType.Double1);
+		winPattern.add(PatternType.Double2);
 		winPattern.add(PatternType.Double3);
+		winPattern.add(PatternType.Double4);
+		winPattern.add(PatternType.Double6);
+		winPattern.add(PatternType.AllTriple);
+		winPattern.add(PatternType.SingleDice1);
+		winPattern.add(PatternType.SingleDice2);
 
 		GameEntity.getInstance().currentGame.setGame(
 				result.getBoolean("iswin"), result.getInt("dice1"),

@@ -118,11 +118,8 @@ public class SicBoGameActivity extends BaseGameActivity {
 
 	@Override
 	public void onBackPressed() {
-		/*
-		 * GameEntity.getInstance().displayYesNoDialog("Do you want to exit?",
-		 * 200, 300);
-		 */
-		GameEntity.getInstance().sceneManager.gameScene.displayMenu();
+		if (!GameEntity.getInstance().isAnimationRunning)
+			GameEntity.getInstance().sceneManager.gameScene.displayMenu();
 	}
 
 }

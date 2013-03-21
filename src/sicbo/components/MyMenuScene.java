@@ -3,25 +3,17 @@ package sicbo.components;
 import java.util.ArrayList;
 
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.menu.MenuScene;
-import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
-import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 
 import com.example.sicbogameexample.GameEntity;
 
 import android.content.Context;
-import android.opengl.GLES20;
-import android.util.Log;
 
 public class MyMenuScene extends AbItemComponent {
 	ArrayList<ButtonComponent> itemList;
@@ -39,7 +31,9 @@ public class MyMenuScene extends AbItemComponent {
 		setSprite(new Sprite(positionX, positionY, atlasRegionBig,
 				engine.getVertexBufferObjectManager()));
 		atlastBig.load();
-		hideMenu();
+		//hideMenu();
+		getSprite().setPosition(-GameEntity.CAMERA_WIDTH,
+				-GameEntity.CAMERA_HEIGHT);
 		itemList = new ArrayList<ButtonComponent>();
 	}
 
@@ -50,11 +44,15 @@ public class MyMenuScene extends AbItemComponent {
 
 	public void displayMenu() {
 		getSprite().setPosition(0, 0);
+		getSprite().setZIndex(9999);
+		getSprite().getParent().sortChildren();
 	}
 
 	public void hideMenu() {
 		getSprite().setPosition(-GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT);
+		getSprite().setZIndex(0);
+		getSprite().getParent().sortChildren();
 	}
 	
 	public void registerTouch(Scene parent)

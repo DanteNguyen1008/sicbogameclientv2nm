@@ -6,6 +6,10 @@ import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.modifier.MoveXModifier;
+import org.andengine.entity.modifier.MoveYModifier;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
@@ -60,6 +64,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 	// Menu
 	MyMenuScene menuScene;
 
+	TextComponent runableText;
 	public GameScene(Engine engine, Camera camera, BaseGameActivity activity) {
 		super(engine, camera, activity);
 		// TODO Auto-generated constructor stub
@@ -73,6 +78,23 @@ public class GameScene extends MyScene implements OnShakeListener {
 		fireworkList = new ArrayList<ParticleSystemComponent>();
 		GameEntity.getInstance().mSensorListener.setOnShakeListener(this);
 
+	}
+
+	private void loadRunableText() {
+		Font mSmallFont = FontFactory.create(getEngine().getFontManager(),
+				getEngine().getTextureManager(), 512, 512,
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 22,
+				Color.WHITE_ABGR_PACKED_INT);
+		mSmallFont.load();
+		runableText = new TextComponent(1, 800, 30,
+				GameEntity.getInstance().runableTextContent,
+				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT,
+				getActivity().getTextureManager(), getActivity(), getEngine(),
+				ItemType.TEXT, 1, Color.BLUE, mSmallFont);
+		
+		MoveModifier move = new MoveModifier(20, 800, -800, 415, 415);
+		LoopEntityModifier loopEntityModifier = new LoopEntityModifier(move);
+		runableText.text.registerEntityModifier(loopEntityModifier);
 	}
 
 	private void loadDialog(Font mFont) {
@@ -111,22 +133,20 @@ public class GameScene extends MyScene implements OnShakeListener {
 		menuScene = new MyMenuScene(1, 800, 480, "dialogbackground.png", 0, 0,
 				getActivity().getTextureManager(), getActivity(), getActivity()
 						.getEngine(), ItemType.NORMAL_ITEM);
-		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
-				"menu_resume.jpg", 300, 50, getEngine().getTextureManager(),
-				getActivity(), getEngine(), ItemType.MENU_RESUME, getScene(),
-				SceneType.GAME));
-		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
-				"menu_profile.jpg", 300, 120, getEngine().getTextureManager(),
-				getActivity(), getEngine(), ItemType.MENU_PROFILE, getScene(),
-				SceneType.GAME));
-		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
-				"menu_help.jpg", 300, 190, getEngine().getTextureManager(),
-				getActivity(), getEngine(), ItemType.MENU_HELP, getScene(),
-				SceneType.GAME));
-		menuScene.addItem(new ButtonComponent(1, 200, 50, 1, 1,
-				"menu_exit.jpg", 300, 260, getEngine().getTextureManager(),
-				getActivity(), getEngine(), ItemType.MENU_EXIT, getScene(),
-				SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "resume.jpg",
+				300, 50, getEngine().getTextureManager(), getActivity(),
+				getEngine(), ItemType.MENU_RESUME, getScene(), SceneType.GAME));
+		menuScene
+				.addItem(new ButtonComponent(1, 200, 36, 1, 1, "profile.jpg",
+						300, 120, getEngine().getTextureManager(),
+						getActivity(), getEngine(), ItemType.MENU_PROFILE,
+						getScene(), SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "help.jpg",
+				300, 190, getEngine().getTextureManager(), getActivity(),
+				getEngine(), ItemType.MENU_HELP, getScene(), SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "exit.jpg",
+				300, 260, getEngine().getTextureManager(), getActivity(),
+				getEngine(), ItemType.MENU_EXIT, getScene(), SceneType.GAME));
 
 	}
 
@@ -413,10 +433,9 @@ public class GameScene extends MyScene implements OnShakeListener {
 		loadResourceButtonList();
 		loadText();
 		loadMusicAndSound();
-		// loadParticleObject();
-		// loadFireworkResource();
 		playAnimationComponent.loadResource();
 		loadMenuScene();
+		loadRunableText();
 	}
 
 	@Override
@@ -474,7 +493,8 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 		getScene().attachChild(menuScene.getSprite());
 		menuScene.registerTouch(getScene());
-
+		getScene().attachChild(runableText.text);
+		
 	}
 
 	@Override
@@ -558,6 +578,11 @@ public class GameScene extends MyScene implements OnShakeListener {
 	public void displayMenu() {
 		disableAllTouch();
 		menuScene.displayMenu();
+		if (GameEntity.getInstance().isResultDisplay) {
+			GameEntity.getInstance().updateAfterBet();
+			playAnimationComponent.stopAnimation();
+		}
+
 	}
 
 	public void hideMenu() {

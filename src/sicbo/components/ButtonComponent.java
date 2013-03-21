@@ -179,17 +179,23 @@ public class ButtonComponent extends AbItemComponent {
 					switch (pSceneTouchEvent.getAction()) {
 					case TouchEvent.ACTION_DOWN:
 						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
+						if (GameEntity.getInstance().isMusicEnable)
+							this.setCurrentTileIndex(1);
+						else
+							this.setCurrentTileIndex(3);
 						break;
 					case TouchEvent.ACTION_MOVE:
 
 						break;
 					case TouchEvent.ACTION_UP:
 						this.setScale(1f);
-						this.setCurrentTileIndex(0);
 						GameEntity.getInstance().sceneManager.gameScene
 								.buttonPlaySound();
 						GameEntity.getInstance().enableMusic();
+						if (GameEntity.getInstance().isMusicEnable)
+							this.setCurrentTileIndex(0);
+						else
+							this.setCurrentTileIndex(2);
 						break;
 					}
 					return true;
@@ -222,7 +228,7 @@ public class ButtonComponent extends AbItemComponent {
 										GameEntity.getInstance().sceneManager.gameScene,
 										"Do you want to exit?", 200, 300);
 						// ConfigClass.sceneManager.gameScene.exitGame();
-						
+
 						break;
 					}
 					return true;
