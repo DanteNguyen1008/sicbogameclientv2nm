@@ -126,6 +126,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				} else {
 					Toast.makeText(activity, result.getString("message"),
 							Toast.LENGTH_LONG).show();
+					progressDialog.dismiss();
 				}
 
 			} catch (JSONException e) {
