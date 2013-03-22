@@ -15,7 +15,7 @@ public class GameComponent {
 	public ArrayList<PatternType> winPatterns;
 
 	public void setGame(boolean isWin, int dice1, int dice2, int dice3,
-			double newBalance, double totalBetAmount, double totalWinAmount, ArrayList<PatternType> winPatterns) {
+			double newBalance, double totalBetAmount, double totalWinAmount, String strWinPatterns) {
 		this.isWin = isWin;
 		this.dice1 = dice1;
 		this.dice2 = dice2;
@@ -23,6 +23,28 @@ public class GameComponent {
 		this.newBalance = newBalance;
 		this.totalBetAmount = totalBetAmount;
 		this.totalWinAmount = totalWinAmount;
-		this.winPatterns = winPatterns;
+		if(!strWinPatterns.equals(""))
+		{
+			this.winPatterns = convertStringtoArrayList(strWinPatterns);
+		}else 
+		{
+			this.winPatterns = new ArrayList<PatternType>();
+		}
+		
+		
+		
+	}
+	
+	private ArrayList<PatternType> convertStringtoArrayList(String arg)
+	{
+		ArrayList<PatternType> result = new ArrayList<PatternType>();
+		
+		String[] str = arg.split("\\|");
+        for (int i = 0; i < str.length; i++) {
+            if(!str[i].equals("|") && !str[i].equals(""))
+            	result.add(PatternType.values()[Integer.parseInt(str[i]) - 1]);
+        }
+		
+		return result;
 	}
 }
