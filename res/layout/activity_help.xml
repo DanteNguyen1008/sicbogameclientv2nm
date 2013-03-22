@@ -1,16 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-<TextView 
-    android:id="@+id/txt_help"
-    android:layout_marginTop="100dp"
-    android:text="www.google.com.vn"
-    android:layout_width="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_height="wrap_content"
-    android:autoLink="web"
-    />
-</LinearLayout>
+<RelativeLayout
+        android:id="@+id/rela1"
+        android:layout_width="fill_parent"
+        
+        android:layout_height="50dp" >
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_back"
+            android:background="#1B0A2A"
+            />
+
+        <ImageButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/btn_login"
+            android:background="#1B0A2A"
+            android:layout_toRightOf="@+id/btn_back" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rela1"
+        android:layout_marginTop="-5dp"
+        android:background="#BDBDBD" >
+
+      
+
+        <Button
+            android:id="@+id/btn_tutorial"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"
+            android:background="@drawable/rounded_btn_sign_in"
+            android:text="Tutorial"
+            android:textColor="#EFFBFB"
+            android:textStyle="bold" />
+ <Button
+            android:id="@+id/btn_about_game"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btn_tutorial"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_btn_sign_in"
+            android:text="About Game"
+            android:textColor="#EFFBFB"
+            android:textStyle="bold" />
+        <Button
+            android:id="@+id/btn_about_bitcoin"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btn_about_game"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_btn_sign_in"
+            android:text="About Bitcoin"
+            android:textColor="#EFFBFB"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</RelativeLayout>
