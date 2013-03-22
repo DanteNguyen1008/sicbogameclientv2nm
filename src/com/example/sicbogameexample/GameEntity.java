@@ -38,7 +38,7 @@ import android.util.Log;
 public class GameEntity {
 	// Implement single ton
 	private static GameEntity INSTANCE = null;
-	public Context mContext;
+
 
 	protected GameEntity() {
 
@@ -529,28 +529,6 @@ public class GameEntity {
 	 *             Server
 	 */
 	public void onReceiveStartGame(JSONObject result) throws JSONException {
-		// Temp data
-		/*
-		ArrayList<PatternType> winPattern = new ArrayList<GameEntity.PatternType>();
-		winPattern.add(PatternType.Big);
-		winPattern.add(PatternType.Small);
-		winPattern.add(PatternType.Double1);
-		winPattern.add(PatternType.Double2);
-		winPattern.add(PatternType.Double3);
-		winPattern.add(PatternType.Double4);
-		winPattern.add(PatternType.Double6);
-		winPattern.add(PatternType.AllTriple);
-		winPattern.add(PatternType.SingleDice1);
-<<<<<<< HEAD
-		winPattern.add(PatternType.SingleDice2);
-
-		GameEntity.getInstance().currentGame.setGame(
-				result.getBoolean("iswin"), result.getInt("dice1"),
-				result.getInt("dice2"), result.getInt("dice3"),
-				result.getDouble("current_balance"),
-=======
-		winPattern.add(PatternType.SingleDice2);*/
-
 		currentGame.setGame(result.getBoolean("is_win"),
 				result.getInt("dice1"), result.getInt("dice2"),
 				result.getInt("dice3"), result.getDouble("current_balance"),
