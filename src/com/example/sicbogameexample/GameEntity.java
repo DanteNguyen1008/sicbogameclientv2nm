@@ -1,7 +1,6 @@
 package com.example.sicbogameexample;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -20,11 +19,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.util.Log;
-
+import sicbo.components.AbItemComponent.ItemType;
 import sicbo.components.BetComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.GameComponent;
@@ -33,12 +28,17 @@ import sicbo.components.PatternComponent;
 import sicbo.components.ShakeEventListener;
 import sicbo.components.TimoutCheckAsyns;
 import sicbo.components.UserComponent;
-import sicbo.components.AbItemComponent.ItemType;
 import sicbo_networks.ConnectionHandler;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
 
 public class GameEntity {
 	// Implement single ton
 	private static GameEntity INSTANCE = null;
+	public Context mContext;
 
 	protected GameEntity() {
 
@@ -49,7 +49,8 @@ public class GameEntity {
 			INSTANCE = new GameEntity();
 		return INSTANCE;
 	}
-
+	
+	
 	public final String runableTextContent = "Maximum bet is 100 Z - You can click back button to open menu - You can Shake phone to start game";
 
 	// Final static fields
@@ -64,7 +65,7 @@ public class GameEntity {
 
 	public final static String STARTGAME_TASK = "play_bet";
 
-	public final static String VIEW_HISTORY = "view_history";
+	public final static String VIEW_HISTORY = "view_bet_history";
 	public static final double REMAIN_FIXED = 100;
 	public final static int miniCoiWidth = 31;
 	public final static int miniCoinHeight = 31;
@@ -416,14 +417,18 @@ public class GameEntity {
 	 * Go to profile activity
 	 */
 	public void viewProfile() {
-
+		Intent intent1 = new Intent(sceneManager.gameScene.getActivity(), ProfileActivity.class);
+		
+		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
 	/**
 	 * Go to help page activity
 	 */
 	public void viewHelp() {
-
+        Intent intent1 = new Intent(sceneManager.gameScene.getActivity(), HelpActivity.class);
+		
+		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
 	/**
@@ -496,7 +501,7 @@ public class GameEntity {
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
-
+                String s=connectionHandler.getTaskID();
 				if (connectionHandler.getTaskID().equals("res_play_bet")) {
 					// move to animation scene
 					if (result.getBoolean("is_success")) {
@@ -504,7 +509,7 @@ public class GameEntity {
 					} else {
 						Log.d("Bet error", "Something wrong???");
 					}
-				} else if (connectionHandler.getTaskID().equals("res_history")) {
+				} else if (connectionHandler.getTaskID().equals("res_view_history")) {
 					onReceiveViewHistory(result, activity);
 				} else if (connectionHandler.getTaskID().equals("res_signout")) {
 					onReceiveSignout();
@@ -536,6 +541,14 @@ public class GameEntity {
 		winPattern.add(PatternType.Double6);
 		winPattern.add(PatternType.AllTriple);
 		winPattern.add(PatternType.SingleDice1);
+<<<<<<< HEAD
+		winPattern.add(PatternType.SingleDice2);
+
+		GameEntity.getInstance().currentGame.setGame(
+				result.getBoolean("iswin"), result.getInt("dice1"),
+				result.getInt("dice2"), result.getInt("dice3"),
+				result.getDouble("current_balance"),
+=======
 		winPattern.add(PatternType.SingleDice2);*/
 
 		currentGame.setGame(result.getBoolean("is_win"),
@@ -557,11 +570,13 @@ public class GameEntity {
 	 */
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
-		for (int i = 0; i < result.getInt("historyamount"); i++) {
+		for (int i = 0; i < result.getInt("num_of_item"); i++) {
 			userComponent.historyList.add(new HistoryComponent(result
 					.getJSONObject(i + "").getBoolean("iswin"), result
 					.getJSONObject(i + "").getString("betdate"), result
-					.getJSONObject(i + "").getDouble("balance")));
+					.getJSONObject(i + "").getDouble("balance"),result
+					.getJSONObject(i+"").getString("dices")));
+					
 		}
 
 		Intent intent = new Intent(activity, ViewHistoryActivity.class);

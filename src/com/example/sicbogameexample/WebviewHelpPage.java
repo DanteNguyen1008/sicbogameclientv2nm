@@ -2,23 +2,58 @@ package com.example.sicbogameexample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class WebviewHelpPage extends Activity {
 
 	WebView mWebView;
+	Bundle b;
+	int id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.webview_help);
-		
-		mWebView = (WebView) findViewById(R.id.webbiew_help);
-		mWebView.getSettings().setSupportZoom(true); // Zoom Control on web (You
-		// if ROM supports Multi-Touch
-		mWebView.getSettings().setBuiltInZoomControls(true); 
-		mWebView.loadUrl("http://www.google.com.vn");
+		//setContentView(R.layout.webview_help);
+		b = getIntent().getExtras();
+		if (b != null) {
+			id = b.getInt("idButton");
+		}
+		mWebView = new WebView(this);
+		loadWebView(id);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+                return true;
+            }
+        });
+ 
+        this.setContentView(mWebView);
+    }
+ 
+    @Override
+    public boolean onKeyDown(final int keyCode, final KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
+            mWebView.goBack();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+	void loadWebView(int id) {
+		switch (id) {
+		case 0:
+			mWebView.loadUrl("http://10.0.1.7:8080/SicbokServer/tutorial");
+			break;
+		case 1:
+			mWebView.loadUrl("http://10.0.1.7:8080/SicbokServer/help");
+			break;
+		case 2:
+			break;
+		}
 	}
 
 }

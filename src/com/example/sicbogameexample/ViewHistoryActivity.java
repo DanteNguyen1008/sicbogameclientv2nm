@@ -52,7 +52,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		    addTextToRowWithValues(headerRow, convertSecondsToDate(Long.parseLong(historyGame.get(i).betDate), "dd/MM/yyyy hh:mm:ss"), textColor, textSize);
 		    addTextToRowWithValues(headerRow, result, textColor, textSize);
 		    addTextToRowWithValues(headerRow, String.valueOf(historyGame.get(i).balance), textColor, textSize);
-	        
+	        addTextToRowWithValues(headerRow, String.valueOf(historyGame.get(i).dices), textColor, textSize);
 	        tblHistory.addView(headerRow);
 	  }
   }
@@ -67,6 +67,8 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	        addTextToRowWithValues(headerRow, "Date Time", textColor, textSize);
 	        addTextToRowWithValues(headerRow, "Result", textColor, textSize);
 	        addTextToRowWithValues(headerRow, "Balance", textColor, textSize);
+	        addTextToRowWithValues(headerRow, "Dices", textColor, textSize);
+	        
 	        scoreTable.addView(headerRow);
 	    }
 	 private void addTextToRowWithValues(final TableRow tableRow, String text, int textColor, float textSize) {

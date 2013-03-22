@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 public class ConnectionHandler {
 
-	private static final String SERVER_URL = "http://10.0.1.15:8084/WEB-INF/Portal";
+	private static final String SERVER_URL = "http://10.0.1.7:8080/SicbokServer/Portal";
 	private static final String REQUEST_KEY = "request";
 	private static final String DATA_KEY = "data";
 	private static final String TASKID_KEY = "taskId";

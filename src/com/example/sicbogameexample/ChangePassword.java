@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ChangePassword extends Activity implements OnClickListener{
+public class ChangePassword extends BaseActivity implements OnClickListener{
 	
 	EditText edtCurrentPassword,edtNewPassword,edtConfirmPassword;
 	Button btnOk;
@@ -45,7 +45,7 @@ public class ChangePassword extends Activity implements OnClickListener{
 		switch(v.getId())
 		{
 		case R.id.btn_ok:
-			if(edtConfirmPassword.getText().equals(edtNewPassword))
+			if(edtConfirmPassword.getText().equals(edtNewPassword)!=true)
 				Toast.makeText(this, "Please type again", Toast.LENGTH_LONG).show();
 			else
 			{
@@ -54,7 +54,7 @@ public class ChangePassword extends Activity implements OnClickListener{
 			String[] paramsValue = { edtCurrentPassword.getText().toString().trim(),
 					edtNewPassword.getText().toString().trim()};
 			Object[] params = { GameEntity.getInstance().connectionHandler, this,
-					GameEntity.SIGNIN_TASK, paramsName, paramsValue };
+					GameEntity.CHANGE_PASSWORD_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 			}
 			break;
@@ -68,7 +68,12 @@ public class ChangePassword extends Activity implements OnClickListener{
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
 		Activity activity;
-
+        @Override
+        protected void onPreExecute() {
+        	// TODO Auto-generated method stub
+        	super.onPreExecute();
+        	createProgressDialog();
+        }
 		@Override
 		protected Integer doInBackground(Object... params) {
 			// TODO Auto-generated method stub
@@ -95,18 +100,23 @@ public class ChangePassword extends Activity implements OnClickListener{
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
-
+                 
 				// Create user and move to game scene
+				if(result!=null)
+				{
 				if (result.getBoolean("is_success")) {					
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
-					Toast.makeText(ChangePassword.this, "Change password succesful", Toast.LENGTH_LONG).show();
+					createDialog();
 					activity.startActivity(intent);
 					activity.finish();
 				} else {
 					Toast.makeText(activity,result.getString("message"),
 							Toast.LENGTH_LONG).show();
 				}
+				}
+				else
+					Toast.makeText(ChangePassword.this,"Error network!Please try again", Toast.LENGTH_LONG).show();
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
