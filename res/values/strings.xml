@@ -9,5 +9,5 @@
     <string name="title_activity_splash_screen_acivity">SplashScreenAcivity</string>
     <string name="title_activity_register_screen">RegisterScreen</string>
     <string name="title_activity_view_history">ViewHistoryActivity</string>
-
+	<string name="app_id">548981545122265</string>
 </resources>
