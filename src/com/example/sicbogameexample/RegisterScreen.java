@@ -76,6 +76,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		
 		switch (v.getId()) {
 		case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
@@ -91,6 +92,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		case R.id.btn_back:
 			this.finish();
 			break;
+		
 		}
 	}
 

@@ -35,7 +35,7 @@ public class GameComponent {
 		
 	}
 	
-	private ArrayList<PatternType> convertStringtoArrayList(String arg)
+	public ArrayList<PatternType> convertStringtoArrayList(String arg)
 	{
 		ArrayList<PatternType> result = new ArrayList<PatternType>();
 		

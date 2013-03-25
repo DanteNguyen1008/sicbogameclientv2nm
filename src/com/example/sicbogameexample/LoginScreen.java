@@ -11,7 +11,10 @@ import org.json.JSONObject;
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +26,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +50,9 @@ public class LoginScreen extends Activity implements OnClickListener {
 	ConnectionAsync connectionAsync;
 	private UiLifecycleHelper uiHelper;
 	public boolean isLoginWaiting = false;
+	Button btnFacebookLogin;
+	TextView txtFbProfilePicture;
+	GraphUser user;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +75,41 @@ public class LoginScreen extends Activity implements OnClickListener {
 		edt_username.setOnClickListener(this);
 		txtForgotPassword.setOnClickListener(this);
 		txtCreatAccount.setOnClickListener(this);
+		btnFacebookLogin = (Button) findViewById(R.id.btnLoginFacebook);
+		btnFacebookLogin.setOnClickListener(this);
+		txtFbProfilePicture = (TextView) findViewById(R.id.txtFbName);
+		checkloginPreferrences("username");
+	}
 
+	private void insertLoginPreferrences(String username, String password) {
+		Editor editor = this.getSharedPreferences("login-referrences",
+				Context.MODE_PRIVATE).edit();
+		editor.putString("username", username);
+		editor.putString("password", password);
+		editor.commit();
+	}
+
+	private void checkloginPreferrences(String key) {
+		String[] result = new String[2];
+		SharedPreferences loginPreferrences = this.getSharedPreferences(
+				"login-referrences", Context.MODE_PRIVATE);
+		if (loginPreferrences.contains(key)) {
+			result[0] = loginPreferrences.getString("username", null);
+			result[1] = loginPreferrences.getString("password", null);
+			normalLogin(result);
+		}
+	}
+
+	public void onFacebookLogin(GraphUser user) {
+		this.user = user;
+		btnFacebookLogin.setVisibility(View.VISIBLE);
+		txtFbProfilePicture.setVisibility(View.VISIBLE);
+		txtFbProfilePicture.setText(user.getName() + " logged!");
+	}
+
+	public void onFacebookLogout() {
+		btnFacebookLogin.setVisibility(View.INVISIBLE);
+		txtFbProfilePicture.setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -98,6 +139,18 @@ public class LoginScreen extends Activity implements OnClickListener {
 
 	}
 
+	private void normalLogin(String[] paramsValue) {
+		connectionAsync = new ConnectionAsync();
+		String[] paramsName = { "username", "password" };
+		/*
+		 * paramsValue = { edt_username.getText().toString().trim(),
+		 * edt_password.getText().toString().trim() };
+		 */
+		Object[] params = { GameEntity.getInstance().connectionHandler, this,
+				GameEntity.SIGNIN_TASK, paramsName, paramsValue };
+		connectionAsync.execute(params);
+	}
+
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
@@ -111,13 +164,10 @@ public class LoginScreen extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_sign_in:
-			connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password" };
-			String[] paramsValue = { edt_username.getText().toString().trim(),
-					edt_password.getText().toString().trim() };
-			Object[] params = { GameEntity.getInstance().connectionHandler,
-					this, GameEntity.SIGNIN_TASK, paramsName, paramsValue };
-			connectionAsync.execute(params);
+			String username = edt_username.getText().toString().trim();
+			String password = edt_password.getText().toString().trim();
+			insertLoginPreferrences(username, password);
+			normalLogin(new String[] { username, password });
 			break;
 		case R.id.txt_forgot_password:
 
@@ -126,6 +176,9 @@ public class LoginScreen extends Activity implements OnClickListener {
 			break;
 
 		case R.id.btn_back:
+			break;
+		case R.id.btnLoginFacebook:
+			loginByFacebook(user);
 			break;
 		}
 
@@ -137,6 +190,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 		String fb_username;
 		String fb_email;
 		String fb_fullname;
+
 		@Override
 		protected Integer doInBackground(Object... params) {
 			// TODO Auto-generated method stub
@@ -145,9 +199,8 @@ public class LoginScreen extends Activity implements OnClickListener {
 			try {
 				connectionHandler.requestToServer((String) params[2],
 						(String[]) params[3], (Object[]) params[4]);
-				
-				if(params.length >= 6)
-				{
+
+				if (params.length >= 6) {
 					fb_username = ((String[]) params[5])[0];
 					fb_fullname = ((String[]) params[5])[1];
 				}
@@ -183,18 +236,25 @@ public class LoginScreen extends Activity implements OnClickListener {
 							result.getDouble("balance"));
 					activity.startActivity(intent);
 					activity.finish();
-				}else if(!isSuccess && result.getBoolean("is_allow_facebook_register"))
-				{
-					//New facebook account => move to register screen
-					Intent intent = new Intent(activity, RegisterScreen.class);
-					//put extra facebook information
-					intent.putExtra("email", result.getString("email"));
-					intent.putExtra("username", fb_username);
-					intent.putExtra("fullname", fb_fullname);
-					activity.startActivity(intent);
-					activity.finish();
+				} else if (!isSuccess
+						&& result.has("is_allow_facebook_register")) {
+					if (result.getBoolean("is_allow_facebook_register")) {
+						// New facebook account => move to register screen
+						Intent intent = new Intent(activity,
+								RegisterScreen.class);
+						// put extra facebook information
+						intent.putExtra("email", result.getString("email"));
+						intent.putExtra("username", fb_username);
+						intent.putExtra("fullname", fb_fullname);
+						activity.startActivity(intent);
+						activity.finish();
+					} else {
+						Toast.makeText(activity,
+								"Invalid facebook account, please try again",
+								Toast.LENGTH_LONG).show();
+					}
 				}
-				
+
 				else {
 					Toast.makeText(activity, "Login fail, please try again",
 							Toast.LENGTH_LONG).show();
@@ -232,13 +292,15 @@ public class LoginScreen extends Activity implements OnClickListener {
 								Response response) {
 							if (user != null) {
 								// Display the parsed user info
-								loginByFacebook(user);
+								// loginByFacebook(user);
+								onFacebookLogin(user);
 							}
 						}
 					});
 		} else if (state.isClosed()) {
 			Log.i("Facebook login", "Logged out...");
 			isLoginWaiting = false;
+			onFacebookLogout();
 		}
 	}
 
@@ -327,11 +389,12 @@ public class LoginScreen extends Activity implements OnClickListener {
 		// if this is the first time user login -> move to register screen
 		// Request to server
 		connectionAsync = new ConnectionAsync();
-		String[] additionalParams = {username, fullname};
+		String[] additionalParams = { username, fullname };
 		String[] paramsName = { "email" };
 		String[] paramsValue = { email };
 		Object[] params = { GameEntity.getInstance().connectionHandler, this,
-				GameEntity.SIGNIN_FACEBOOK_TASK, paramsName, paramsValue, additionalParams };
+				GameEntity.SIGNIN_FACEBOOK_TASK, paramsName, paramsValue,
+				additionalParams };
 		connectionAsync.execute(params);
 	}
 }

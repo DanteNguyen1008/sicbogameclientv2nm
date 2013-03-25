@@ -554,7 +554,8 @@ public class GameEntity {
 					.getJSONObject(i + "").getBoolean("iswin"), result
 					.getJSONObject(i + "").getString("betdate"), result
 					.getJSONObject(i + "").getDouble("balance"),result
-					.getJSONObject(i+"").getString("dices")));
+					.getJSONObject(i+"").getString("dices"),result
+					.getJSONObject(i+"").getString("bet_spots")));
 					
 		}
 
