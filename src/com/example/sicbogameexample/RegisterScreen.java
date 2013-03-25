@@ -31,6 +31,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	String fb_email = "";
 	String fb_username = "";
 	String fb_fullname = "";
+	boolean is_facebook_account = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		if (intent.getStringExtra("email") != null) {
 			fb_email = intent.getStringExtra("email");
 			edtEmail.setText(fb_email);
+			is_facebook_account = true;
 		}
 
 		if (intent.getStringExtra("username") != null) {
@@ -77,11 +79,11 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password", "email", "fullname" };
+			String[] paramsName = { "username", "password", "email", "fullname", "is_facebook_account" };
 			String[] paramsValue = { edtUsername.getText().toString().trim(),
 					edtPassword.getText().toString().trim(),
 					edtEmail.getText().toString().trim(),
-					edtFullName.getText().toString().trim() };
+					edtFullName.getText().toString().trim() , is_facebook_account + ""};
 			Object[] params = { connectionHandler, this,
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);

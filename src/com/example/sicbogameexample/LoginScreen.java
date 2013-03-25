@@ -45,7 +45,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 	String[] responseName = { "username", "password" };
 	ConnectionAsync connectionAsync;
 	private UiLifecycleHelper uiHelper;
-	
+	public boolean isLoginWaiting = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -221,8 +221,9 @@ public class LoginScreen extends Activity implements OnClickListener {
 
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
-		if (state.isOpened()) {
+		if (state.isOpened() && !isLoginWaiting) {
 			Log.i("Facebook login", "Logged in...");
+			isLoginWaiting = true;
 			Request.executeMeRequestAsync(session,
 					new Request.GraphUserCallback() {
 
@@ -237,6 +238,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 					});
 		} else if (state.isClosed()) {
 			Log.i("Facebook login", "Logged out...");
+			isLoginWaiting = false;
 		}
 	}
 
