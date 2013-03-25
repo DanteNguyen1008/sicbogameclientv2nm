@@ -53,32 +53,56 @@ public class LoginScreen extends Activity implements OnClickListener {
 	Button btnFacebookLogin;
 	TextView txtFbProfilePicture;
 	GraphUser user;
+	public boolean isAutoLogin = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login_screen);
-		uiHelper = new UiLifecycleHelper(this, callback);
-		uiHelper.onCreate(savedInstanceState);
-		LoginButton authButton = (LoginButton) findViewById(R.id.facebookLoginButton);
-		authButton.setReadPermissions(Arrays.asList("email"));
-
 		GameEntity.getInstance().connectionHandler = new ConnectionHandler();
+		if (checkLoginPreferrenes("username")) {
+			loadLoginPreferrences("username");
+			isAutoLogin = true;
+			//clearLoginPreferrences();
+		} else {
+			isAutoLogin = false;
+			uiHelper = new UiLifecycleHelper(this, callback);
+			uiHelper.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_login_screen);
+			LoginButton authButton = (LoginButton) findViewById(R.id.facebookLoginButton);
+			authButton.setReadPermissions(Arrays.asList("email"));
+			
+			edt_username = (EditText) findViewById(R.id.edt_username);
+			edt_password = (EditText) findViewById(R.id.edt_password);
+			btn_sign_in = (Button) findViewById(R.id.btn_sign_in);
+			btnBack = (ImageButton) findViewById(R.id.btn_back);
+			btn_sign_in.setOnClickListener(this);
+			txtCreatAccount = (TextView) findViewById(R.id.txt_create_account);
+			txtForgotPassword = (TextView) findViewById(R.id.txt_forgot_password);
+			edt_username.setOnClickListener(this);
+			txtForgotPassword.setOnClickListener(this);
+			txtCreatAccount.setOnClickListener(this);
+			btnFacebookLogin = (Button) findViewById(R.id.btnLoginFacebook);
+			btnFacebookLogin.setOnClickListener(this);
+			txtFbProfilePicture = (TextView) findViewById(R.id.txtFbName);
+		}
+		
+	}
+	
+	private void clearLoginPreferrences()
+	{
+		SharedPreferences preferences = getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
+		preferences.edit().remove("username").commit();
+		preferences.edit().remove("password").commit();
+	}
 
-		edt_username = (EditText) findViewById(R.id.edt_username);
-		edt_password = (EditText) findViewById(R.id.edt_password);
-		btn_sign_in = (Button) findViewById(R.id.btn_sign_in);
-		btnBack = (ImageButton) findViewById(R.id.btn_back);
-		btn_sign_in.setOnClickListener(this);
-		txtCreatAccount = (TextView) findViewById(R.id.txt_create_account);
-		txtForgotPassword = (TextView) findViewById(R.id.txt_forgot_password);
-		edt_username.setOnClickListener(this);
-		txtForgotPassword.setOnClickListener(this);
-		txtCreatAccount.setOnClickListener(this);
-		btnFacebookLogin = (Button) findViewById(R.id.btnLoginFacebook);
-		btnFacebookLogin.setOnClickListener(this);
-		txtFbProfilePicture = (TextView) findViewById(R.id.txtFbName);
-		checkloginPreferrences("username");
+	private boolean checkLoginPreferrenes(String key) {
+		String[] result = new String[2];
+		SharedPreferences loginPreferrences = this.getSharedPreferences(
+				"login-referrences", Context.MODE_PRIVATE);
+		if (loginPreferrences.contains(key)) {
+			return true;
+		} else
+			return false;
 	}
 
 	private void insertLoginPreferrences(String username, String password) {
@@ -89,7 +113,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 		editor.commit();
 	}
 
-	private void checkloginPreferrences(String key) {
+	private void loadLoginPreferrences(String key) {
 		String[] result = new String[2];
 		SharedPreferences loginPreferrences = this.getSharedPreferences(
 				"login-referrences", Context.MODE_PRIVATE);
@@ -230,8 +254,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 							SicBoGameActivity.class);
 
 					GameEntity.getInstance().userComponent = new UserComponent(
-							edt_username.getText().toString(),
-
+							(String) result.get("username"),
 							(String) result.get("email"),
 							result.getDouble("balance"));
 					activity.startActivity(intent);
@@ -307,38 +330,45 @@ public class LoginScreen extends Activity implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
-		// For scenarios where the main activity is launched and user
-		// session is not null, the session state change notification
-		// may not be triggered. Trigger it if it's open/closed.
-		Session session = Session.getActiveSession();
-		if (session != null && (session.isOpened() || session.isClosed())) {
-			onSessionStateChange(session, session.getState(), null);
+		if (!isAutoLogin) {
+			// For scenarios where the main activity is launched and user
+			// session is not null, the session state change notification
+			// may not be triggered. Trigger it if it's open/closed.
+			Session session = Session.getActiveSession();
+			if (session != null && (session.isOpened() || session.isClosed())) {
+				onSessionStateChange(session, session.getState(), null);
+			}
+			uiHelper.onResume();
 		}
-		uiHelper.onResume();
+
 	}
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		uiHelper.onActivityResult(requestCode, resultCode, data);
+		if (!isAutoLogin)
+			uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		uiHelper.onPause();
+		if (!isAutoLogin)
+			uiHelper.onPause();
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		uiHelper.onDestroy();
+		if (!isAutoLogin)
+			uiHelper.onDestroy();
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
+		if (!isAutoLogin)
+			uiHelper.onSaveInstanceState(outState);
 	}
 
 	private String buildUserInfoDisplay(GraphUser user) {

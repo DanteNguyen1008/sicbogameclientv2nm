@@ -31,7 +31,6 @@
             android:configChanges="orientation|screenSize"
             android:label="SicBoGameActivity" >
         </activity>
-
         <activity
             android:name="com.example.sicbogameexample.LoginScreen"
             android:configChanges="orientation|screenSize"
