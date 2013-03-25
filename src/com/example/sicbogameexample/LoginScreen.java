@@ -51,10 +51,10 @@ public class LoginScreen extends Activity implements OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login_screen);
-		uiHelper = new UiLifecycleHelper(this, callback);
-		uiHelper.onCreate(savedInstanceState);
-		LoginButton authButton = (LoginButton) findViewById(R.id.facebookLoginButton);
-		authButton.setReadPermissions(Arrays.asList("email"));
+		//uiHelper = new UiLifecycleHelper(this, callback);
+		//uiHelper.onCreate(savedInstanceState);
+		//LoginButton authButton = (LoginButton) findViewById(R.id.facebookLoginButton);
+		//authButton.setReadPermissions(Arrays.asList("email"));
 
 		GameEntity.getInstance().connectionHandler = new ConnectionHandler();
 
@@ -246,11 +246,11 @@ public class LoginScreen extends Activity implements OnClickListener {
 		// For scenarios where the main activity is launched and user
 		// session is not null, the session state change notification
 		// may not be triggered. Trigger it if it's open/closed.
-		Session session = Session.getActiveSession();
+		/*Session session = Session.getActiveSession();
 		if (session != null && (session.isOpened() || session.isClosed())) {
 			onSessionStateChange(session, session.getState(), null);
 		}
-		uiHelper.onResume();
+		uiHelper.onResume();*/
 	}
 
 	@Override
@@ -262,19 +262,19 @@ public class LoginScreen extends Activity implements OnClickListener {
 	@Override
 	public void onPause() {
 		super.onPause();
-		uiHelper.onPause();
+		//uiHelper.onPause();
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		uiHelper.onDestroy();
+		//uiHelper.onDestroy();
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		uiHelper.onSaveInstanceState(outState);
+		//uiHelper.onSaveInstanceState(outState);
 	}
 
 	private String buildUserInfoDisplay(GraphUser user) {

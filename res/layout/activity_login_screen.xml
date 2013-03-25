@@ -94,7 +94,7 @@
             android:text="Forgot PassWord"
             android:textColor="#045FB4"
             android:textSize="14sp" />
-
+<!-- 
         <com.facebook.widget.LoginButton
             android:id="@+id/facebookLoginButton"
             android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/txt_create_account"
             android:layout_marginTop="40dp"
-            />
+            /> -->
     </RelativeLayout>
 
 </RelativeLayout>
