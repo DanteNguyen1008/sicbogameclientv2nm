@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sicbo.components.AbItemComponent.ItemType;
+
 import sicbo.components.BetComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.GameComponent;
@@ -39,7 +40,6 @@ public class GameEntity {
 	// Implement single ton
 	private static GameEntity INSTANCE = null;
 
-
 	protected GameEntity() {
 
 	}
@@ -49,8 +49,7 @@ public class GameEntity {
 			INSTANCE = new GameEntity();
 		return INSTANCE;
 	}
-	
-	
+
 	public final String runableTextContent = "Maximum bet is 100 Z - You can click back button to open menu - You can Shake phone to start game";
 
 	// Final static fields
@@ -58,7 +57,9 @@ public class GameEntity {
 	public final static int CAMERA_HEIGHT = 480;
 
 	public final static String SIGNIN_TASK = "sign_in";
+	public final static String SIGNIN_FACEBOOK_TASK = "sign_in_facebook";
 	public final static String SIGNUP_TASK = "sign_up";
+	public final static String SIGNUP_FACEBOOK_TASK = "sign_up_facebook";
 	public final static String SIGNOUT_TASK = "sign_out";
 	public final static String CHANGE_PASSWORD_TASK = "change_password";
 	public final static String FORGOT_PASSWORD_TASK = "forgot_password";

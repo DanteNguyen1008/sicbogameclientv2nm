@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	Button btnRegister;
 	ImageButton imgBack;
 	ConnectionHandler connectionHandler;
+	String fb_email = "";
+	String fb_username = "";
+	String fb_fullname = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,25 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		edtEmail = (EditText) findViewById(R.id.edt_email);
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
 		btnRegister = (Button) findViewById(R.id.btn_register);
-		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack = (ImageButton) findViewById(R.id.btn_back);
 		imgBack.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
 
+		Intent intent = getIntent();
+		if (intent.getStringExtra("email") != null) {
+			fb_email = intent.getStringExtra("email");
+			edtEmail.setText(fb_email);
+		}
+
+		if (intent.getStringExtra("username") != null) {
+			fb_username = intent.getStringExtra("username");
+			edtUsername.setText(fb_username);
+		}
+
+		if (intent.getStringExtra("fullname") != null) {
+			fb_fullname = intent.getStringExtra("fullname");
+			edtFullName.setText(fb_fullname);
+		}
 	}
 
 	@Override
@@ -55,9 +74,8 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-       switch(v.getId())
-       {
-       case R.id.btn_register:
+		switch (v.getId()) {
+		case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
 			String[] paramsName = { "username", "password", "email", "fullname" };
 			String[] paramsValue = { edtUsername.getText().toString().trim(),
@@ -68,9 +86,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 			break;
-       case R.id.btn_back:
-    	   this.finish();
-    	   break;
+		case R.id.btn_back:
+			this.finish();
+			break;
 		}
 	}
 
@@ -115,12 +133,11 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				// Create user and move to game scene
 
 				if (result.getBoolean("is_success")) {
-					GameEntity.getInstance().userComponent = new UserComponent(edtUsername
-							.getText().toString(), edtEmail.getText()
-							.toString(), 0);
+					GameEntity.getInstance().userComponent = new UserComponent(
+							edtUsername.getText().toString(), edtEmail
+									.getText().toString(), 0);
 					progressDialog.dismiss();
 					createDialog();
-
 
 				} else {
 					Toast.makeText(activity, result.getString("message"),
