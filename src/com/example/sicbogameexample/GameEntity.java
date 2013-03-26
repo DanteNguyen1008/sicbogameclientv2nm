@@ -578,21 +578,29 @@ public class GameEntity {
 	 */
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
-		for (int i = 0; i < result.getInt("num_of_item"); i++) {
-			userComponent.historyList.add(new HistoryComponent(result
-					.getJSONObject(i + "").getBoolean("iswin"), result
-					.getJSONObject(i + "").getString("betdate"), result
-					.getJSONObject(i + "").getDouble("balance"), result
-					.getJSONObject(i + "").getString("dices"), result
-					.getJSONObject(i + "").getString("bet_spots")));
+		int numOfItem = result.getInt("num_of_item");
+		if(numOfItem > 0)
+		{
+			for (int i = 0; i < numOfItem; i++) {
+				userComponent.historyList.add(new HistoryComponent(result
+						.getJSONObject(i + "").getBoolean("iswin"), result
+						.getJSONObject(i + "").getString("betdate"), result
+						.getJSONObject(i + "").getDouble("balance"), result
+						.getJSONObject(i + "").getString("dices"), result
+						.getJSONObject(i + "").getString("bet_spots")));
 
+			}
+
+			Intent intent = new Intent(activity, ViewHistoryActivity.class);
+			activity.startActivity(intent);
+			betAmountRemain = GameEntity.REMAIN_FIXED;
+			if (!sceneManager.gameScene.backgroundMusic.music.isReleased())
+				sceneManager.gameScene.backgroundMusic.music.release();
+		}else
+		{
+			displayConfirmDialog("Your history is blank!", 170, 200);
 		}
-
-		Intent intent = new Intent(activity, ViewHistoryActivity.class);
-		activity.startActivity(intent);
-		betAmountRemain = GameEntity.REMAIN_FIXED;
-		if (!sceneManager.gameScene.backgroundMusic.music.isReleased())
-			sceneManager.gameScene.backgroundMusic.music.release();
+		
 		// sceneManager.gameScene.unLoadScene();
 		// sceneManager = null;
 		// activity.finish();
