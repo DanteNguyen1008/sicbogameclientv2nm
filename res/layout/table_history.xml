@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#D8D8D8"
     >
    <RelativeLayout
         android:id="@+id/rela1"

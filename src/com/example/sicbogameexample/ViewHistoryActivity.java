@@ -50,7 +50,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		return s;
 	}
 	private void fillRow() {
-		int textColor = Color.BLACK;
+		int textColor = Color.WHITE;
 		float textSize = 10f;
 		String[] betSpot;
 		int lenght;
