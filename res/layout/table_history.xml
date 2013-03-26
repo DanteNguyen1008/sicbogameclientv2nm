@@ -1,25 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--main.xml-->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffccd0"
     >
-    <TextView
-            android:text="History"
-            android:textColor="#b3000d"
-            android:gravity="center_vertical|center_horizontal"
-            android:textSize="26dip"
+   <RelativeLayout
+        android:id="@+id/rela1"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp" >
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#1B0A2A"
+            android:src="@drawable/btn_back" />
+
+        <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:background="#ffb0b6"
-            android:layout_marginBottom="5dip"
-            android:typeface="sans"/>
+            android:layout_toRightOf="@+id/btn_back"
+            android:background="#1B0A2A"
+            android:scaleType="fitXY"
+            android:src="@drawable/btn_login" />
+    </RelativeLayout>
    
-    <LinearLayout android:id="@+id/ll_country"
-        android:layout_height="fill_parent" android:layout_width="fill_parent">
+    <RelativeLayout
+        android:id="@+id/ll_country"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rela1" >
+
         <ScrollView android:id="@+id/ScrollView11"
             android:layout_width="fill_parent" android:layout_height="fill_parent"
             android:fillViewport="true">
@@ -31,5 +43,5 @@
                 </TableLayout>
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

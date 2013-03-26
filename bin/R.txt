@@ -79,6 +79,7 @@ int drawable ic_launcher 0x7f020029
 int drawable press_button 0x7f02002a
 int drawable rounded_btn_sign_in 0x7f02002b
 int drawable rounded_edit_password 0x7f02002c
+int drawable wood_bg 0x7f02002d
 int id ScrollView11 0x7f050036
 int id btnBack 0x7f05001c
 int id btnLoginFacebook 0x7f050013

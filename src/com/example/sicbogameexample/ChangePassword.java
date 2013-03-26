@@ -45,7 +45,7 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		switch(v.getId())
 		{
 		case R.id.btn_ok:
-			if(edtConfirmPassword.getText().equals(edtNewPassword)!=true)
+			if(edtConfirmPassword.getText().toString().equals(edtNewPassword.getText().toString())!=true)
 				Toast.makeText(this, "Please type again", Toast.LENGTH_LONG).show();
 			else
 			{
@@ -105,18 +105,21 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 				if(result!=null)
 				{
 				if (result.getBoolean("is_success")) {					
-					Intent intent = new Intent(activity,
-							SicBoGameActivity.class);
+					progressDialog.dismiss();
 					createDialog();
-					activity.startActivity(intent);
-					activity.finish();
+					
+					
 				} else {
+					progressDialog.dismiss();
 					Toast.makeText(activity,result.getString("message"),
 							Toast.LENGTH_LONG).show();
 				}
 				}
 				else
+				{
 					Toast.makeText(ChangePassword.this,"Error network!Please try again", Toast.LENGTH_LONG).show();
+					progressDialog.dismiss();
+				}
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
