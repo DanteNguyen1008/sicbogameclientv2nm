@@ -460,7 +460,7 @@ public class GameEntity {
 				null, null };
 		connectionAsync.execute(params);
 		clearLoginPreferrences();
-		betAmountRemain = GameEntity.REMAIN_FIXED;
+		clearBet();
 		sceneManager.gameScene.unLoadScene();
 		sceneManager.activity.finish();
 		
@@ -591,19 +591,23 @@ public class GameEntity {
 
 			}
 
-			Intent intent = new Intent(activity, ViewHistoryActivity.class);
-			activity.startActivity(intent);
-			betAmountRemain = GameEntity.REMAIN_FIXED;
+			
+			//betAmountRemain = GameEntity.REMAIN_FIXED;
+			clearBet();
 			if (!sceneManager.gameScene.backgroundMusic.music.isReleased())
 				sceneManager.gameScene.backgroundMusic.music.release();
+			//sceneManager.gameScene.unLoadScene();
+			sceneManager = null;
+			activity.finish();
+			Intent intent = new Intent(activity, ViewHistoryActivity.class);
+			activity.startActivity(intent);
+			
 		}else
 		{
 			displayConfirmDialog("Your history is blank!", 170, 200);
 		}
 		
-		// sceneManager.gameScene.unLoadScene();
-		// sceneManager = null;
-		// activity.finish();
+		
 	}
 
 	public void onReceiveSignout() {

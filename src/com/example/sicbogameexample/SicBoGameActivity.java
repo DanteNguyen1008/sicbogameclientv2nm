@@ -1,6 +1,5 @@
 package com.example.sicbogameexample;
 
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -9,10 +8,8 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import sicbo.components.MSComponent;
 import sicbo.components.ShakeEventListener;
 import sicbo.components.UserComponent;
-import sicbo.components.MSComponent.MStype;
 
 import android.os.Bundle;
 import android.view.KeyEvent;

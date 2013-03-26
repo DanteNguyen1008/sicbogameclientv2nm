@@ -52,14 +52,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 		displayTextList.add(new TextComponent(2, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
 						.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE,
-				smallFont));
+				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE, smallFont));
 		// 200 150
 		displayTextList.add(new TextComponent(3, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
 						.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE,
-				smallFont));
+				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE, smallFont));
 	}
 
 	public void loadResource() {
@@ -343,16 +341,17 @@ public class PlayAnimationComponent implements IAnimationListener {
 	}
 
 	private void displayResultText() {
-		
+
 		GameEntity.getInstance().isResultDisplay = true;
 		// TODO Auto-generated method stub
 		String resultString = "You lose";
 		String totalBetString = "Total money you bet : "
 				+ GameEntity.getInstance().currentGame.totalBetAmount;
-		String totalWinString = "Total money you win : "
-				+ ((GameEntity.getInstance().currentGame.totalWinAmount > 0) ? GameEntity
-						.getInstance().currentGame.totalWinAmount : 0);
+		String totalWinString;
 		if (GameEntity.getInstance().currentGame.isWin) {
+			totalWinString = "Total money you win : "
+					+ ((GameEntity.getInstance().currentGame.totalWinAmount > 0) ? GameEntity
+							.getInstance().currentGame.totalWinAmount : 0);
 			// Win
 			scene.playWinSound(true);
 			resultString = "You win";
@@ -360,6 +359,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 			// displayFireWork();
 		} else {
 			// Lose
+			totalWinString = "Total money you lose : "
+					+ GameEntity.getInstance().currentGame.totalWinAmount;
 			scene.playLoseSound(true);
 		}
 
