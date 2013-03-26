@@ -11,8 +11,10 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.example.sicbogameexample.GameEntity;
+import com.example.sicbogameexample.LoginScreen;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class ButtonComponent extends AbItemComponent {
@@ -164,6 +166,7 @@ public class ButtonComponent extends AbItemComponent {
 								.stopAnimation();
 						GameEntity.getInstance().sceneManager.gameScene
 								.enableAllTouch();
+						GameEntity.getInstance().mSensorListener.registerShake();
 						break;
 					}
 					return true;
@@ -342,6 +345,35 @@ public class ButtonComponent extends AbItemComponent {
 								.hideMenu();
 						GameEntity.getInstance().displayYesNoDialog(
 								"Do you want to exit?", 200, 300);
+						break;
+					}
+					return true;
+				}
+			});
+			break;
+		case MENU_LOGOUT:
+			tiledSprite = (new TiledSprite(positionX, positionY,
+					tiledTextureRegion, engine.getVertexBufferObjectManager()) {
+				@Override
+				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+						float X, float Y) {
+					switch (pSceneTouchEvent.getAction()) {
+					case TouchEvent.ACTION_DOWN:
+						this.setScale(1.2f);
+						this.setCurrentTileIndex(0);
+						break;
+					case TouchEvent.ACTION_MOVE:
+
+						break;
+					case TouchEvent.ACTION_UP:
+						this.setScale(1f);
+						this.setCurrentTileIndex(0);
+						GameEntity.getInstance().sceneManager.gameScene
+								.buttonPlaySound();
+						GameEntity.getInstance().sceneManager.gameScene
+								.hideMenu();
+						GameEntity.getInstance().logout();
+						
 						break;
 					}
 					return true;

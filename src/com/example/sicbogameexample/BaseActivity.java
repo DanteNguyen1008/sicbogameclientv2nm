@@ -63,7 +63,7 @@ public class BaseActivity extends Activity {
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 						startActivity(intent);
-						// finish();
+						finish();
 					}
 				});
 

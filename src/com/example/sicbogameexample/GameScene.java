@@ -142,8 +142,11 @@ public class GameScene extends MyScene implements OnShakeListener {
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "help.jpg",
 				300, 190, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.MENU_HELP, getScene(), SceneType.GAME));
-		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "exit.jpg",
+		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "logout.jpg",
 				300, 260, getEngine().getTextureManager(), getActivity(),
+				getEngine(), ItemType.MENU_LOGOUT, getScene(), SceneType.GAME));
+		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "exit.jpg",
+				300, 330, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.MENU_EXIT, getScene(), SceneType.GAME));
 
 	}
@@ -538,6 +541,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 	@Override
 	public void unLoadScene() {
 		// TODO Auto-generated method stub
+		backgroundMusic.music.release();
 		getScene().detachChildren();
 	}
 
@@ -575,6 +579,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 	public void displayMenu() {
 		disableAllTouch();
+		GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		menuScene.displayMenu();
 		if (GameEntity.getInstance().isResultDisplay) {
 			GameEntity.getInstance().updateAfterBet();
@@ -585,6 +590,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 	public void hideMenu() {
 		enableAllTouch();
+		GameEntity.getInstance().mSensorListener.registerShake();
 		menuScene.hideMenu();
 	}
 

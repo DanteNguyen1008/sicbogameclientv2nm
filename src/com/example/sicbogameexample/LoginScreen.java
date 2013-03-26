@@ -53,6 +53,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 	Button btnFacebookLogin;
 	TextView txtFbProfilePicture;
 	GraphUser user;
+	String password;
 	public boolean isAutoLogin = false;
 
 	@Override
@@ -88,12 +89,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 		
 	}
 	
-	private void clearLoginPreferrences()
-	{
-		SharedPreferences preferences = getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
-		preferences.edit().remove("username").commit();
-		preferences.edit().remove("password").commit();
-	}
+	
 
 	private boolean checkLoginPreferrenes(String key) {
 		String[] result = new String[2];
@@ -189,8 +185,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 			break;
 		case R.id.btn_sign_in:
 			String username = edt_username.getText().toString().trim();
-			String password = edt_password.getText().toString().trim();
-			insertLoginPreferrences(username, password);
+			password = edt_password.getText().toString().trim();
 			normalLogin(new String[] { username, password });
 			break;
 		case R.id.txt_forgot_password:
@@ -250,6 +245,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 				// Create user and move to game scene
 				boolean isSuccess = result.getBoolean("is_success");
 				if (isSuccess) {
+					insertLoginPreferrences((String) result.get("username"), password);
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
 

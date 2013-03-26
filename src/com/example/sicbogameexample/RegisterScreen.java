@@ -76,15 +76,17 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
 		switch (v.getId()) {
 		case R.id.btn_register:
 			ConnectionAsync connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password", "email", "fullname", "is_facebook_account" };
+			String[] paramsName = { "username", "password", "email",
+					"fullname", "is_facebook_account" };
 			String[] paramsValue = { edtUsername.getText().toString().trim(),
 					edtPassword.getText().toString().trim(),
 					edtEmail.getText().toString().trim(),
-					edtFullName.getText().toString().trim() , is_facebook_account + ""};
+					edtFullName.getText().toString().trim(),
+					is_facebook_account + "" };
 			Object[] params = { connectionHandler, this,
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
@@ -92,7 +94,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		case R.id.btn_back:
 			this.finish();
 			break;
-		
+
 		}
 	}
 
@@ -139,9 +141,17 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				if (result.getBoolean("is_success")) {
 					GameEntity.getInstance().userComponent = new UserComponent(
 							edtUsername.getText().toString(), edtEmail
-									.getText().toString(), 0);
+									.getText().toString(),
+							result.getDouble("balance"));
 					progressDialog.dismiss();
-					createDialog();
+					if (!result.getBoolean("is_facebook_account")) {
+						createDialog();
+					} else {
+						Intent intent = new Intent(activity,
+								SicBoGameActivity.class);
+						activity.startActivity(intent);
+						activity.finish();
+					}
 
 				} else {
 					Toast.makeText(activity, result.getString("message"),

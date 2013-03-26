@@ -33,6 +33,7 @@ import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -325,6 +326,7 @@ public class GameEntity {
 	 */
 	public void startGame() {
 		boolean isBet = false;
+		GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		int patternListSize = sceneManager.gameScene.patternList.size();
 		for (int i = 0; i < patternListSize; i++) {
 			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0
@@ -418,8 +420,9 @@ public class GameEntity {
 	 * Go to profile activity
 	 */
 	public void viewProfile() {
-		Intent intent1 = new Intent(sceneManager.gameScene.getActivity(), ProfileActivity.class);
-		
+		Intent intent1 = new Intent(sceneManager.gameScene.getActivity(),
+				ProfileActivity.class);
+
 		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
@@ -427,8 +430,9 @@ public class GameEntity {
 	 * Go to help page activity
 	 */
 	public void viewHelp() {
-        Intent intent1 = new Intent(sceneManager.gameScene.getActivity(), HelpActivity.class);
-		
+		Intent intent1 = new Intent(sceneManager.gameScene.getActivity(),
+				HelpActivity.class);
+
 		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
@@ -446,6 +450,30 @@ public class GameEntity {
 		sceneManager.gameScene.unLoadScene();
 		sceneManager.activity.finish();
 		sceneManager = null;
+	}
+	
+	public void logout()
+	{
+		ConnectionAsync connectionAsync = new ConnectionAsync();
+		Object[] params = { connectionHandler,
+				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
+				null, null };
+		connectionAsync.execute(params);
+		clearLoginPreferrences();
+		betAmountRemain = GameEntity.REMAIN_FIXED;
+		sceneManager.gameScene.unLoadScene();
+		sceneManager.activity.finish();
+		
+		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
+		sceneManager.activity.startActivity(intent);
+		sceneManager = null;
+	}
+	
+	private void clearLoginPreferrences()
+	{
+		SharedPreferences preferences = sceneManager.activity.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
+		preferences.edit().remove("username").commit();
+		preferences.edit().remove("password").commit();
 	}
 
 	/**
@@ -502,7 +530,7 @@ public class GameEntity {
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
-                String s=connectionHandler.getTaskID();
+				String s = connectionHandler.getTaskID();
 				if (connectionHandler.getTaskID().equals("res_play_bet")) {
 					// move to animation scene
 					if (result.getBoolean("is_success")) {
@@ -510,7 +538,8 @@ public class GameEntity {
 					} else {
 						Log.d("Bet error", "Something wrong???");
 					}
-				} else if (connectionHandler.getTaskID().equals("res_view_history")) {
+				} else if (connectionHandler.getTaskID().equals(
+						"res_view_history")) {
 					onReceiveViewHistory(result, activity);
 				} else if (connectionHandler.getTaskID().equals("res_signout")) {
 					onReceiveSignout();
@@ -553,14 +582,20 @@ public class GameEntity {
 			userComponent.historyList.add(new HistoryComponent(result
 					.getJSONObject(i + "").getBoolean("iswin"), result
 					.getJSONObject(i + "").getString("betdate"), result
-					.getJSONObject(i + "").getDouble("balance"),result
-					.getJSONObject(i+"").getString("dices"),result
-					.getJSONObject(i+"").getString("bet_spots")));
-					
+					.getJSONObject(i + "").getDouble("balance"), result
+					.getJSONObject(i + "").getString("dices"), result
+					.getJSONObject(i + "").getString("bet_spots")));
+
 		}
 
 		Intent intent = new Intent(activity, ViewHistoryActivity.class);
 		activity.startActivity(intent);
+		betAmountRemain = GameEntity.REMAIN_FIXED;
+		if (!sceneManager.gameScene.backgroundMusic.music.isReleased())
+			sceneManager.gameScene.backgroundMusic.music.release();
+		// sceneManager.gameScene.unLoadScene();
+		// sceneManager = null;
+		// activity.finish();
 	}
 
 	public void onReceiveSignout() {

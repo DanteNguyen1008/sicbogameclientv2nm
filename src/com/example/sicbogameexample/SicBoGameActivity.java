@@ -1,5 +1,6 @@
 package com.example.sicbogameexample;
 
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -8,8 +9,10 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import sicbo.components.MSComponent;
 import sicbo.components.ShakeEventListener;
 import sicbo.components.UserComponent;
+import sicbo.components.MSComponent.MStype;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -54,9 +57,22 @@ public class SicBoGameActivity extends BaseGameActivity {
 	protected void onResume() {
 		super.onResume();
 		GameEntity.getInstance().mSensorListener.registerShake();
-		if (GameEntity.getInstance().sceneManager != null)
-			GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
-					.resume();
+		if (GameEntity.getInstance().sceneManager != null) {
+			if (!GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.music
+					.isReleased()) {
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+						.resume();
+			} else {
+				/*
+				MusicFactory.setAssetBasePath("mfx/");
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic = new MSComponent(
+						1, "themesong.mp3", MStype.MUSIC, getEngine(), this,
+						true);
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+						.play();
+						*/
+			}
+		}
 	}
 
 	@Override
@@ -64,8 +80,10 @@ public class SicBoGameActivity extends BaseGameActivity {
 		super.onStop();
 		GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		if (GameEntity.getInstance().sceneManager != null)
-			GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
-					.pause();
+			if (!GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.music
+					.isReleased())
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+						.pause();
 
 	}
 

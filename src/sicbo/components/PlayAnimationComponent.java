@@ -323,14 +323,14 @@ public class PlayAnimationComponent implements IAnimationListener {
 										/ 2,
 								scene.patternList.get(i).getPositionY()
 										+ scene.patternList.get(i).getiHeight()
-										/ 2, 32, 32, Color.RED, 20, 3);
+										/ 2, 32, 32, Color.RED, 20, 2);
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
 										/ 2,
 								scene.patternList.get(i).getPositionY()
 										+ scene.patternList.get(i).getiHeight()
-										/ 2, 32, 32, Color.YELLOW, 20, 3);
+										/ 2, 32, 32, Color.YELLOW, 20, 2);
 					} else {
 						scene.patternList.get(i).getSprite().setAlpha(1f);
 

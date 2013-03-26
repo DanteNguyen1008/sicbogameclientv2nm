@@ -7,9 +7,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import sicbo.components.HistoryComponent;
+import sicbo.components.UserComponent;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -154,6 +157,22 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		 * upstream/master Intent intent = new Intent(this,
 		 * SicBoGameActivity.class); this.startActivity(intent); finish(); }
 		 */
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			onBackPressed();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this,
+				SicBoGameActivity.class);
+		this.startActivity(intent); 
+		this.finish();
 	}
 
 }
