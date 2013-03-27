@@ -14,7 +14,7 @@ public class UserComponent {
 		this.email = email;
 		this.balance = new BalanceHandle();
 		this.balance.updateBalance(balanceAmount);
-		this.historyList = new ArrayList<HistoryComponent>();
+		//this.historyList = new ArrayList<HistoryComponent>();
 	}
 	
 	public List<HistoryComponent> historyList;

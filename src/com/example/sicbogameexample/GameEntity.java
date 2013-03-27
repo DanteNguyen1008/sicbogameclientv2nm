@@ -1,6 +1,7 @@
 package com.example.sicbogameexample;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -20,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sicbo.components.AbItemComponent.ItemType;
-
 import sicbo.components.BetComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.GameComponent;
@@ -580,6 +580,7 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		int numOfItem = result.getInt("num_of_item");
+		userComponent.historyList=new ArrayList<HistoryComponent>();
 		if (numOfItem > 0) {
 			for (int i = 0; i < numOfItem; i++) {
 				userComponent.historyList.add(new HistoryComponent(result

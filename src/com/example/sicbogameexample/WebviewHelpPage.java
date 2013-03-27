@@ -2,6 +2,7 @@ package com.example.sicbogameexample;
 
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.webkit.WebView;
@@ -47,7 +48,9 @@ public class WebviewHelpPage extends Activity {
 	void loadWebView(int id) {
 		switch (id) {
 		case 0:
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "tutorial");
+			
 			break;
 		case 1:
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "help");
