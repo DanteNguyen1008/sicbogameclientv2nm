@@ -63,6 +63,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 	MyMenuScene menuScene;
 
 	TextComponent runableText;
+
 	public GameScene(Engine engine, Camera camera, BaseGameActivity activity) {
 		super(engine, camera, activity);
 		// TODO Auto-generated constructor stub
@@ -89,7 +90,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT,
 				getActivity().getTextureManager(), getActivity(), getEngine(),
 				ItemType.TEXT, 1, Color.BLUE, mSmallFont);
-		
+
 		MoveModifier move = new MoveModifier(20, 800, -800, 415, 415);
 		LoopEntityModifier loopEntityModifier = new LoopEntityModifier(move);
 		runableText.text.registerEntityModifier(loopEntityModifier);
@@ -495,7 +496,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 		getScene().attachChild(menuScene.getSprite());
 		menuScene.registerTouch(getScene());
 		getScene().attachChild(runableText.text);
-		
+
 	}
 
 	@Override
@@ -541,7 +542,8 @@ public class GameScene extends MyScene implements OnShakeListener {
 	@Override
 	public void unLoadScene() {
 		// TODO Auto-generated method stub
-		backgroundMusic.music.release();
+		if (!backgroundMusic.music.isReleased())
+			backgroundMusic.music.release();
 		getScene().detachChildren();
 	}
 

@@ -245,6 +245,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 				// Create user and move to game scene
 				boolean isSuccess = result.getBoolean("is_success");
 				if (isSuccess) {
+					if(!result.getBoolean("is_facebook_account"))
 					insertLoginPreferrences((String) result.get("username"), password);
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);

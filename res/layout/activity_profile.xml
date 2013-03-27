@@ -20,6 +20,7 @@
         <ImageButton
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:scaleType="fitXY"
             android:src="@drawable/btn_login"
             android:background="#1B0A2A"
             android:layout_toRightOf="@+id/btn_back" />

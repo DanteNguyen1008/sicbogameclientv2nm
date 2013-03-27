@@ -134,8 +134,7 @@ public class ButtonComponent extends AbItemComponent {
 						GameEntity.getInstance().sceneManager.gameScene
 								.buttonPlaySound();
 						GameEntity.getInstance().viewHistory();
-						GameEntity.getInstance().sceneManager.gameScene
-								.getActivity().finish();
+						
 						break;
 					}
 					return true;

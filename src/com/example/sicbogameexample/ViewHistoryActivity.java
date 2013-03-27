@@ -7,18 +7,20 @@ import java.util.Calendar;
 import java.util.List;
 
 import sicbo.components.HistoryComponent;
-import sicbo.components.UserComponent;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.example.sicbogameexample.GameEntity.PatternType;
 public class ViewHistoryActivity extends Activity implements OnClickListener {
 
@@ -27,6 +29,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	int size;
 	List<HistoryComponent> historyGame;
 	ArrayList<PatternType> winPattern;
+	ImageButton imgBack;
 	
 
 	@Override
@@ -35,6 +38,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.table_history);
 		tblHistory = (TableLayout) findViewById(R.id.table_history);
 		historyGame = GameEntity.getInstance().userComponent.historyList;
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
 		size = historyGame.size();
 		initializeHeaderRow(tblHistory);
 		fillRow();
@@ -79,6 +83,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 			tblHistory.addView(headerRow);
 			
 			lenght=winPattern.size();
+			Log.d("Lenght patter",String.valueOf(lenght));
 			for(int j=0;j<lenght-1;j++)
 			{
 			headerRow = new TableRow(this);
@@ -149,14 +154,13 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 
-		/*
-		 * if (arg0.equals(btnBack)) {
-		 * GameEntity.userComponent.historyList.clear(); ======= if
-		 * (arg0.equals(btnBack)) {
-		 * GameEntity.getInstance().userComponent.historyList.clear(); >>>>>>>
-		 * upstream/master Intent intent = new Intent(this,
-		 * SicBoGameActivity.class); this.startActivity(intent); finish(); }
-		 */
+		switch(arg0.getId())
+		{
+		case R.id.btn_back:
+			this.finish();
+			break;
+		
+		}
 	}
 	
 	@Override

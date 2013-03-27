@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ResetPassword extends BaseActivity implements OnClickListener{
@@ -25,7 +26,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener{
 	Button btnResetPassword;
 	ConnectionAsync connectionAsync;
 	AlertDialog.Builder alertDialog;
-	
+	ImageButton imgBack;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -34,6 +35,8 @@ public class ResetPassword extends BaseActivity implements OnClickListener{
 		
 		edtEmail=(EditText)findViewById(R.id.edt_email_reset);
 		btnResetPassword=(Button)findViewById(R.id.btn_reset);
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
 		btnResetPassword.setOnClickListener(this);
 		
 	}
@@ -131,6 +134,9 @@ public class ResetPassword extends BaseActivity implements OnClickListener{
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
+		switch(arg0.getId())
+		{
+		case R.id.btn_reset:
 		 connectionAsync = new ConnectionAsync();
 			String[] paramsName = {"email"};
 			String[] paramsValue =  {edtEmail.getText().toString().trim()};
@@ -138,6 +144,11 @@ public class ResetPassword extends BaseActivity implements OnClickListener{
 			Object[] params = { GameEntity.getInstance().connectionHandler, this,
 					GameEntity.FORGOT_PASSWORD_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
+			break;
+		case R.id.btn_back:
+			this.finish();
+			break;
+		}
 	}
 
 }
