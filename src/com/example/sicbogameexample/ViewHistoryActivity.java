@@ -9,6 +9,7 @@ import java.util.List;
 import sicbo.components.HistoryComponent;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +31,18 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 	List<HistoryComponent> historyGame;
 	ArrayList<PatternType> winPattern;
 	ImageButton imgBack;
+	Resources res;
 	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.table_history);
+		res=getResources();
 		tblHistory = (TableLayout) findViewById(R.id.table_history);
 		historyGame = GameEntity.getInstance().userComponent.historyList;
 		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
 		size = historyGame.size();
 		initializeHeaderRow(tblHistory);
 		fillRow();
@@ -54,7 +58,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		return s;
 	}
 	private void fillRow() {
-		int textColor = Color.WHITE;
+		int textColor = res.getColor(R.color.history_color);
 		float textSize = 10f;
 		String[] betSpot;
 		int lenght;
