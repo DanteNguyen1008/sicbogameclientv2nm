@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class HelpActivity extends Activity implements OnClickListener{
    
 	Bundle b;
 	Button btnTutorial,btnAboutGame,btnAboutBitcoin;
+	ImageButton imgBack;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -19,7 +21,9 @@ public class HelpActivity extends Activity implements OnClickListener{
 		b=new Bundle();
 		btnTutorial=(Button)findViewById(R.id.btn_tutorial);
 		btnAboutGame=(Button)findViewById(R.id.btn_about_game);
-		btnAboutBitcoin=(Button)findViewById(R.id.btn_about_bitcoin);
+		btnAboutBitcoin=(Button)findViewById(R.id.btn_about_bitcoin);;
+		imgBack=(ImageButton)findViewById(R.id.btn_back);
+		imgBack.setOnClickListener(this);
 		btnTutorial.setOnClickListener(this);
 		btnAboutBitcoin.setOnClickListener(this);
 		btnAboutGame.setOnClickListener(this);
@@ -47,9 +51,10 @@ public class HelpActivity extends Activity implements OnClickListener{
 			c.putExtra("idButton", 1);
 			startActivity(c);
 			break;
+		case R.id.btn_back:
+			this.finish();
+			break;
 		}
-		
-		
 	}
 
 	

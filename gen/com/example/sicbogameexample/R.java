@@ -159,6 +159,7 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_connected_shadow_color=0x7f070002;
         public static final int com_facebook_usersettingsfragment_connected_text_color=0x7f070001;
         public static final int com_facebook_usersettingsfragment_not_connected_text_color=0x7f070003;
+        public static final int history_color=0x7f070005;
     }
     public static final class dimen {
         public static final int com_facebook_loginview_height=0x7f080007;
@@ -220,6 +221,7 @@ containing a value of this type.
         public static final int press_button=0x7f02002a;
         public static final int rounded_btn_sign_in=0x7f02002b;
         public static final int rounded_edit_password=0x7f02002c;
+        public static final int wood_bg=0x7f02002d;
     }
     public static final class id {
         public static final int ScrollView11=0x7f050036;
