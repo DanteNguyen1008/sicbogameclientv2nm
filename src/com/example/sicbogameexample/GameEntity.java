@@ -451,9 +451,8 @@ public class GameEntity {
 		sceneManager.activity.finish();
 		sceneManager = null;
 	}
-	
-	public void logout()
-	{
+
+	public void logout() {
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
@@ -463,15 +462,15 @@ public class GameEntity {
 		clearBet();
 		sceneManager.gameScene.unLoadScene();
 		sceneManager.activity.finish();
-		
+
 		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
 		sceneManager.activity.startActivity(intent);
 		sceneManager = null;
 	}
-	
-	private void clearLoginPreferrences()
-	{
-		SharedPreferences preferences = sceneManager.activity.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
+
+	private void clearLoginPreferrences() {
+		SharedPreferences preferences = sceneManager.activity
+				.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
 		preferences.edit().remove("username").commit();
 		preferences.edit().remove("password").commit();
 	}
@@ -520,6 +519,8 @@ public class GameEntity {
 				e.printStackTrace();
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
@@ -579,8 +580,7 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		int numOfItem = result.getInt("num_of_item");
-		if(numOfItem > 0)
-		{
+		if (numOfItem > 0) {
 			for (int i = 0; i < numOfItem; i++) {
 				userComponent.historyList.add(new HistoryComponent(result
 						.getJSONObject(i + "").getBoolean("iswin"), result
@@ -591,23 +591,20 @@ public class GameEntity {
 
 			}
 
-			
-			//betAmountRemain = GameEntity.REMAIN_FIXED;
-			clearBet();
-			if (!sceneManager.gameScene.backgroundMusic.music.isReleased())
-				sceneManager.gameScene.backgroundMusic.music.release();
-			//sceneManager.gameScene.unLoadScene();
-			sceneManager = null;
-			activity.finish();
+			/*
+			 * //betAmountRemain = GameEntity.REMAIN_FIXED; clearBet(); if
+			 * (!sceneManager.gameScene.backgroundMusic.music.isReleased())
+			 * sceneManager.gameScene.backgroundMusic.music.release();
+			 * //sceneManager.gameScene.unLoadScene(); sceneManager = null;
+			 * activity.finish();
+			 */
 			Intent intent = new Intent(activity, ViewHistoryActivity.class);
 			activity.startActivity(intent);
-			
-		}else
-		{
+
+		} else {
 			displayConfirmDialog("Your history is blank!", 170, 200);
 		}
-		
-		
+
 	}
 
 	public void onReceiveSignout() {

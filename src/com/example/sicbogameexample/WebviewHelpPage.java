@@ -1,5 +1,6 @@
 package com.example.sicbogameexample;
 
+import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -46,10 +47,10 @@ public class WebviewHelpPage extends Activity {
 	void loadWebView(int id) {
 		switch (id) {
 		case 0:
-			mWebView.loadUrl("http://10.0.1.7:8080/SicbokServer/tutorial");
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "tutorial");
 			break;
 		case 1:
-			mWebView.loadUrl("http://10.0.1.7:8080/SicbokServer/help");
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "help");
 			break;
 		case 2:
 			break;

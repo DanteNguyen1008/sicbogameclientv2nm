@@ -61,9 +61,10 @@ public class LoginScreen extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		GameEntity.getInstance().connectionHandler = new ConnectionHandler();
 		if (checkLoginPreferrenes("username")) {
-			loadLoginPreferrences("username");
 			isAutoLogin = true;
-			//clearLoginPreferrences();
+			loadLoginPreferrences("username");
+
+			// clearLoginPreferrences();
 		} else {
 			isAutoLogin = false;
 			uiHelper = new UiLifecycleHelper(this, callback);
@@ -71,7 +72,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 			setContentView(R.layout.activity_login_screen);
 			LoginButton authButton = (LoginButton) findViewById(R.id.facebookLoginButton);
 			authButton.setReadPermissions(Arrays.asList("email"));
-			
+
 			edt_username = (EditText) findViewById(R.id.edt_username);
 			edt_password = (EditText) findViewById(R.id.edt_password);
 			btn_sign_in = (Button) findViewById(R.id.btn_sign_in);
@@ -86,10 +87,15 @@ public class LoginScreen extends Activity implements OnClickListener {
 			btnFacebookLogin.setOnClickListener(this);
 			txtFbProfilePicture = (TextView) findViewById(R.id.txtFbName);
 		}
-		
+
 	}
-	
-	
+
+	private void clearLoginPreferrences() {
+		SharedPreferences preferences = getSharedPreferences(
+				"login-referrences", Context.MODE_PRIVATE);
+		preferences.edit().remove("username").commit();
+		preferences.edit().remove("password").commit();
+	}
 
 	private boolean checkLoginPreferrenes(String key) {
 		String[] result = new String[2];
@@ -232,6 +238,8 @@ public class LoginScreen extends Activity implements OnClickListener {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			return null;
 		}
@@ -245,8 +253,9 @@ public class LoginScreen extends Activity implements OnClickListener {
 				// Create user and move to game scene
 				boolean isSuccess = result.getBoolean("is_success");
 				if (isSuccess) {
-					if(!result.getBoolean("is_facebook_account"))
-					insertLoginPreferrences((String) result.get("username"), password);
+					if (!result.getBoolean("is_facebook_account"))
+						insertLoginPreferrences(
+								(String) result.get("username"), password);
 					Intent intent = new Intent(activity,
 							SicBoGameActivity.class);
 
@@ -276,8 +285,15 @@ public class LoginScreen extends Activity implements OnClickListener {
 				}
 
 				else {
+
 					Toast.makeText(activity, "Login fail, please try again",
 							Toast.LENGTH_LONG).show();
+					if (isAutoLogin) {
+						clearLoginPreferrences();
+						finish();
+						startActivity(getIntent());
+					}
+
 				}
 
 			} catch (JSONException e) {
