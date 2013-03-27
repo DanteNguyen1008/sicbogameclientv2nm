@@ -162,7 +162,7 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		
 		}
 	}
-	
+	/*
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -178,5 +178,5 @@ public class ViewHistoryActivity extends Activity implements OnClickListener {
 		this.startActivity(intent); 
 		this.finish();
 	}
-
+	*/
 }

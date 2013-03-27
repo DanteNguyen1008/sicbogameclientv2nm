@@ -127,6 +127,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}catch (Exception e)
+			{
+				e.printStackTrace();
 			}
 			return null;
 		}
