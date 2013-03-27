@@ -12,6 +12,7 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.params.ConnManagerPNames;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -86,7 +87,7 @@ public class ConnectionHandler {
 
 	public void requestToServer(String taskName, String[] paramsName,
 			Object[] paramsValue) throws ClientProtocolException, IOException,
-			JSONException, Exception {
+			JSONException,ConnectTimeoutException, Exception {
 
 		if (!taskName.equals("")) {
 			List<NameValuePair> nameValuePair;

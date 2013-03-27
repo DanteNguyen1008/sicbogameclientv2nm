@@ -36,6 +36,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class GameEntity {
 	// Implement single ton
@@ -517,6 +518,21 @@ public class GameEntity {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				activity.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						// displayConfirmDialog("Connection time out, data corrupted",
+						// 170, 200);
+						Toast.makeText(activity,
+								"Connection time out, data corrupted!",
+								Toast.LENGTH_LONG).show();
+						sceneManager.gameScene.unLoadScene();
+						sceneManager = null;
+						activity.finish();
+					}
+				});
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

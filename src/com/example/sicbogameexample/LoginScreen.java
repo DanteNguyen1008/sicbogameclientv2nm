@@ -3,8 +3,10 @@ package com.example.sicbogameexample;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -215,6 +217,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 		String fb_username;
 		String fb_email;
 		String fb_fullname;
+		boolean isConnected = false;
 
 		@Override
 		protected Integer doInBackground(Object... params) {
@@ -229,12 +232,24 @@ public class LoginScreen extends Activity implements OnClickListener {
 					fb_username = ((String[]) params[5])[0];
 					fb_fullname = ((String[]) params[5])[1];
 				}
+				isConnected = true;
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				activity.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Toast.makeText(activity,
+								"Connection time out, data corrupted!",
+								Toast.LENGTH_LONG).show();
+						finish();
+					}
+				});
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -246,59 +261,66 @@ public class LoginScreen extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(Integer value) {
-			try {
-				// dataList = connectionHandler.parseData(responseName);
-				JSONObject result = connectionHandler.getResult();
+			if (isConnected) {
+				try {
+					// dataList = connectionHandler.parseData(responseName);
+					JSONObject result = connectionHandler.getResult();
 
-				// Create user and move to game scene
-				boolean isSuccess = result.getBoolean("is_success");
-				if (isSuccess) {
-					if (!result.getBoolean("is_facebook_account"))
-						insertLoginPreferrences(
-								(String) result.get("username"), password);
-					Intent intent = new Intent(activity,
-							SicBoGameActivity.class);
-
-					GameEntity.getInstance().userComponent = new UserComponent(
-							(String) result.get("username"),
-							(String) result.get("email"),
-							result.getDouble("balance"));
-					activity.startActivity(intent);
-					//activity.finish();
-				} else if (!isSuccess
-						&& result.has("is_allow_facebook_register")) {
-					if (result.getBoolean("is_allow_facebook_register")) {
-						// New facebook account => move to register screen
+					// Create user and move to game scene
+					boolean isSuccess = result.getBoolean("is_success");
+					if (isSuccess) {
+						if (!result.getBoolean("is_facebook_account"))
+							insertLoginPreferrences(
+									(String) result.get("username"), password);
 						Intent intent = new Intent(activity,
-								RegisterScreen.class);
-						// put extra facebook information
-						intent.putExtra("email", result.getString("email"));
-						intent.putExtra("username", fb_username);
-						intent.putExtra("fullname", fb_fullname);
+								SicBoGameActivity.class);
+
+						GameEntity.getInstance().userComponent = new UserComponent(
+								(String) result.get("username"),
+								(String) result.get("email"),
+								result.getDouble("balance"));
 						activity.startActivity(intent);
 						activity.finish();
-					} else {
-						Toast.makeText(activity,
-								"Invalid facebook account, please try again",
-								Toast.LENGTH_LONG).show();
+					} else if (!isSuccess
+							&& result.has("is_allow_facebook_register")) {
+						if (result.getBoolean("is_allow_facebook_register")) {
+							// New facebook account => move to register screen
+							Intent intent = new Intent(activity,
+									RegisterScreen.class);
+							// put extra facebook information
+							intent.putExtra("email", result.getString("email"));
+							intent.putExtra("username", fb_username);
+							intent.putExtra("fullname", fb_fullname);
+							activity.startActivity(intent);
+							activity.finish();
+						} else {
+							Toast.makeText(
+									activity,
+									"Invalid facebook account, please try again",
+									Toast.LENGTH_LONG).show();
+						}
 					}
-				}
 
 				else {
 
-					Toast.makeText(activity, "Login fail, please try again",
-							Toast.LENGTH_LONG).show();
-					if (isAutoLogin) {
-						clearLoginPreferrences();
-						finish();
-						startActivity(getIntent());
-					}
+						Toast.makeText(activity,
+								"Login fail, please try again",
+								Toast.LENGTH_LONG).show();
+						if (isAutoLogin) {
+							clearLoginPreferrences();
+							finish();
+							startActivity(getIntent());
+						}
 
 				}
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				} catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 			}
 		}
 	}
