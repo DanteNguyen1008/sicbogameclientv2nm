@@ -25,6 +25,7 @@ public class WebviewHelpPage extends Activity {
 		}
 		mWebView = new WebView(this);
 		loadWebView(id);
+		mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class BaseActivity extends Activity {
+public abstract class BaseActivity extends Activity {
 
 	AlertDialog.Builder alertDialog;
 	ProgressDialog progressDialog;
@@ -20,15 +20,10 @@ public class BaseActivity extends Activity {
 		getClassName = this.getClass().getSimpleName();
 	}
 
-	void createProgressDialog() {
+	protected void createProgressDialog() {
 		progressDialog = new ProgressDialog(this);
 		String s = null;
-		/*
-		 * progressDialog.setIndeterminate(true);
-		 * progressDialog.setIndeterminateDrawable
-		 * (getResources().getDrawable(R.anim.progress_dialog_anim));
-		 * progressDialog.setCancelable(false);
-		 */
+		
 		if (getClassName.equals("RegisterScreen")) {
 			s = "Processing data! Please wait...!";
 		} else if (getClassName.equals("ChangePassword")) {
@@ -40,11 +35,11 @@ public class BaseActivity extends Activity {
 		progressDialog.show();
 	}
 
-	void createDialog() {
+	protected void createDialog() {
 		alertDialog = new AlertDialog.Builder(this);
 		if (getClassName.equals("ChangePassword")) {
-			alertDialog.setTitle("new password sent");
-			alertDialog.setMessage("Please check your email");
+			alertDialog.setTitle("Change Password");
+			alertDialog.setMessage("New password have changed");
 		} else {
 			alertDialog.setTitle("Active account");
 			alertDialog.setMessage("Please check your email to active");
@@ -52,22 +47,22 @@ public class BaseActivity extends Activity {
 		alertDialog.setPositiveButton("OK",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-
-						/*
-						 * Intent intent = new Intent(Intent.ACTION_MAIN);
-						 * intent.addCategory(Intent.CATEGORY_HOME);
-						 * intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						 */
-						Intent intent = new Intent(BaseActivity.this,
+                         
+						setHintEditext();
+					
+						/*Intent intent = new Intent(BaseActivity.this,
 								LoginScreen.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 						startActivity(intent);
-						finish();
+						finish();*/
 					}
 				});
 
 		alertDialog.show();
 	}
-
+protected void setHintEditext()
+{
+	
+}
 }

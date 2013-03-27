@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +33,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	String fb_username = "";
 	String fb_fullname = "";
 	boolean is_facebook_account = false;
+	boolean isValidPassword=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,29 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		connectionHandler = new ConnectionHandler();
 		edtUsername = (EditText) findViewById(R.id.edt_username);
 		edtPassword = (EditText) findViewById(R.id.edt_password);
+		edtPassword.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View arg0, boolean arg1) {
+				// TODO Auto-generated method stub
+				if(arg1==true)
+				{
+					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+				}
+				else
+				{
+					if(edtPassword.getText().toString().length()<6)
+	            	{
+	            		
+	            		isValidPassword=false;
+	            	}
+	            	else
+	            	{
+	            		isValidPassword=true;
+	            	}
+				}
+			}
+		});
 		edtConfirmPassword = (EditText) findViewById(R.id.edt_confirm_password);
 		edtEmail = (EditText) findViewById(R.id.edt_email);
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
@@ -79,6 +104,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.btn_register:
+			
 			ConnectionAsync connectionAsync = new ConnectionAsync();
 			String[] paramsName = { "username", "password", "email",
 					"fullname", "is_facebook_account" };
@@ -150,7 +176,8 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				// Create user and move to game scene
-
+                if(result!=null)
+                {
 				if (result.getBoolean("is_success")) {
 					GameEntity.getInstance().userComponent = new UserComponent(
 							edtUsername.getText().toString(), edtEmail
@@ -171,12 +198,28 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 							Toast.LENGTH_LONG).show();
 					progressDialog.dismiss();
 				}
-
+                }
+                else
+                {
+                	Toast.makeText(getApplicationContext(),"Error network!Please try again", Toast.LENGTH_LONG).show();
+                	progressDialog.dismiss();
+                }
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	protected void setHintEditext() {
+		// TODO Auto-generated method stub
+		super.setHintEditext();
+		edtConfirmPassword.setText("");
+		edtEmail.setText("");
+		edtFullName.setText("");
+		edtUsername.setText("");
+		edtPassword.setText("");
 	}
 
 }
