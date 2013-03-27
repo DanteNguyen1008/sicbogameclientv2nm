@@ -51,7 +51,6 @@ public class WebviewHelpPage extends Activity {
 		case 0:
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "tutorial");
-			
 			break;
 		case 1:
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "help");

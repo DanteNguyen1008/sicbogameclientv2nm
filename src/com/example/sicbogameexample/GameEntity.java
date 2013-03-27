@@ -31,6 +31,7 @@ import sicbo.components.TimoutCheckAsyns;
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -93,6 +94,8 @@ public class GameEntity {
 	public UserComponent userComponent;
 	public double betAmountRemain = REMAIN_FIXED;
 	public boolean isMusicEnable = true;
+	public boolean isMenuDisplay = false;
+	public boolean isBackPress = false;
 
 	// Enum
 	public enum GameAction {
@@ -250,39 +253,67 @@ public class GameEntity {
 		}
 	}
 
+	private double checkBalanceRebet() {
+		double amoutUpdate = 0;
+		int patternListSize = sceneManager.gameScene.patternList.size();
+		for (int j = 0; j < patternListSize; j++) {
+			int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
+					.size();
+			for (int i = 0; i < coinListSize; i++) {
+				amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
+						.get(i).getCoinID();
+			}
+		}
+		/*
+		 * if (userComponent.balance.balance - currentCoint < 0) {
+		 * //displayConfirmDialog("You do not enough money", 170, 200);
+		 * 
+		 * }else {
+		 * 
+		 * }
+		 */
+		return amoutUpdate;
+	}
+
 	/**
 	 * This method called when user click "rebet" button Called from Button
 	 * component class - click action
 	 */
 	public void rebet() {
 		if (gameAction.equals(GameEntity.GameAction.RESET)) {
-			double amoutUpdate = 0;
-			int patternListSize = sceneManager.gameScene.patternList.size();
-			for (int j = 0; j < patternListSize; j++) {
-				int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
-						.size();
-				for (int i = 0; i < coinListSize; i++) {
-					sceneManager.gameScene.patternList.get(j).coinList.get(i)
-							.reBuildCoin();
-					amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
-							.get(i).getCoinID();
-					sceneManager.gameScene.getScene().registerTouchArea(
-							sceneManager.gameScene.patternList.get(j).coinList
-									.get(i).getSprite());
+			double amoutUpdate = checkBalanceRebet();
+			if (userComponent.balance.balance - amoutUpdate < 0) {
+				displayConfirmDialog("You do not enough money", 170, 200);
+			} else {
+				int patternListSize = sceneManager.gameScene.patternList.size();
+				for (int j = 0; j < patternListSize; j++) {
+					int coinListSize = sceneManager.gameScene.patternList
+							.get(j).coinList.size();
+					for (int i = 0; i < coinListSize; i++) {
+						sceneManager.gameScene.patternList.get(j).coinList.get(
+								i).reBuildCoin();
+
+						sceneManager.gameScene.getScene()
+								.registerTouchArea(
+										sceneManager.gameScene.patternList
+												.get(j).coinList.get(i)
+												.getSprite());
+					}
 				}
-			}
-			int textListSize = sceneManager.gameScene.textList.size();
-			for (int i = 0; i < textListSize; i++) {
-				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
-					sceneManager.gameScene.textList.get(i).updateBalance(
-							UserComponent.UserAction.DECREASE_BALANCE,
-							amoutUpdate);
-				} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
-					sceneManager.gameScene.textList.get(i).decreaseBetRemain(
-							amoutUpdate);
+				int textListSize = sceneManager.gameScene.textList.size();
+				for (int i = 0; i < textListSize; i++) {
+					if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+						sceneManager.gameScene.textList.get(i).updateBalance(
+								UserComponent.UserAction.DECREASE_BALANCE,
+								amoutUpdate);
+					} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+						sceneManager.gameScene.textList.get(i)
+								.decreaseBetRemain(amoutUpdate);
+					}
 				}
+				gameAction = GameEntity.GameAction.REBET;
 			}
-			gameAction = GameEntity.GameAction.REBET;
+
 		}
 	}
 
@@ -467,13 +498,13 @@ public class GameEntity {
 
 		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
 		sceneManager.activity.startActivity(intent);
+		sceneManager.activity.finish();
 		sceneManager = null;
 	}
 
 	private void clearLoginPreferrences() {
 		SharedPreferences preferences = sceneManager.activity
 				.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
-		String s=preferences.getString("password", "123");
 		preferences.edit().remove("username").commit();
 		preferences.edit().remove("password").commit();
 	}
@@ -497,13 +528,21 @@ public class GameEntity {
 	 * @author Admin this class is the portal to sent and receive request
 	 *         response with server
 	 */
+	private ProgressDialog pd = null;
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
 		BaseGameActivity activity;
 
 		@Override
 		protected void onPreExecute() {
-
+			sceneManager.gameScene.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					pd = ProgressDialog.show(sceneManager.gameScene.getActivity(), "Loading data..",
+							"Please wait....", true, false);
+				}
+			});
 		}
 
 		@Override
@@ -563,7 +602,14 @@ public class GameEntity {
 				} else if (connectionHandler.getTaskID().equals("res_signout")) {
 					onReceiveSignout();
 				}
-
+				
+				sceneManager.gameScene.getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						pd.dismiss();
+					}
+				});
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

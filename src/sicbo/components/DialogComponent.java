@@ -144,6 +144,7 @@ public class DialogComponent extends AbItemComponent {
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
 					// disableDialog(ConfigClass.sceneManager.gameScene);
+					GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(false);
 					GameEntity.getInstance().exitGame();
 					break;
 				}
@@ -169,6 +170,7 @@ public class DialogComponent extends AbItemComponent {
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
 					disableDialog(GameEntity.getInstance().sceneManager.gameScene);
+					GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(false);
 					break;
 				}
 				return true;

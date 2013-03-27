@@ -581,6 +581,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 	public void displayMenu() {
 		disableAllTouch();
+		GameEntity.getInstance().isMenuDisplay = true;
 		GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		menuScene.displayMenu();
 		if (GameEntity.getInstance().isResultDisplay) {
@@ -592,8 +593,20 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 	public void hideMenu() {
 		enableAllTouch();
+		GameEntity.getInstance().isMenuDisplay = false;
 		GameEntity.getInstance().mSensorListener.registerShake();
 		menuScene.hideMenu();
 	}
 
+	public void onBackButtonPress(boolean isDisplay) {
+		if (isDisplay) {
+			GameEntity.getInstance().displayYesNoDialog("Do you want to exit?",
+					200, 300);
+			GameEntity.getInstance().mSensorListener.stopRegisterShake();
+			GameEntity.getInstance().isBackPress = true;
+		} else {
+			GameEntity.getInstance().mSensorListener.registerShake();
+			GameEntity.getInstance().isBackPress = false;
+		}
+	}
 }
