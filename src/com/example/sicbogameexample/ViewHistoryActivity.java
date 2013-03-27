@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import sicbo.components.HistoryComponent;
+import sicbo.components.UserComponent;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;

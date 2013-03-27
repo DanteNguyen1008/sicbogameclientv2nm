@@ -124,11 +124,21 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				activity.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Toast.makeText(activity,
+								"Connection time out, data corrupted!",
+								Toast.LENGTH_LONG).show();
+						finish();
+					}
+				});
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}catch (Exception e)
-			{
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return null;
