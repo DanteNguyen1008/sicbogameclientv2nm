@@ -34,6 +34,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -462,7 +463,7 @@ public class GameEntity {
 		clearLoginPreferrences();
 		clearBet();
 		sceneManager.gameScene.unLoadScene();
-		sceneManager.activity.finish();
+		//sceneManager.activity.finish();
 
 		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
 		sceneManager.activity.startActivity(intent);
@@ -472,6 +473,7 @@ public class GameEntity {
 	private void clearLoginPreferrences() {
 		SharedPreferences preferences = sceneManager.activity
 				.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
+		String s=preferences.getString("password", "123");
 		preferences.edit().remove("username").commit();
 		preferences.edit().remove("password").commit();
 	}

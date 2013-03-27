@@ -45,7 +45,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 
 	}
 
-	void createDialog() {
+	/*void createDialog() {
 		alertDialog = new AlertDialog.Builder(this);
 		alertDialog.setTitle("new password sent");
 		alertDialog.setMessage("Please check your email");
@@ -69,7 +69,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 					}
 				});
 		alertDialog.show();
-	}
+	}*/
 
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
@@ -128,8 +128,10 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 					if (result.getBoolean("is_success")) {
 
 						createDialog();
+						progressDialog.dismiss();
 
 					} else {
+						progressDialog.dismiss();
 						Toast.makeText(activity, result.getString("message"),
 								Toast.LENGTH_LONG).show();
 					}
@@ -137,6 +139,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 					Toast.makeText(ResetPassword.this,
 							"Error network,try again", Toast.LENGTH_LONG)
 							.show();
+				           progressDialog.dismiss();
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
@@ -166,7 +169,13 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 			this.finish();
 			break;
 		}
+	}
 
+	@Override
+	protected void setHintEditext() {
+		// TODO Auto-generated method stub
+		super.setHintEditext();
+		edtEmail.setText("");
 	}
 
 }

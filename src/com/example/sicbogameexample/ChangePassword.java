@@ -8,11 +8,12 @@ import org.json.JSONObject;
 
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,6 +25,7 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 	Button btnOk;
 	ImageButton imgBack;
 	ConnectionAsync connectionAsync;
+	boolean validtext=true;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -31,6 +33,26 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		setContentView(R.layout.activity_change_password);
 		edtCurrentPassword=(EditText)findViewById(R.id.edt_current_password);
 		edtNewPassword=(EditText)findViewById(R.id.edt_new_password);
+		edtNewPassword.setOnFocusChangeListener(new OnFocusChangeListener() {          
+
+	        public void onFocusChange(View v, boolean hasFocus) {
+	            if(!hasFocus)
+	            {
+	            	if(edtNewPassword.getText().toString().length()<6)
+	            	{
+	            		Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+	            	    validtext=false;
+	            	}
+	            	else
+	            	{
+	            		validtext=true;
+	            	}
+	            	
+	            }
+
+ 
+	        }
+	    });
 		edtConfirmPassword=(EditText)findViewById(R.id.edt_confirm_password);
 		btnOk=(Button)findViewById(R.id.btn_ok);
 		imgBack=(ImageButton)findViewById(R.id.btn_back);
@@ -45,10 +67,14 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		switch(v.getId())
 		{
 		case R.id.btn_ok:
+			
 			if(edtConfirmPassword.getText().toString().equals(edtNewPassword.getText().toString())!=true)
-				Toast.makeText(this, "Please type again", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Confirm password doesn't match", Toast.LENGTH_LONG).show();
 			else
 			{
+			 missTyping();
+			 if(validtext==true)
+			 {
 			connectionAsync = new ConnectionAsync();
 			String[] paramsName = { "old_pass", "new_pass" };
 			String[] paramsValue = { edtCurrentPassword.getText().toString().trim(),
@@ -57,6 +83,8 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 					GameEntity.CHANGE_PASSWORD_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 			}
+			}
+			
 			break;
 		case R.id.btn_back:
 			this.finish();
@@ -103,6 +131,7 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 			try {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
+				Log.d("result from json",result.toString());
                  
 				// Create user and move to game scene
 				if(result!=null)
@@ -130,5 +159,38 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 			}
 		}
 	}
+	void missTyping()
+	{   
+		
+		
+		if(edtCurrentPassword.getText().toString()==""
+				||edtConfirmPassword.getText().toString()==""
+				||edtNewPassword.getText().toString()=="")
+		{
+			validtext= false;
+		    Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
+		
+		}
+		
+		
+		
+	}
+	void checkPasswordLenght()
+	{
+		int lenght=edtNewPassword.getText().toString().length();
+		if(lenght<6)
+		{
+			
+		}
+	}
+	@Override
+	protected void setHintEditext() {
+		// TODO Auto-generated method stub
+		super.setHintEditext();
+		edtCurrentPassword.setText("");
+		edtConfirmPassword.setText("");
+		edtNewPassword.setText("");
+	}
+	
 
 }
