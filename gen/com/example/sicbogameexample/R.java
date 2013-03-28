@@ -224,7 +224,7 @@ containing a value of this type.
         public static final int wood_bg=0x7f02002d;
     }
     public static final class id {
-        public static final int ScrollView11=0x7f050037;
+        public static final int ScrollView11=0x7f050036;
         public static final int btnBack=0x7f05001c;
         public static final int btnLoginFacebook=0x7f050013;
         public static final int btn_about_bitcoin=0x7f05000c;
@@ -232,7 +232,6 @@ containing a value of this type.
         public static final int btn_back=0x7f050005;
         public static final int btn_bitcoin=0x7f050016;
         public static final int btn_change_password=0x7f050015;
-        public static final int btn_load_history=0x7f050036;
         public static final int btn_ok=0x7f050009;
         public static final int btn_register=0x7f050019;
         public static final int btn_reset=0x7f05001b;
@@ -268,14 +267,15 @@ containing a value of this type.
         public static final int facebookLoginButton=0x7f050014;
         public static final int large=0x7f050002;
         public static final int llHistoryList=0x7f05001d;
+        public static final int ll_country=0x7f050035;
         public static final int menu_help=0x7f050034;
         public static final int menu_profile=0x7f050033;
         public static final int normal=0x7f050001;
         public static final int picker_subtitle=0x7f05002f;
         public static final int rela1=0x7f050004;
-        public static final int rela_history=0x7f050035;
         public static final int search_box=0x7f05002e;
         public static final int small=0x7f050000;
+        public static final int table_history=0x7f050037;
         public static final int tbl_history=0x7f050038;
         public static final int txtFbName=0x7f050012;
         public static final int txt_active_account=0x7f050003;
@@ -311,7 +311,8 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment=0x7f030018;
         public static final int menu_option=0x7f030019;
         public static final int table_history=0x7f03001a;
-        public static final int webview_help=0x7f03001b;
+        public static final int view_history=0x7f03001b;
+        public static final int webview_help=0x7f03001c;
     }
     public static final class string {
         public static final int app_id=0x7f060021;

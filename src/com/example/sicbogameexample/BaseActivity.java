@@ -30,9 +30,6 @@ public abstract class BaseActivity extends Activity {
 			s = "Changing password! Please wait...!";
 		} else if (getClassName.equals("ResetPassword")) {
 			s = "Reset password! Please wait...!";
-		} else if(getClassName.equals("ViewHistoryActivity"))
-		{
-			s = "Loading data! Please wait...!";
 		}
 		progressDialog.setMessage(s);
 		progressDialog.show();

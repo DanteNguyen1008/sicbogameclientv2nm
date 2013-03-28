@@ -70,7 +70,6 @@ public class GameEntity {
 	public final static String STARTGAME_TASK = "play_bet";
 
 	public final static String VIEW_HISTORY = "view_bet_history";
-	public final static String VIEW_HISTORY_NEXT="view_bet_history_next";
 	public static final double REMAIN_FIXED = 100;
 	public final static int miniCoiWidth = 31;
 	public final static int miniCoinHeight = 31;
@@ -599,7 +598,6 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		int numOfItem = result.getInt("num_of_item");
-		String s=result.toString();
 		userComponent.historyList=new ArrayList<HistoryComponent>();
 		if (numOfItem > 0) {
 			for (int i = 0; i < numOfItem; i++) {
@@ -631,7 +629,7 @@ public class GameEntity {
 	public void onReceiveSignout() {
 
 	}
-    
+
 	// Dialog display
 	// Error display
 	public void displayYesNoDialog(String errorContent, int posX, int posY) {

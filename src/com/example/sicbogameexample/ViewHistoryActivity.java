@@ -1,74 +1,52 @@
 package com.example.sicbogameexample;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import sicbo.components.HistoryComponent;
-import sicbo_networks.ConnectionHandler;
-import android.app.ActionBar.LayoutParams;
+import sicbo.components.UserComponent;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.sicbogameexample.GameEntity.PatternType;
-public class ViewHistoryActivity extends BaseActivity implements OnClickListener {
+public class ViewHistoryActivity extends Activity implements OnClickListener {
 
 	TableLayout tblHistory;
-	RelativeLayout rela;
 	boolean isSpace = false;
-	int size,nextIndexHistory,backIndexHistory,indexLastDate,countLoad,countBetDate;
+	int size;
 	List<HistoryComponent> historyGame;
 	ArrayList<PatternType> winPattern;
 	ImageButton imgBack;
-	Button btnLoadHistory;
 	Resources res;
-	ConnectionAsync connectionAsync;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.table_history);
 		res=getResources();
-		tblHistory = (TableLayout) findViewById(R.id.tbl_history);
-		rela=(RelativeLayout)findViewById(R.id.rela_history);
+		tblHistory = (TableLayout) findViewById(R.id.table_history);
 		historyGame = GameEntity.getInstance().userComponent.historyList;
-		backIndexHistory=historyGame.size();
-		nextIndexHistory=backIndexHistory;
 		imgBack=(ImageButton)findViewById(R.id.btn_back);
-		btnLoadHistory=(Button)findViewById(R.id.btn_load_history);
-		
-		btnLoadHistory.setOnClickListener(this);
-		//createTapLoad();
 		imgBack.setOnClickListener(this);
 		size = historyGame.size();
-		//createTapLoad();
 		initializeHeaderRow(tblHistory);
 		fillRow();
-		indexLastDate=size;
-		countLoad=1;
-		countBetDate=size;
 	}
 
 	String convertDice(String textDice) {
@@ -87,7 +65,7 @@ public class ViewHistoryActivity extends BaseActivity implements OnClickListener
 		int lenght;
 		String result;
 		TableRow headerRow;
-		for (int i = indexLastDate; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			if (historyGame.get(i).isWin)
 				result = "Win";
 			else
@@ -105,7 +83,7 @@ public class ViewHistoryActivity extends BaseActivity implements OnClickListener
 					textSize);
 			addTextToRowWithValues(headerRow,
 					convertDice(historyGame.get(i).dices), Color.RED, textSize);
-			winPattern=GameEntity.getInstance().currentGame.convertStringtoArrayList(historyGame.get(indexLastDate).betSpot);
+			winPattern=GameEntity.getInstance().currentGame.convertStringtoArrayList(historyGame.get(i).betSpot);
 			addTextToRowWithValues(headerRow,winPattern.get(0).toString(), textColor, textSize);
 			tblHistory.addView(headerRow);
 			
@@ -186,122 +164,24 @@ public class ViewHistoryActivity extends BaseActivity implements OnClickListener
 		case R.id.btn_back:
 			this.finish();
 			break;
-		case R.id.btn_load_history:
-		{   
-			Log.d("countBetDate",String.valueOf(countBetDate));
-			if(countBetDate>19)
-			{
-			connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "last_date" };
-			String[] paramsValue = { historyGame.get(size-1).betDate};
-			Object[] params = { GameEntity.getInstance().connectionHandler, this,
-					GameEntity.VIEW_HISTORY, paramsName, paramsValue };
-			connectionAsync.execute(params);
-			break;
-			}
-			else
-			{
-				Toast.makeText(getApplicationContext(),"No more data to load", Toast.LENGTH_LONG).show();
-			}
-		
-		}
-		
 		
 		}
 	}
-	void createTapLoad()
-    {
-   	 
-   	
-   	 RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.MATCH_PARENT);
-   	 params.addRule(RelativeLayout.BELOW,R.id.btn_load_history);
-   	 rela.setLayoutParams(params);
-   	 
-   	 
-    }
-	public void onReceiveViewHistory(JSONObject result, Activity activity)
-			throws JSONException {
-		int numOfItem = result.getInt("num_of_item");
-		Log.d("numOfItem",String.valueOf(numOfItem));
-		countBetDate=numOfItem;
-		
-		if (numOfItem > 0) {
-			for (int i = 0; i < numOfItem ; i++) {
-				historyGame.add(new HistoryComponent(result
-						.getJSONObject(i + "").getBoolean("iswin"), result
-						.getJSONObject(i + "").getString("betdate"), result
-						.getJSONObject(i + "").getDouble("balance"), result
-						.getJSONObject(i + "").getString("dices"), result
-						.getJSONObject(i + "").getString("bet_spots")));
+	/*
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			onBackPressed();
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
-			}
-		}
-		size =historyGame.size();
-	
+	@Override
+	public void onBackPressed() {
+		Intent intent = new Intent(this,
+				SicBoGameActivity.class);
+		this.startActivity(intent); 
+		this.finish();
 	}
-	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
-		ConnectionHandler connectionHandler;
-		Activity activity;
-        @Override
-        protected void onPreExecute() {
-        	// TODO Auto-generated method stub
-        	createProgressDialog();
-        	super.onPreExecute();
-        	
-        }
-		@Override
-		protected Integer doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			connectionHandler = (ConnectionHandler) params[0];
-			activity = (Activity) params[1];
-			try {
-				connectionHandler.requestToServer((String) params[2],
-						(String[]) params[3], (Object[]) params[4]);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-			return null;
-		}
-     
-		@Override
-		protected void onPostExecute(Integer value) {
-			try {
-				// dataList = connectionHandler.parseData(responseName);
-				JSONObject result = connectionHandler.getResult();
-                 
-				// Create user and move to game scene
-				if(result!=null)
-				{
-					onReceiveViewHistory(result, activity);
-					
-				     indexLastDate=20*countLoad;
-					
-					progressDialog.dismiss();
-					
-					fillRow();
-					countLoad++;
-				} 
-				
-				else
-				{
-					
-					progressDialog.dismiss();
-				}
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+	*/
 }
