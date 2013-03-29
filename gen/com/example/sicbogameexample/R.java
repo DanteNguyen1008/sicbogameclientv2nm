@@ -221,7 +221,8 @@ containing a value of this type.
         public static final int press_button=0x7f02002a;
         public static final int rounded_btn_sign_in=0x7f02002b;
         public static final int rounded_edit_password=0x7f02002c;
-        public static final int wood_bg=0x7f02002d;
+        public static final int sicbologon=0x7f02002d;
+        public static final int wood_bg=0x7f02002e;
     }
     public static final class id {
         public static final int ScrollView11=0x7f050039;
