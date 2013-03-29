@@ -470,11 +470,14 @@ public class GameEntity {
 		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
+	private boolean isLogout = false;
+
 	/**
 	 * This method will be call when user click exit button Called from Button
 	 * Action click - button component class
 	 */
 	public void exitGame() {
+		isLogout = false;
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
@@ -482,11 +485,11 @@ public class GameEntity {
 		connectionAsync.execute(params);
 		betAmountRemain = GameEntity.REMAIN_FIXED;
 		sceneManager.gameScene.unLoadScene();
-		sceneManager.activity.finish();
-		sceneManager = null;
+
 	}
 
 	public void logout() {
+		isLogout = true;
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
@@ -495,12 +498,7 @@ public class GameEntity {
 		clearLoginPreferrences();
 		clearBet();
 		sceneManager.gameScene.unLoadScene();
-		//sceneManager.activity.finish();
 
-		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
-		sceneManager.activity.startActivity(intent);
-		sceneManager.activity.finish();
-		sceneManager = null;
 	}
 
 	private void clearLoginPreferrences() {
@@ -540,8 +538,9 @@ public class GameEntity {
 				@Override
 				public void run() {
 					// TODO Auto-generated method stub
-					pd = ProgressDialog.show(sceneManager.gameScene.getActivity(), "Loading data..",
-							"Please wait....", true, false);
+					pd = ProgressDialog.show(
+							sceneManager.gameScene.getActivity(),
+							"Loading data..", "Please wait....", true, false);
 				}
 			});
 		}
@@ -587,6 +586,15 @@ public class GameEntity {
 		@Override
 		protected void onPostExecute(Integer value) {
 			try {
+				sceneManager.gameScene.getActivity().runOnUiThread(
+						new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								pd.dismiss();
+							}
+						});
+
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				String s = connectionHandler.getTaskID();
@@ -597,20 +605,15 @@ public class GameEntity {
 					} else {
 						Log.d("Bet error", "Something wrong???");
 					}
+
 				} else if (connectionHandler.getTaskID().equals(
 						"res_view_history")) {
 					onReceiveViewHistory(result, activity);
-				} else if (connectionHandler.getTaskID().equals("res_signout")) {
+
+				} else if (connectionHandler.getTaskID().equals("res_sign_out")) {
 					onReceiveSignout();
 				}
-				
-				sceneManager.gameScene.getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						pd.dismiss();
-					}
-				});
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -645,8 +648,7 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		int numOfItem = result.getInt("num_of_item");
-		String s=result.toString();
-		userComponent.historyList=new ArrayList<HistoryComponent>();
+		userComponent.historyList = new ArrayList<HistoryComponent>();
 		if (numOfItem > 0) {
 			for (int i = 0; i < numOfItem; i++) {
 				userComponent.historyList.add(new HistoryComponent(result
@@ -675,9 +677,16 @@ public class GameEntity {
 	}
 
 	public void onReceiveSignout() {
-
+		if (!isLogout)
+			sceneManager.activity.finish();
+		else {
+			Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
+			sceneManager.activity.startActivity(intent);
+			sceneManager.activity.finish();
+			sceneManager = null;
+		}
 	}
-    
+
 	// Dialog display
 	// Error display
 	public void displayYesNoDialog(String errorContent, int posX, int posY) {

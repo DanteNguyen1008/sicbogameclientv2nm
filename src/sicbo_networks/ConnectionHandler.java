@@ -60,15 +60,15 @@ public class ConnectionHandler {
 	HttpContext httpContext;
 	
 	// the timeout until a connection is established
-	private static final int CONNECTION_TIMEOUT = 5000; /* 5 seconds */
+	private static final int CONNECTION_TIMEOUT = 10000; /* 5 seconds */
 
 	// the timeout for waiting for data
-	private static final int SOCKET_TIMEOUT = 5000; /* 5 seconds */
+	private static final int SOCKET_TIMEOUT = 10000; /* 5 seconds */
 
 	// ----------- this is the one I am talking about:
 	// the timeout until a ManagedClientConnection is got 
 	// from ClientConnectionRequest
-	private static final long MCC_TIMEOUT = 5000; /* 5 seconds */
+	private static final long MCC_TIMEOUT = 10000; /* 5 seconds */
 	
 	private static void setTimeouts(HttpParams params) {
 	    params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 
