@@ -64,6 +64,7 @@ public class ViewHistoryActivity extends BaseActivity implements OnClickListener
 		imgBack.setOnClickListener(this);
 		size = historyGame.size();
 		//createTapLoad();
+		indexLastDate=0;
 		initializeHeaderRow(tblHistory);
 		fillRow();
 		indexLastDate=size;
@@ -105,7 +106,7 @@ public class ViewHistoryActivity extends BaseActivity implements OnClickListener
 					textSize);
 			addTextToRowWithValues(headerRow,
 					convertDice(historyGame.get(i).dices), Color.RED, textSize);
-			winPattern=GameEntity.getInstance().currentGame.convertStringtoArrayList(historyGame.get(indexLastDate).betSpot);
+			winPattern=GameEntity.getInstance().currentGame.convertStringtoArrayList(historyGame.get(i).betSpot);
 			addTextToRowWithValues(headerRow,winPattern.get(0).toString(), textColor, textSize);
 			tblHistory.addView(headerRow);
 			
