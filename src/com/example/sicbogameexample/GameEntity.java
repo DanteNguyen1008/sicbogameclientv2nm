@@ -31,6 +31,7 @@ import sicbo.components.TimoutCheckAsyns;
 import sicbo.components.UserComponent;
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -94,6 +95,8 @@ public class GameEntity {
 	public UserComponent userComponent;
 	public double betAmountRemain = REMAIN_FIXED;
 	public boolean isMusicEnable = true;
+	public boolean isMenuDisplay = false;
+	public boolean isBackPress = false;
 
 	// Enum
 	public enum GameAction {
@@ -251,39 +254,67 @@ public class GameEntity {
 		}
 	}
 
+	private double checkBalanceRebet() {
+		double amoutUpdate = 0;
+		int patternListSize = sceneManager.gameScene.patternList.size();
+		for (int j = 0; j < patternListSize; j++) {
+			int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
+					.size();
+			for (int i = 0; i < coinListSize; i++) {
+				amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
+						.get(i).getCoinID();
+			}
+		}
+		/*
+		 * if (userComponent.balance.balance - currentCoint < 0) {
+		 * //displayConfirmDialog("You do not enough money", 170, 200);
+		 * 
+		 * }else {
+		 * 
+		 * }
+		 */
+		return amoutUpdate;
+	}
+
 	/**
 	 * This method called when user click "rebet" button Called from Button
 	 * component class - click action
 	 */
 	public void rebet() {
 		if (gameAction.equals(GameEntity.GameAction.RESET)) {
-			double amoutUpdate = 0;
-			int patternListSize = sceneManager.gameScene.patternList.size();
-			for (int j = 0; j < patternListSize; j++) {
-				int coinListSize = sceneManager.gameScene.patternList.get(j).coinList
-						.size();
-				for (int i = 0; i < coinListSize; i++) {
-					sceneManager.gameScene.patternList.get(j).coinList.get(i)
-							.reBuildCoin();
-					amoutUpdate += sceneManager.gameScene.patternList.get(j).coinList
-							.get(i).getCoinID();
-					sceneManager.gameScene.getScene().registerTouchArea(
-							sceneManager.gameScene.patternList.get(j).coinList
-									.get(i).getSprite());
+			double amoutUpdate = checkBalanceRebet();
+			if (userComponent.balance.balance - amoutUpdate < 0) {
+				displayConfirmDialog("You do not enough money", 170, 200);
+			} else {
+				int patternListSize = sceneManager.gameScene.patternList.size();
+				for (int j = 0; j < patternListSize; j++) {
+					int coinListSize = sceneManager.gameScene.patternList
+							.get(j).coinList.size();
+					for (int i = 0; i < coinListSize; i++) {
+						sceneManager.gameScene.patternList.get(j).coinList.get(
+								i).reBuildCoin();
+
+						sceneManager.gameScene.getScene()
+								.registerTouchArea(
+										sceneManager.gameScene.patternList
+												.get(j).coinList.get(i)
+												.getSprite());
+					}
 				}
-			}
-			int textListSize = sceneManager.gameScene.textList.size();
-			for (int i = 0; i < textListSize; i++) {
-				if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
-					sceneManager.gameScene.textList.get(i).updateBalance(
-							UserComponent.UserAction.DECREASE_BALANCE,
-							amoutUpdate);
-				} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
-					sceneManager.gameScene.textList.get(i).decreaseBetRemain(
-							amoutUpdate);
+				int textListSize = sceneManager.gameScene.textList.size();
+				for (int i = 0; i < textListSize; i++) {
+					if (sceneManager.gameScene.textList.get(i).getiID() == 1) {
+						sceneManager.gameScene.textList.get(i).updateBalance(
+								UserComponent.UserAction.DECREASE_BALANCE,
+								amoutUpdate);
+					} else if (sceneManager.gameScene.textList.get(i).getiID() == 3) {
+						sceneManager.gameScene.textList.get(i)
+								.decreaseBetRemain(amoutUpdate);
+					}
 				}
+				gameAction = GameEntity.GameAction.REBET;
 			}
-			gameAction = GameEntity.GameAction.REBET;
+
 		}
 	}
 
@@ -439,11 +470,14 @@ public class GameEntity {
 		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
+	private boolean isLogout = false;
+
 	/**
 	 * This method will be call when user click exit button Called from Button
 	 * Action click - button component class
 	 */
 	public void exitGame() {
+		isLogout = false;
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
@@ -451,11 +485,11 @@ public class GameEntity {
 		connectionAsync.execute(params);
 		betAmountRemain = GameEntity.REMAIN_FIXED;
 		sceneManager.gameScene.unLoadScene();
-		sceneManager.activity.finish();
-		sceneManager = null;
+
 	}
 
 	public void logout() {
+		isLogout = true;
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
@@ -464,17 +498,12 @@ public class GameEntity {
 		clearLoginPreferrences();
 		clearBet();
 		sceneManager.gameScene.unLoadScene();
-		//sceneManager.activity.finish();
 
-		Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
-		sceneManager.activity.startActivity(intent);
-		sceneManager = null;
 	}
 
 	private void clearLoginPreferrences() {
 		SharedPreferences preferences = sceneManager.activity
 				.getSharedPreferences("login-referrences", Context.MODE_PRIVATE);
-		String s=preferences.getString("password", "123");
 		preferences.edit().remove("username").commit();
 		preferences.edit().remove("password").commit();
 	}
@@ -498,13 +527,22 @@ public class GameEntity {
 	 * @author Admin this class is the portal to sent and receive request
 	 *         response with server
 	 */
+	private ProgressDialog pd = null;
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
 		BaseGameActivity activity;
 
 		@Override
 		protected void onPreExecute() {
-
+			sceneManager.gameScene.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					pd = ProgressDialog.show(
+							sceneManager.gameScene.getActivity(),
+							"Loading data..", "Please wait....", true, false);
+				}
+			});
 		}
 
 		@Override
@@ -548,6 +586,15 @@ public class GameEntity {
 		@Override
 		protected void onPostExecute(Integer value) {
 			try {
+				sceneManager.gameScene.getActivity().runOnUiThread(
+						new Runnable() {
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								pd.dismiss();
+							}
+						});
+
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				String s = connectionHandler.getTaskID();
@@ -558,10 +605,12 @@ public class GameEntity {
 					} else {
 						Log.d("Bet error", "Something wrong???");
 					}
+
 				} else if (connectionHandler.getTaskID().equals(
 						"res_view_history")) {
 					onReceiveViewHistory(result, activity);
-				} else if (connectionHandler.getTaskID().equals("res_signout")) {
+
+				} else if (connectionHandler.getTaskID().equals("res_sign_out")) {
 					onReceiveSignout();
 				}
 
@@ -599,8 +648,7 @@ public class GameEntity {
 	public void onReceiveViewHistory(JSONObject result, Activity activity)
 			throws JSONException {
 		int numOfItem = result.getInt("num_of_item");
-		String s=result.toString();
-		userComponent.historyList=new ArrayList<HistoryComponent>();
+		userComponent.historyList = new ArrayList<HistoryComponent>();
 		if (numOfItem > 0) {
 			for (int i = 0; i < numOfItem; i++) {
 				userComponent.historyList.add(new HistoryComponent(result
@@ -629,9 +677,16 @@ public class GameEntity {
 	}
 
 	public void onReceiveSignout() {
-
+		if (!isLogout)
+			sceneManager.activity.finish();
+		else {
+			Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
+			sceneManager.activity.startActivity(intent);
+			sceneManager.activity.finish();
+			sceneManager = null;
+		}
 	}
-    
+
 	// Dialog display
 	// Error display
 	public void displayYesNoDialog(String errorContent, int posX, int posY) {

@@ -44,7 +44,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
 				camera);
-		engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+		//engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsMusic(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
 		return engineOptions;
@@ -127,14 +127,20 @@ public class SicBoGameActivity extends BaseGameActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			onBackPressed();
+		} else if (keyCode == KeyEvent.KEYCODE_MENU) {
+			if (!GameEntity.getInstance().isAnimationRunning
+					&& !GameEntity.getInstance().isBackPress) {
+				GameEntity.getInstance().sceneManager.gameScene.displayMenu();
+			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
 	public void onBackPressed() {
-		if (!GameEntity.getInstance().isAnimationRunning)
-			GameEntity.getInstance().sceneManager.gameScene.displayMenu();
+		if (!GameEntity.getInstance().isMenuDisplay && !GameEntity.getInstance().isAnimationRunning) {
+			GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(true);
+		}
 	}
 
 }
