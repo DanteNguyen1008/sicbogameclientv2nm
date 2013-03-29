@@ -1,6 +1,8 @@
 package com.example.sicbogameexample;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -36,6 +38,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	String fb_fullname = "";
 	boolean is_facebook_account = false;
 	boolean isValidPassword=true;
+	boolean isValidEmail=false;
+	boolean isMissTyping =false;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 				// TODO Auto-generated method stub
 				if(arg1==true)
 				{
-					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+					//Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
 				}
 				else
 				{
@@ -74,15 +79,7 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				// TODO Auto-generated method stub
-				if(edtPassword.getText().toString().length()<6)
-				{
-					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
-					isValidPassword=false;
-				}
-				else 
-				{
-					isValidPassword=true;
-				}
+				
 			
 			}
 			
@@ -96,10 +93,43 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
-				
+				if(edtPassword.getText().toString().length()<6)
+				{   
+					
+					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+					isValidPassword=false;
+				}
+				else 
+				{
+					isValidPassword=true;
+				}
 			}
 		});
 		edtEmail = (EditText) findViewById(R.id.edt_email);
+		final String email = edtEmail.getText().toString().trim();
+
+		final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+		edtEmail.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				// TODO Auto-generated method stub
+				if(hasFocus==false)
+				{
+					if(validateEmailAddress(edtEmail.getText().toString())==false)
+					{
+						Toast.makeText(getApplicationContext(), "InValid email", Toast.LENGTH_LONG).show();
+					   isValidEmail=false;
+					}
+					else
+					{
+						isValidEmail=true;
+					}
+					
+				}
+			}
+		});
+		
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
 		btnRegister = (Button) findViewById(R.id.btn_register);
 		imgBack = (ImageButton) findViewById(R.id.btn_back);
@@ -123,7 +153,15 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			edtFullName.setText(fb_fullname);
 		}
 	}
-
+     
+	private boolean validateEmailAddress(String emailAddress){
+	    String  expression="^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";  
+	       CharSequence inputStr = emailAddress;  
+	       Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);  
+	       Matcher matcher = pattern.matcher(inputStr); 
+	       boolean a=matcher.matches();
+	       return matcher.matches();
+	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -138,31 +176,8 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 		switch (v.getId()) {
 		case R.id.btn_register:
 			 checkValidPassword();
-			 if(isValidPassword==true)
-			 {
-				 if(edtPassword.getText().equals(edtConfirmPassword.getText())==true)
-				 {
-			ConnectionAsync connectionAsync = new ConnectionAsync();
-			String[] paramsName = { "username", "password", "email",
-					"fullname", "is_facebook_account" };
-			String[] paramsValue = { edtUsername.getText().toString().trim(),
-					edtPassword.getText().toString().trim(),
-					edtEmail.getText().toString().trim(),
-					edtFullName.getText().toString().trim(),
-					is_facebook_account + "" };
-			Object[] params = { connectionHandler, this,
-					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
-			connectionAsync.execute(params);
-				 }
-				 else
-				 {
-					 Toast.makeText(getApplicationContext(), "Confirm password doesn't match", Toast.LENGTH_LONG).show();
-				 }
-			 }
-			 else
-			 {
-				 Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
-			 }
+			 
+			
 			 
 			break;
 		case R.id.btn_back:
@@ -261,10 +276,6 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
    void checkValidPassword()
    {
 	   
-	   int l;
-	   l=edtConfirmPassword.length();
-	   
-	   
 	   if(edtConfirmPassword.length()==0||
 			   edtEmail.length()==0||
 			   edtFullName.length()==0||
@@ -273,7 +284,42 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 	   {
 		   Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
 		   isValidPassword=false;
+		  
 	   }
+	   else
+	   {   
+		   if(edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())==true)
+		   {  
+			   if(isValidPassword==true)
+			   {
+				   if(isValidEmail==true)
+				   {
+			   ConnectionAsync connectionAsync = new ConnectionAsync();
+				String[] paramsName = { "username", "password", "email",
+						"fullname", "is_facebook_account" };
+				String[] paramsValue = { edtUsername.getText().toString().trim(),
+						edtPassword.getText().toString().trim(),
+						edtEmail.getText().toString().trim(),
+						edtFullName.getText().toString().trim(),
+						is_facebook_account + "" };
+				Object[] params = { connectionHandler, this,
+						GameEntity.SIGNUP_TASK, paramsName, paramsValue };
+				connectionAsync.execute(params);
+				   }
+				   else
+				   {
+					   Toast.makeText(getApplicationContext(), "InValid email", Toast.LENGTH_LONG).show();
+				   }
+			   }
+			   else
+				   Toast.makeText(getApplicationContext(), "Password at least 6 charaters", Toast.LENGTH_LONG).show();
+		   }
+		   else
+			   Toast.makeText(getApplicationContext(), "Confirm password doesn't match", Toast.LENGTH_LONG).show();
+				 
+		   
+	   }
+	   
    }
 	@Override
 	protected void setHintEditext() {

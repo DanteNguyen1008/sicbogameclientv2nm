@@ -192,9 +192,16 @@ public class LoginScreen extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_sign_in:
+			if(edt_password.length()!=0&&edt_username.length()!=0)
+			{
 			String username = edt_username.getText().toString().trim();
 			password = edt_password.getText().toString().trim();
 			normalLogin(new String[] { username, password });
+			}
+			else
+			{
+				Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
+			}
 			break;
 		case R.id.txt_forgot_password:
 

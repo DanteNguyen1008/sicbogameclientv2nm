@@ -79,7 +79,7 @@
             android:layout_below="@+id/btn_sign_in"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
-            android:text="Creat An Account"
+            android:text="Create Account"
             android:textColor="#045FB4"
             android:textSize="14sp" />
 
