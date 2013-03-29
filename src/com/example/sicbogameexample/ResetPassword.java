@@ -45,31 +45,7 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 
 	}
 
-	/*void createDialog() {
-		alertDialog = new AlertDialog.Builder(this);
-		alertDialog.setTitle("new password sent");
-		alertDialog.setMessage("Please check your email");
-		alertDialog.setPositiveButton("YES",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-
-						Intent intent = new Intent(Intent.ACTION_MAIN);
-						intent.addCategory(Intent.CATEGORY_HOME);
-						intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						finish();
-					}
-				});
-
-		alertDialog.setNegativeButton("NO",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						// Write your code here to invoke NO event
-						dialog.cancel();
-					}
-				});
-		alertDialog.show();
-	}*/
+	
 
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
@@ -157,6 +133,8 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 		switch(arg0.getId())
 		{
 		case R.id.btn_reset:
+			if(edtEmail.length()!=0)
+			{
 		 connectionAsync = new ConnectionAsync();
 			String[] paramsName = {"email"};
 			String[] paramsValue =  {edtEmail.getText().toString().trim()};
@@ -165,12 +143,22 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 					GameEntity.FORGOT_PASSWORD_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
 			break;
+			}
+			else
+				Toast.makeText(getApplicationContext(),"Miss Typing", Toast.LENGTH_LONG).show();
+		    break;
 		case R.id.btn_back:
 			this.finish();
 			break;
 		}
 	}
-
+     void missTyping()
+     {
+    	 if(edtEmail.length()==0)
+    	 {
+    		 
+    	 }
+     }
 	@Override
 	protected void setHintEditext() {
 		// TODO Auto-generated method stub
