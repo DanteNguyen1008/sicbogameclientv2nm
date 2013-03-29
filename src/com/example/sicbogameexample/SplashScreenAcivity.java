@@ -7,6 +7,7 @@ import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
@@ -46,9 +47,9 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),
-				256, 256, TextureOptions.DEFAULT);
+				100, 100, TextureOptions.NEAREST);
 		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(splashTextureAtlas, this, "splash.png", 0, 0);
+				.createFromAsset(splashTextureAtlas, this, "logosicbo.jpg", 0, 0);
 		splashTextureAtlas.load();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
@@ -81,6 +82,7 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 
 	private void initSplashScene() {
 		GameEntity.getInstance().splashScene = new Scene();
+		GameEntity.getInstance().splashScene.setBackground(new Background(1f,1f,1f));
 		splash = new Sprite(0, 0, splashTextureRegion,
 				mEngine.getVertexBufferObjectManager()) {
 			@Override
