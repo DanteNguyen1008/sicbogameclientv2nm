@@ -164,14 +164,16 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 	{   
 		
 		
-		if(edtCurrentPassword.getText().toString()==""
-				||edtConfirmPassword.getText().toString()==""
-				||edtNewPassword.getText().toString()=="")
+		if(edtCurrentPassword.length()==0
+				||edtConfirmPassword.length()==0
+				||edtNewPassword.length()==0)
 		{
 			validtext= false;
 		    Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
 		
 		}
+		else
+			validtext=true;
 		
 	
 		
