@@ -57,7 +57,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
-            android:inputType="textPersonName" >
+            android:inputType="textPassword" >
         </EditText>
         
          <EditText
@@ -72,7 +72,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
-            android:inputType="textPersonName" >
+            android:inputType="textPassword" >
         </EditText>
           <EditText
             android:id="@+id/edt_email"
