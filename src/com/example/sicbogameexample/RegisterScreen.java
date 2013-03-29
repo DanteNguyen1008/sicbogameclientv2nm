@@ -12,6 +12,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +44,7 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		connectionHandler = new ConnectionHandler();
 		edtUsername = (EditText) findViewById(R.id.edt_username);
 		edtPassword = (EditText) findViewById(R.id.edt_password);
+		
 		edtPassword.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
@@ -66,6 +69,36 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			}
 		});
 		edtConfirmPassword = (EditText) findViewById(R.id.edt_confirm_password);
+edtConfirmPassword.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				// TODO Auto-generated method stub
+				if(edtPassword.getText().toString().length()<6)
+				{
+					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+					isValidPassword=false;
+				}
+				else 
+				{
+					isValidPassword=true;
+				}
+			
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		edtEmail = (EditText) findViewById(R.id.edt_email);
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
 		btnRegister = (Button) findViewById(R.id.btn_register);
@@ -104,7 +137,11 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 
 		switch (v.getId()) {
 		case R.id.btn_register:
-			
+			 checkValidPassword();
+			 if(isValidPassword==true)
+			 {
+				 if(edtPassword.getText().equals(edtConfirmPassword.getText())==true)
+				 {
 			ConnectionAsync connectionAsync = new ConnectionAsync();
 			String[] paramsName = { "username", "password", "email",
 					"fullname", "is_facebook_account" };
@@ -116,6 +153,17 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			Object[] params = { connectionHandler, this,
 					GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 			connectionAsync.execute(params);
+				 }
+				 else
+				 {
+					 Toast.makeText(getApplicationContext(), "Confirm password doesn't match", Toast.LENGTH_LONG).show();
+				 }
+			 }
+			 else
+			 {
+				 Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
+			 }
+			 
 			break;
 		case R.id.btn_back:
 			this.finish();
@@ -210,7 +258,23 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 			}
 		}
 	}
-
+   void checkValidPassword()
+   {
+	   
+	   int l;
+	   l=edtConfirmPassword.length();
+	   
+	   
+	   if(edtConfirmPassword.length()==0||
+			   edtEmail.length()==0||
+			   edtFullName.length()==0||
+			   edtUsername.length()==0||
+			   edtPassword.length()==0)
+	   {
+		   Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
+		   isValidPassword=false;
+	   }
+   }
 	@Override
 	protected void setHintEditext() {
 		// TODO Auto-generated method stub
