@@ -39,7 +39,7 @@
              android:textColor="#848484"
             android:padding="5dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textPersonName" >
@@ -108,13 +108,32 @@
             android:id="@+id/btn_register"
             android:layout_width="280dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/edt_full_name"
+            android:layout_below="@+id/checkBox1"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+           
             android:background="@drawable/rounded_btn_sign_in"
             android:text="Register"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
+
+          <CheckBox
+              android:id="@+id/checkBox1"
+              android:layout_below="@+id/edt_full_name"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="20dp"
+               />
+          <TextView 
+              android:id="@+id/txt_link_policy"
+              android:layout_marginTop="15dp"
+              android:layout_toRightOf="@+id/checkBox1"
+              android:layout_width="wrap_content"
+              android:layout_below="@+id/edt_full_name"
+              android:layout_marginLeft="5dp"
+              android:text="Do you agree game policy"
+              android:textColor="@android:color/white"
+              android:layout_height="wrap_content"/>
+
     </RelativeLayout>
 
 </RelativeLayout>

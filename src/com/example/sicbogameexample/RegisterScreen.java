@@ -15,14 +15,18 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class RegisterScreen extends BaseActivity implements OnClickListener {
@@ -30,6 +34,8 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	EditText edtPassword;
 	EditText edtConfirmPassword;
 	EditText edtEmail, edtFullName;
+	TextView txtGamePolicy;
+	CheckBox checkBox;
 	Button btnRegister;
 	ImageButton imgBack;
 	ConnectionHandler connectionHandler;
@@ -49,7 +55,12 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		connectionHandler = new ConnectionHandler();
 		edtUsername = (EditText) findViewById(R.id.edt_username);
 		edtPassword = (EditText) findViewById(R.id.edt_password);
-		
+		txtGamePolicy=(TextView)findViewById(R.id.txt_link_policy);
+		checkBox=(CheckBox)findViewById(R.id.checkBox1);
+		SpannableString content = new SpannableString("Do you agree policy");
+		content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+		txtGamePolicy.setText(content);
+		txtGamePolicy.setOnClickListener(this);
 		edtPassword.setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
@@ -176,12 +187,14 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 		switch (v.getId()) {
 		case R.id.btn_register:
 			 checkValidPassword();
-			 
-			
-			 
 			break;
 		case R.id.btn_back:
 			this.finish();
+			break;
+		case R.id.txt_link_policy:
+			Intent intent =new Intent(RegisterScreen.this,WebviewHelpPage.class);
+			intent.putExtra("idButton", 3);
+			startActivity(intent);
 			break;
 
 		}
@@ -294,6 +307,8 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			   {
 				   if(isValidEmail==true)
 				   {
+					   if(checkBox.isChecked()==true)
+					   {
 			   ConnectionAsync connectionAsync = new ConnectionAsync();
 				String[] paramsName = { "username", "password", "email",
 						"fullname", "is_facebook_account" };
@@ -305,6 +320,9 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 				Object[] params = { connectionHandler, this,
 						GameEntity.SIGNUP_TASK, paramsName, paramsValue };
 				connectionAsync.execute(params);
+					   }
+					   else
+						   Toast.makeText(getApplicationContext(), "You have to agree policy", Toast.LENGTH_LONG).show();
 				   }
 				   else
 				   {
