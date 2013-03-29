@@ -81,7 +81,7 @@ int drawable press_button 0x7f02002a
 int drawable rounded_btn_sign_in 0x7f02002b
 int drawable rounded_edit_password 0x7f02002c
 int drawable wood_bg 0x7f02002d
-int id ScrollView11 0x7f050036
+int id ScrollView11 0x7f050037
 int id btnBack 0x7f05001c
 int id btnLoginFacebook 0x7f050013
 int id btn_about_bitcoin 0x7f05000c
@@ -89,6 +89,7 @@ int id btn_about_game 0x7f05000b
 int id btn_back 0x7f050005
 int id btn_bitcoin 0x7f050016
 int id btn_change_password 0x7f050015
+int id btn_load_history 0x7f050036
 int id btn_ok 0x7f050009
 int id btn_register 0x7f050019
 int id btn_reset 0x7f05001b
@@ -124,15 +125,14 @@ int id edt_username 0x7f05000d
 int id facebookLoginButton 0x7f050014
 int id large 0x7f050002
 int id llHistoryList 0x7f05001d
-int id ll_country 0x7f050035
 int id menu_help 0x7f050034
 int id menu_profile 0x7f050033
 int id normal 0x7f050001
 int id picker_subtitle 0x7f05002f
 int id rela1 0x7f050004
+int id rela_history 0x7f050035
 int id search_box 0x7f05002e
 int id small 0x7f050000
-int id table_history 0x7f050037
 int id tbl_history 0x7f050038
 int id txtFbName 0x7f050012
 int id txt_active_account 0x7f050003
@@ -166,8 +166,7 @@ int layout com_facebook_placepickerfragment_list_row 0x7f030017
 int layout com_facebook_usersettingsfragment 0x7f030018
 int layout menu_option 0x7f030019
 int layout table_history 0x7f03001a
-int layout view_history 0x7f03001b
-int layout webview_help 0x7f03001c
+int layout webview_help 0x7f03001b
 int string app_id 0x7f060021
 int string app_name 0x7f060019
 int string com_facebook_choose_friends 0x7f06000f
