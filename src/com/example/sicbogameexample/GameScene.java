@@ -39,6 +39,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 
 	public ItemComponent background;
 	public DialogComponent confirmDialog;
+	public DialogComponent confirmErrorDialog;
 	public DialogComponent yesnoDialog;
 	public PlayAnimationComponent playAnimationComponent;
 
@@ -102,6 +103,12 @@ public class GameScene extends MyScene implements OnShakeListener {
 				"dialogbackground.png", -800, -480, getEngine()
 						.getTextureManager(), getActivity(), getEngine(),
 				ItemType.CONFIRM_DIALOG, 118, 38, "btnconfirm.png",
+				GameEntity.CAMERA_WIDTH / 2 - 118 / 2, 300, mFont);
+		
+		confirmErrorDialog = new DialogComponent(1, 800, 480,
+				"dialogbackground.png", -800, -480, getEngine()
+						.getTextureManager(), getActivity(), getEngine(),
+				ItemType.CONFIRM_ERROR, 118, 38, "btnconfirm.png",
 				GameEntity.CAMERA_WIDTH / 2 - 118 / 2, 300, mFont);
 		// 0 0
 		yesnoDialog = new DialogComponent(2, 800, 480, "dialogbackground.png",
@@ -484,6 +491,7 @@ public class GameScene extends MyScene implements OnShakeListener {
 		getScene().attachChild(playAnimationComponent.background.getSprite());
 		// load Dialog
 		getScene().attachChild(confirmDialog.getSprite());
+		getScene().attachChild(confirmErrorDialog.getSprite());
 		getScene().attachChild(yesnoDialog.getSprite());
 
 		getScene().setTouchAreaBindingOnActionMoveEnabled(true);
