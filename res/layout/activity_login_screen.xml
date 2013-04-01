@@ -67,7 +67,7 @@
             android:layout_below="@+id/edt_password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="Sign in"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />

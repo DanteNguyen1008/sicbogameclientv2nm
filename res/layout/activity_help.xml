@@ -18,12 +18,14 @@
             android:background="#1B0A2A"
             />
 
-        <ImageButton
+       <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/btn_login"
-            android:background="#1B0A2A"
+             android:textSize="20sp"
+            android:text="Guide"
+            android:textStyle="bold"
+            android:textColor="#FAFAFA"
+            android:background="@drawable/btn_title"
             android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
     <RelativeLayout
@@ -33,7 +35,11 @@
         android:layout_marginTop="-5dp"
         android:background="#BDBDBD" >
 
-      
+      <RelativeLayout 
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true" >
 
         <Button
             android:id="@+id/btn_tutorial"
@@ -41,8 +47,7 @@
             android:layout_height="50dp"
             
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="Tutorial"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
@@ -53,7 +58,7 @@
             android:layout_below="@+id/btn_tutorial"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="About Game"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
@@ -64,10 +69,11 @@
             android:layout_below="@+id/btn_about_game"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="About Bitcoin"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

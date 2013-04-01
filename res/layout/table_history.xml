@@ -19,13 +19,15 @@
             android:background="#1B0A2A"
             android:src="@drawable/btn_back" />
 
-        <ImageButton
+      <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/btn_back"
-            android:background="#1B0A2A"
-            android:scaleType="fitXY"
-            android:src="@drawable/btn_login" />
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="History"
+            android:textColor="#FAFAFA"
+            android:background="@drawable/btn_title"
+            android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
    
     <RelativeLayout

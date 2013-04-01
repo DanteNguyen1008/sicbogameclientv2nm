@@ -111,7 +111,7 @@
             android:layout_below="@+id/checkBox1"
             android:layout_centerHorizontal="true"
            
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="Register"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />

@@ -58,7 +58,7 @@ public class WebviewHelpPage extends Activity {
 		case 2:
 			break;
 		case 3:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "help");
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "Policy");
 			break;
 		}
 	}
