@@ -513,12 +513,15 @@ public class GameEntity {
 	 * checkTimeout method
 	 */
 	public void exitGameTimeOut() {
+		/*
 		ConnectionAsync connectionAsync = new ConnectionAsync();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
 				null, null };
-		connectionAsync.execute(params);
+		connectionAsync.execute(params);*/
 		// unLoadScene();
+		betAmountRemain = GameEntity.REMAIN_FIXED;
+		sceneManager.gameScene.unLoadScene();
 		sceneManager.gameScene.getActivity().finish();
 		sceneManager = null;
 	}
@@ -612,6 +615,9 @@ public class GameEntity {
 
 				} else if (connectionHandler.getTaskID().equals("res_sign_out")) {
 					onReceiveSignout();
+				} else if (connectionHandler.getTaskID().equals(
+						"res_session_expire")) {
+					onSessionExpire();
 				}
 
 			} catch (JSONException e) {
@@ -619,6 +625,13 @@ public class GameEntity {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * Method called when session expire
+	 */
+	public void onSessionExpire() {
+		displayConfirmErrorDialog("Your session is expired", 170, 200);
 	}
 
 	/**
@@ -696,6 +709,11 @@ public class GameEntity {
 
 	public void displayConfirmDialog(String errorContent, int posX, int posY) {
 		sceneManager.gameScene.confirmDialog.displayDialog(
+				sceneManager.gameScene, errorContent, posX, posY);
+	}
+	
+	public void displayConfirmErrorDialog(String errorContent, int posX, int posY) {
+		sceneManager.gameScene.confirmErrorDialog.displayDialog(
 				sceneManager.gameScene, errorContent, posX, posY);
 	}
 

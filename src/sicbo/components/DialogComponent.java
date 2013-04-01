@@ -83,8 +83,43 @@ public class DialogComponent extends AbItemComponent {
 					engine.getVertexBufferObjectManager());
 			// dialogText.setScale(0.7f);
 			break;
-		case LOADING_DIALOG:
+		case CONFIRM_ERROR:
+			BitmapTextureAtlas erroratlastChild = new BitmapTextureAtlas(
+					textureManager, childWidth, childHeight,
+					TextureOptions.BILINEAR);
 
+			ITextureRegion erroratlasRegionChild = BitmapTextureAtlasTextureRegionFactory
+					.createFromAsset(erroratlastChild, context, childURL, 0, 0);
+
+			btnOK = new Sprite(childPositionX, childPositionY,
+					erroratlasRegionChild,
+					engine.getVertexBufferObjectManager()) {
+				@Override
+				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+						float X, float Y) {
+					switch (pSceneTouchEvent.getAction()) {
+					case TouchEvent.ACTION_DOWN:
+						this.setScale(1.2f);
+						break;
+					case TouchEvent.ACTION_MOVE:
+
+						break;
+					case TouchEvent.ACTION_UP:
+						this.setScale(1f);
+						disableDialog(GameEntity.getInstance().sceneManager.gameScene);
+
+						break;
+					}
+					return true;
+				}
+			};
+
+			erroratlastChild.load();
+
+			dialogText = new Text(0, height / 2, mFont, "", 100,
+					new TextOptions(HorizontalAlign.CENTER),
+					engine.getVertexBufferObjectManager());
+			// dialogText.setScale(0.7f);
 			break;
 		default:
 			break;
@@ -144,7 +179,8 @@ public class DialogComponent extends AbItemComponent {
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
 					// disableDialog(ConfigClass.sceneManager.gameScene);
-					GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(false);
+					GameEntity.getInstance().sceneManager.gameScene
+							.onBackButtonPress(false);
 					GameEntity.getInstance().exitGame();
 					break;
 				}
@@ -170,7 +206,8 @@ public class DialogComponent extends AbItemComponent {
 				case TouchEvent.ACTION_UP:
 					this.setScale(1f);
 					disableDialog(GameEntity.getInstance().sceneManager.gameScene);
-					GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(false);
+					GameEntity.getInstance().sceneManager.gameScene
+							.onBackButtonPress(false);
 					break;
 				}
 				return true;
@@ -188,8 +225,17 @@ public class DialogComponent extends AbItemComponent {
 	}
 
 	public void disableDialog(MyScene scene) {
+
+		getSprite().setPosition(-800, -480);
+		getSprite().setZIndex(0);
+		getSprite().getParent().sortChildren();
+		scene.enableAllTouch();
+
 		switch (getiItemType()) {
-		case LOADING_DIALOG:
+		case CONFIRM_ERROR:
+			scene.getScene().unregisterTouchArea(btnOK);
+			// action
+			GameEntity.getInstance().exitGameTimeOut();
 			break;
 		case CONFIRM_DIALOG:
 			scene.getScene().unregisterTouchArea(btnOK);
@@ -201,10 +247,6 @@ public class DialogComponent extends AbItemComponent {
 		default:
 			break;
 		}
-		getSprite().setPosition(-800, -480);
-		getSprite().setZIndex(0);
-		getSprite().getParent().sortChildren();
-		scene.enableAllTouch();
 	}
 
 	public void displayDialog(MyScene scene, String dialogContent,
@@ -213,7 +255,8 @@ public class DialogComponent extends AbItemComponent {
 		dialogText.setText(dialogContent);
 
 		switch (getiItemType()) {
-		case LOADING_DIALOG:
+		case CONFIRM_ERROR:
+			scene.getScene().registerTouchArea(btnOK);
 			break;
 		case CONFIRM_DIALOG:
 			scene.getScene().registerTouchArea(btnOK);
