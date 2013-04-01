@@ -17,12 +17,13 @@
             android:background="#1B0A2A"
             />
 
-        <ImageButton
+       <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/btn_login"
-            android:background="#1B0A2A"
+             android:textSize="15sp"
+            android:text="Profile"
+            android:textColor="#FAFAFA"
+            android:background="@drawable/btn_title"
             android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
 
@@ -34,15 +35,18 @@
         android:background="#BDBDBD" >
 
       
-
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true" 
+       android:layout_centerVertical="true">
         <Button
             android:id="@+id/btn_change_password"
             android:layout_width="200dp"
             android:layout_height="50dp"
             
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="150dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            
+            android:background="@drawable/button_play_press"
             android:text="Change Password"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
@@ -53,11 +57,11 @@
             android:layout_below="@+id/btn_change_password"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:background="@drawable/rounded_btn_sign_in"
+            android:background="@drawable/button_play_press"
             android:text="Bitcoin"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
-        
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
