@@ -258,7 +258,7 @@ public class ButtonComponent extends AbItemComponent {
 								.buttonPlaySound();
 						GameEntity.getInstance().sceneManager.gameScene
 								.hideMenu();
-
+						
 						break;
 					}
 					return true;

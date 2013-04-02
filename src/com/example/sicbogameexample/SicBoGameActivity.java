@@ -61,13 +61,14 @@ public class SicBoGameActivity extends BaseGameActivity {
 						.resume();
 			} else {
 				/*
-				MusicFactory.setAssetBasePath("mfx/");
-				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic = new MSComponent(
-						1, "themesong.mp3", MStype.MUSIC, getEngine(), this,
-						true);
-				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
-						.play();
-						*/
+				 * MusicFactory.setAssetBasePath("mfx/");
+				 * GameEntity.getInstance(
+				 * ).sceneManager.gameScene.backgroundMusic = new MSComponent(
+				 * 1, "themesong.mp3", MStype.MUSIC, getEngine(), this, true);
+				 * GameEntity
+				 * .getInstance().sceneManager.gameScene.backgroundMusic
+				 * .play();
+				 */
 			}
 		}
 	}

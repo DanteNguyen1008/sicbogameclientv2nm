@@ -68,7 +68,6 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		switch(v.getId())
 		{
 		case R.id.btn_ok:
-			
 			if(edtConfirmPassword.getText().toString().equals(edtNewPassword.getText().toString())!=true)
 				Toast.makeText(this, "Confirm password doesn't match", Toast.LENGTH_LONG).show();
 			else
@@ -194,6 +193,5 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		edtConfirmPassword.setText("");
 		edtNewPassword.setText("");
 	}
-	
 
 }

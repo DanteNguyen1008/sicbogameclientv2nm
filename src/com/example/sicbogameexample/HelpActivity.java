@@ -55,6 +55,8 @@ public class HelpActivity extends Activity implements OnClickListener{
 			this.finish();
 			break;
 		}
+		
+		
 	}
 
 	

@@ -257,6 +257,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 						finish();
 					}
 				});
+				
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -308,7 +309,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 						}
 					}
 
-				else {
+					else {
 
 						Toast.makeText(activity,
 								"Login fail, please try again",
@@ -319,16 +320,17 @@ public class LoginScreen extends Activity implements OnClickListener {
 							startActivity(getIntent());
 						}
 
-				}
+					}
 
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				} catch (Exception e)
 				{
 					e.printStackTrace();
 				}
 			}
+
 		}
 	}
 

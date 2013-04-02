@@ -58,7 +58,18 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:background="@drawable/button_play_press"
-            android:text="Bitcoin"
+            android:text="Withdraw"
+            android:textColor="#EFFBFB"
+            android:textStyle="bold" />
+  <Button
+            android:id="@+id/btn_sent_deposit"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/btn_bitcoin"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_play_press"
+            android:text="Send Deposit"
             android:textColor="#EFFBFB"
             android:textStyle="bold" />
         </RelativeLayout>

@@ -617,4 +617,5 @@ public class GameScene extends MyScene implements OnShakeListener {
 			GameEntity.getInstance().isBackPress = false;
 		}
 	}
+
 }
