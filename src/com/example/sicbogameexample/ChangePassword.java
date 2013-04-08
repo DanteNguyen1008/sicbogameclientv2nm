@@ -194,6 +194,11 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		edtConfirmPassword.setText("");
 		edtNewPassword.setText("");
 	}
-	
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		this.finish();
+		super.onBackPressed();
+	}
 
 }
