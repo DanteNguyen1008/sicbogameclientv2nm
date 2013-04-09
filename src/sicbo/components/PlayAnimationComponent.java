@@ -389,7 +389,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 			// Lose
 			displayWinInLosePatterns(true);
 			totalWinString = "Total money you lose : "
-					+ GameEntity.getInstance().currentGame.totalWinAmount;
+					+ GameEntity.getInstance().currentGame.totalWinAmount*(-1);
+			
 			scene.playLoseSound(true);
 		}
 
