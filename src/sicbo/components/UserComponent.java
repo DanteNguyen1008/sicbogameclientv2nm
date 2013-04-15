@@ -1,6 +1,5 @@
 package sicbo.components;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

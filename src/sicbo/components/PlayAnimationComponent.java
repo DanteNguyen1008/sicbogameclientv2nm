@@ -15,7 +15,6 @@ import android.graphics.Typeface;
 
 import com.example.sicbogameexample.GameEntity;
 import com.example.sicbogameexample.GameScene;
-import com.example.sicbogameexample.GameEntity.PatternType;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class PlayAnimationComponent implements IAnimationListener {

@@ -11,7 +11,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity;
 import com.example.sicbogameexample.SceneManager.SceneType;
