@@ -5,31 +5,25 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
-public class WebviewHelpPage extends Activity implements OnClickListener{
+public class WebviewHelpPage extends Activity {
 
 	WebView mWebView;
 	Bundle b;
-	Button btnBack;
 	int id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.webview_help);
-		btnBack=(Button)findViewById(R.id.btn_back_webview);
-		btnBack.setOnClickListener(this);
+		//setContentView(R.layout.webview_help);
 		b = getIntent().getExtras();
 		if (b != null) {
 			id = b.getInt("idButton");
 		}
-		mWebView = (WebView)findViewById(R.id.webbiew_help);
+		mWebView = new WebView(this);
 		loadWebView(id);
 		mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
@@ -38,20 +32,9 @@ public class WebviewHelpPage extends Activity implements OnClickListener{
                 view.loadUrl(url);
                 return true;
             }
-            @Override
-            public void onPageFinished(WebView view, String url) {
-            	// TODO Auto-generated method stub
-            	super.onPageFinished(view, url);
-            	if(id==0)
-            	{
-            	btnBack.setVisibility(View.VISIBLE);
-            	}
-            	
-            }
         });
-       
  
-        
+        this.setContentView(mWebView);
     }
  
     @Override
@@ -78,12 +61,6 @@ public class WebviewHelpPage extends Activity implements OnClickListener{
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "Policy");
 			break;
 		}
-	}
-
-	@Override
-	public void onClick(View arg0) {
-		// TODO Auto-generated method stub
-		this.finish();
 	}
 
 }

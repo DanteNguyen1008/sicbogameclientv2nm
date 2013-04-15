@@ -45,10 +45,6 @@
               android:name="com.example.sicbogameexample.HelpActivity"
                 android:screenOrientation="landscape">
           </activity>
-          <activity 
-              android:name="com.example.sicbogameexample.Main"
-                android:screenOrientation="landscape">
-          </activity>
         <activity android:name="com.example.sicbogameexample.WebviewHelpPage">
         </activity>
         <activity android:name="com.example.sicbogameexample.ProfileActivity"

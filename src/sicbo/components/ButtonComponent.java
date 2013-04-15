@@ -190,7 +190,7 @@ public class ButtonComponent extends AbItemComponent {
 								.stopAnimation();
 						GameEntity.getInstance().sceneManager.gameScene
 								.enableAllTouch();
-						//GameEntity.getInstance().mSensorListener.registerShake();
+						GameEntity.getInstance().mSensorListener.registerShake();
 						break;
 					}
 					return true;

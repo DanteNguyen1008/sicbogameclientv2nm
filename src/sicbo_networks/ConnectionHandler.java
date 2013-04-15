@@ -27,7 +27,7 @@ import org.json.JSONObject;
 
 public class ConnectionHandler {
 
-	public static final String SERVER_ROOT_URL = "http://sicbogame2.jelastic.servint.net/sicbogame/";
+	public static final String SERVER_ROOT_URL = "http://sicbogame.jelastic.servint.net/sicbogame/";
 	//public static final String SERVER_ROOT_URL = "http://10.0.1.15:8084/SicbokServer/";
 	public static final String SERVER_URL = SERVER_ROOT_URL + "Portal";
 	private static final String REQUEST_KEY = "request";

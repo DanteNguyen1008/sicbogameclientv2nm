@@ -8,16 +8,12 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
-import org.andengine.entity.scene.IOnSceneTouchListener;
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
-import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
-import sicbo.components.AbItemComponent.ItemType;
 import sicbo.components.BetComponent;
 import sicbo.components.ButtonComponent;
 import sicbo.components.CoinComponent;
@@ -25,20 +21,21 @@ import sicbo.components.DialogComponent;
 import sicbo.components.DragComponent;
 import sicbo.components.ItemComponent;
 import sicbo.components.MSComponent;
-import sicbo.components.MSComponent.MStype;
 import sicbo.components.MyMenuScene;
+import sicbo.components.MSComponent.MStype;
 import sicbo.components.ParticleSystemComponent;
 import sicbo.components.PatternComponent;
 import sicbo.components.PlayAnimationComponent;
-import sicbo.components.ShakeEventListener.OnShakeListener;
 import sicbo.components.TextComponent;
+import sicbo.components.AbItemComponent.ItemType;
+import sicbo.components.ShakeEventListener.OnShakeListener;
+
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity.GameAction;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
-public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouchListener{
+public class GameScene extends MyScene implements OnShakeListener {
 
 	public ItemComponent background;
 	public DialogComponent confirmDialog;
@@ -458,8 +455,6 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 	public void loadScene() {
 		// TODO Auto-generated method stub
 		// load background
-		getScene().setOnSceneTouchListener(this);
-	
 		getScene().attachChild(background.getSprite());
 
 		// load Game pattern
@@ -625,26 +620,5 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 			GameEntity.getInstance().mSensorListener.registerShake();
 			GameEntity.getInstance().isBackPress = false;
 		}
-	}
-
-	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		// TODO Auto-generated method stub
-		
-    if(pSceneTouchEvent.isActionUp()) {
-            if(GameEntity.getInstance().sceneManager.gameScene.
-            		playAnimationComponent.showBackgroundResult==true)
-            {
-            	GameEntity.getInstance().sceneManager.gameScene
-				.buttonPlaySound();
-		GameEntity.getInstance().updateAfterBet();
-		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
-				.stopAnimation();
-		playAnimationComponent.showBackgroundResult=false;
-            }
-    }
-   
-    return true;
-		
 	}
 }
