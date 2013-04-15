@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,7 +67,6 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		switch(v.getId())
 		{
 		case R.id.btn_ok:
-			
 			if(edtConfirmPassword.getText().toString().equals(edtNewPassword.getText().toString())!=true)
 				Toast.makeText(this, "Confirm password doesn't match", Toast.LENGTH_LONG).show();
 			else
@@ -200,5 +198,6 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		this.finish();
 		super.onBackPressed();
 	}
-
+	
+	
 }

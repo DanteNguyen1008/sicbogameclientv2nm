@@ -43,10 +43,9 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 	String fb_username = "";
 	String fb_fullname = "";
 	boolean is_facebook_account = false;
-	boolean isValidPassword=true;
-	boolean isValidEmail=false;
-	boolean isMissTyping =false;
-	
+	boolean isValidPassword = true;
+	boolean isValidEmail = false;
+	boolean isMissTyping = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,64 +54,59 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		connectionHandler = new ConnectionHandler();
 		edtUsername = (EditText) findViewById(R.id.edt_username);
 		edtPassword = (EditText) findViewById(R.id.edt_password);
-		txtGamePolicy=(TextView)findViewById(R.id.txt_link_policy);
-		checkBox=(CheckBox)findViewById(R.id.checkBox1);
+		txtGamePolicy = (TextView) findViewById(R.id.txt_link_policy);
+		checkBox = (CheckBox) findViewById(R.id.checkBox1);
 		SpannableString content = new SpannableString("Do you agree policy");
 		content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
 		txtGamePolicy.setText(content);
 		txtGamePolicy.setOnClickListener(this);
 		edtPassword.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View arg0, boolean arg1) {
 				// TODO Auto-generated method stub
-				if(arg1==true)
-				{
-					//Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
-				}
-				else
-				{
-					if(edtPassword.getText().toString().length()<6)
-	            	{
-	            		
-	            		isValidPassword=false;
-	            	}
-	            	else
-	            	{
-	            		isValidPassword=true;
-	            	}
+				if (arg1 == true) {
+					// Toast.makeText(getApplicationContext(),
+					// "Password must at least 6 character",
+					// Toast.LENGTH_LONG).show();
+				} else {
+					if (edtPassword.getText().toString().length() < 6) {
+
+						isValidPassword = false;
+					} else {
+						isValidPassword = true;
+					}
 				}
 			}
 		});
 		edtConfirmPassword = (EditText) findViewById(R.id.edt_confirm_password);
-edtConfirmPassword.addTextChangedListener(new TextWatcher() {
-			
+		edtConfirmPassword.addTextChangedListener(new TextWatcher() {
+
 			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
 				// TODO Auto-generated method stub
-				
-			
+
 			}
-			
+
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void afterTextChanged(Editable s) {
 				// TODO Auto-generated method stub
-				if(edtPassword.getText().toString().length()<6)
-				{   
-					
-					Toast.makeText(getApplicationContext(), "Password must at least 6 character", Toast.LENGTH_LONG).show();
-					isValidPassword=false;
-				}
-				else 
-				{
-					isValidPassword=true;
+				if (edtPassword.getText().toString().length() < 6) {
+
+					Toast.makeText(getApplicationContext(),
+							"Password must at least 6 character",
+							Toast.LENGTH_LONG).show();
+					isValidPassword = false;
+				} else {
+					isValidPassword = true;
 				}
 			}
 		});
@@ -121,26 +115,23 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 
 		final String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
 		edtEmail.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				// TODO Auto-generated method stub
-				if(hasFocus==false)
-				{
-					if(validateEmailAddress(edtEmail.getText().toString())==false)
-					{
-						Toast.makeText(getApplicationContext(), "InValid email", Toast.LENGTH_LONG).show();
-					   isValidEmail=false;
+				if (hasFocus == false) {
+					if (validateEmailAddress(edtEmail.getText().toString()) == false) {
+						Toast.makeText(getApplicationContext(),
+								"InValid email", Toast.LENGTH_LONG).show();
+						isValidEmail = false;
+					} else {
+						isValidEmail = true;
 					}
-					else
-					{
-						isValidEmail=true;
-					}
-					
+
 				}
 			}
 		});
-		
+
 		edtFullName = (EditText) findViewById(R.id.edt_full_name);
 		btnRegister = (Button) findViewById(R.id.btn_register);
 		imgBack = (ImageButton) findViewById(R.id.btn_back);
@@ -164,15 +155,16 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			edtFullName.setText(fb_fullname);
 		}
 	}
-     
-	private boolean validateEmailAddress(String emailAddress){
-	    String  expression="^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";  
-	       CharSequence inputStr = emailAddress;  
-	       Pattern pattern = Pattern.compile(expression,Pattern.CASE_INSENSITIVE);  
-	       Matcher matcher = pattern.matcher(inputStr); 
-	       boolean a=matcher.matches();
-	       return matcher.matches();
+
+	private boolean validateEmailAddress(String emailAddress) {
+		String expression = "^[\\w\\-]([\\.\\w])+[\\w]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+		CharSequence inputStr = emailAddress;
+		Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(inputStr);
+		boolean a = matcher.matches();
+		return matcher.matches();
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -186,18 +178,18 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 
 		switch (v.getId()) {
 		case R.id.btn_register:
-			 checkValidPassword();
+			checkValidPassword();
 			break;
 		case R.id.btn_back:
 
-			Intent intent2 = new Intent(RegisterScreen.this,
-					LoginScreen.class);
+			Intent intent2 = new Intent(RegisterScreen.this, LoginScreen.class);
 			intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			startActivity(intent2);
 			break;
 		case R.id.txt_link_policy:
-			Intent intent =new Intent(RegisterScreen.this,WebviewHelpPage.class);
+			Intent intent = new Intent(RegisterScreen.this,
+					WebviewHelpPage.class);
 			intent.putExtra("idButton", 3);
 			startActivity(intent);
 			break;
@@ -257,93 +249,89 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				// Create user and move to game scene
-                if(result!=null)
-                {
-				if (result.getBoolean("is_success")) {
-					GameEntity.getInstance().userComponent = new UserComponent(
-							edtUsername.getText().toString(), edtEmail
-									.getText().toString(),
-							result.getDouble("balance"));
-					progressDialog.dismiss();
-					if (!result.getBoolean("is_facebook_account")) {
-						createDialog();
-					} else {
-						Intent intent = new Intent(activity,
-								SicBoGameActivity.class);
-						activity.startActivity(intent);
-						activity.finish();
-					}
+				if (result != null) {
+					if (result.getBoolean("is_success")) {
+						GameEntity.getInstance().userComponent = new UserComponent(
+								edtUsername.getText().toString(), edtEmail
+										.getText().toString(),
+								result.getDouble("balance"));
+						progressDialog.dismiss();
+						if (!result.getBoolean("is_facebook_account")) {
+							createDialog();
+						} else {
+							Intent intent = new Intent(activity,
+									SicBoGameActivity.class);
+							activity.startActivity(intent);
+							activity.finish();
+						}
 
+					} else {
+						Toast.makeText(activity, result.getString("message"),
+								Toast.LENGTH_LONG).show();
+						progressDialog.dismiss();
+					}
 				} else {
-					Toast.makeText(activity, result.getString("message"),
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(),
+							"Error network!Please try again", Toast.LENGTH_LONG)
+							.show();
 					progressDialog.dismiss();
 				}
-                }
-                else
-                {
-                	Toast.makeText(getApplicationContext(),"Error network!Please try again", Toast.LENGTH_LONG).show();
-                	progressDialog.dismiss();
-                }
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-   void checkValidPassword()
-   {
-	   
-	   if(edtConfirmPassword.length()==0||
-			   edtEmail.length()==0||
-			   edtFullName.length()==0||
-			   edtUsername.length()==0||
-			   edtPassword.length()==0)
-	   {
-		   Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
-		   isValidPassword=false;
-		  
-	   }
-	   else
-	   {   
-		   if(edtPassword.getText().toString().equals(edtConfirmPassword.getText().toString())==true)
-		   {  
-			   if(isValidPassword==true)
-			   {
-				   if(isValidEmail==true)
-				   {
-					   if(checkBox.isChecked()==true)
-					   {
-			   ConnectionAsync connectionAsync = new ConnectionAsync();
-				String[] paramsName = { "username", "password", "email",
-						"fullname", "is_facebook_account" };
-				String[] paramsValue = { edtUsername.getText().toString().trim(),
-						edtPassword.getText().toString().trim(),
-						edtEmail.getText().toString().trim(),
-						edtFullName.getText().toString().trim(),
-						is_facebook_account + "" };
-				Object[] params = { connectionHandler, this,
-						GameEntity.SIGNUP_TASK, paramsName, paramsValue };
-				connectionAsync.execute(params);
-					   }
-					   else
-						   Toast.makeText(getApplicationContext(), "You have to agree policy", Toast.LENGTH_LONG).show();
-				   }
-				   else
-				   {
-					   Toast.makeText(getApplicationContext(), "InValid email", Toast.LENGTH_LONG).show();
-				   }
-			   }
-			   else
-				   Toast.makeText(getApplicationContext(), "Password at least 6 charaters", Toast.LENGTH_LONG).show();
-		   }
-		   else
-			   Toast.makeText(getApplicationContext(), "Confirm password doesn't match", Toast.LENGTH_LONG).show();
-				 
-		   
-	   }
-	   
-   }
+
+	void checkValidPassword() {
+
+		if (edtConfirmPassword.length() == 0 || edtEmail.length() == 0
+				|| edtFullName.length() == 0 || edtUsername.length() == 0
+				|| edtPassword.length() == 0) {
+			Toast.makeText(getApplicationContext(), "Miss Typing",
+					Toast.LENGTH_LONG).show();
+			isValidPassword = false;
+
+		} else {
+			if (edtPassword.getText().toString()
+					.equals(edtConfirmPassword.getText().toString()) == true) {
+				if (isValidPassword == true) {
+					if (isValidEmail == true) {
+						if (checkBox.isChecked() == true) {
+							ConnectionAsync connectionAsync = new ConnectionAsync();
+							String[] paramsName = { "username", "password",
+									"email", "fullname", "is_facebook_account" };
+							String[] paramsValue = {
+									edtUsername.getText().toString().trim(),
+									edtPassword.getText().toString().trim(),
+									edtEmail.getText().toString().trim(),
+									edtFullName.getText().toString().trim(),
+									is_facebook_account + "" };
+							Object[] params = { connectionHandler, this,
+									GameEntity.SIGNUP_TASK, paramsName,
+									paramsValue };
+							connectionAsync.execute(params);
+						} else
+							Toast.makeText(getApplicationContext(),
+									"You have to agree policy",
+									Toast.LENGTH_LONG).show();
+					} else {
+						Toast.makeText(getApplicationContext(),
+								"InValid email", Toast.LENGTH_LONG).show();
+					}
+				} else
+					Toast.makeText(getApplicationContext(),
+							"Password at least 6 charaters", Toast.LENGTH_LONG)
+							.show();
+			} else
+				Toast.makeText(getApplicationContext(),
+						"Confirm password doesn't match", Toast.LENGTH_LONG)
+						.show();
+
+		}
+
+	}
+
 	@Override
 	protected void setHintEditext() {
 		// TODO Auto-generated method stub
@@ -354,6 +342,7 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 		edtUsername.setText("");
 		edtPassword.setText("");
 	}
+
  @Override
 public void onBackPressed() {
 	// TODO Auto-generated method stub

@@ -627,6 +627,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 		}
 	}
 
+
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		// TODO Auto-generated method stub
@@ -647,4 +648,5 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
     return true;
 		
 	}
+
 }

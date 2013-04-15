@@ -119,7 +119,6 @@ public class DragComponent extends AbItemComponent {
 	public Sprite tempDrag;
 
 	private void dropTempDrag() {
-
 		tempDrag.setPosition(getPositionX(), getPositionY());
 	}
 }

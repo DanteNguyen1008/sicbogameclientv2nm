@@ -75,7 +75,13 @@ public class WebviewHelpPage extends Activity implements OnClickListener{
 		case 2:
 			break;
 		case 3:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "Policy");
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "policy");
+			break;
+		case 4:
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "payment/withdrawal.jsp");
+			break;
+		case 5:
+			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "payment/SendDeposit.jsp");
 			break;
 		}
 	}

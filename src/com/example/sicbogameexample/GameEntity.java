@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import sicbo.components.AbItemComponent.ItemType;
+
 import sicbo.components.BetComponent;
 import sicbo.components.CoinComponent;
 import sicbo.components.GameComponent;
@@ -35,7 +36,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -71,7 +71,7 @@ public class GameEntity {
 	public final static String STARTGAME_TASK = "play_bet";
 
 	public final static String VIEW_HISTORY = "view_bet_history";
-	public final static String VIEW_HISTORY_NEXT="view_bet_history_next";
+	public final static String VIEW_HISTORY_NEXT = "view_bet_history_next";
 	public static final double REMAIN_FIXED = 100;
 	public final static int miniCoiWidth = 31;
 	public final static int miniCoinHeight = 31;
@@ -471,6 +471,8 @@ public class GameEntity {
 	}
 
 	private boolean isLogout = false;
+	
+	
 
 	/**
 	 * This method will be call when user click exit button Called from Button
@@ -531,6 +533,7 @@ public class GameEntity {
 	 *         response with server
 	 */
 	private ProgressDialog pd = null;
+
 	class ConnectionAsync extends AsyncTask<Object, String, Integer> {
 		ConnectionHandler connectionHandler;
 		BaseGameActivity activity;
@@ -553,6 +556,7 @@ public class GameEntity {
 			// TODO Auto-generated method stub
 			connectionHandler = (ConnectionHandler) params[0];
 			activity = (BaseGameActivity) params[1];
+
 			try {
 				connectionHandler.requestToServer((String) params[2],
 						(String[]) params[3], (Object[]) params[4]);

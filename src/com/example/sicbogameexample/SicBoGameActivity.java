@@ -68,7 +68,7 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
 						.resume();
 			} else {
-				
+
 			}
 		}
 	}
