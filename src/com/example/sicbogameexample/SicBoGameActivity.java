@@ -1,24 +1,19 @@
 package com.example.sicbogameexample;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
-import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import sicbo.components.ShakeEventListener;
 import sicbo.components.UserComponent;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
 
 import com.example.sicbogameexample.SceneManager.SceneType;
 
@@ -28,7 +23,7 @@ import com.example.sicbogameexample.SceneManager.SceneType;
  * <br>
  *          https://sites.google.com/site/matimdevelopment/
  */
-public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouchListener{
+public class SicBoGameActivity extends BaseGameActivity {
 
 	private Camera camera;
 	public UserComponent userComponent;
@@ -40,7 +35,6 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 		super.onCreate(savedInstanceState);
 		//createProgressDialog();
 		GameEntity.getInstance().mSensorListener = new ShakeEventListener(this);
-		
 	}
 	
 	@Override
@@ -68,7 +62,14 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
 						.resume();
 			} else {
-
+				/*
+				MusicFactory.setAssetBasePath("mfx/");
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic = new MSComponent(
+						1, "themesong.mp3", MStype.MUSIC, getEngine(), this,
+						true);
+				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
+						.play();
+						*/
 			}
 		}
 	}
@@ -91,21 +92,18 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 			throws Exception {
 		//createProgressDialog();
 		// TODO Auto-generated method stub
-		
-		//BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		GameEntity.getInstance().sceneManager = new SceneManager(this, mEngine,
 				camera);
-		GameEntity.getInstance().sceneManager.loadSplashSceneResources();
-		pOnCreateResourcesCallback.onCreateResourcesFinished();
-		/*if (GameEntity.getInstance().sceneManager.setGameScene()) {
+		if (GameEntity.getInstance().sceneManager.setGameScene()) {
          
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
 			
-		
+			//progressDialog.dismiss();
 		} else {
 			Exception ex = new Exception("Loading resource Error");
 			ex.printStackTrace();
-		}*/
+		}
 
 	}
 
@@ -113,36 +111,19 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws Exception {
 		// TODO Auto-generated method stub
-		//GameEntity.getInstance().sceneManager.setCurrentScene(SceneType.GAME);
+		GameEntity.getInstance().sceneManager.setCurrentScene(SceneType.GAME);
 		pOnCreateSceneCallback
-				.onCreateSceneFinished(GameEntity.getInstance().sceneManager.createSplashScene()
-						);
+				.onCreateSceneFinished(GameEntity.getInstance().sceneManager.gameScene
+						.getScene());
 	}
 
 	@Override
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		// TODO Auto-generated method stub
-		mEngine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback() 
-		{
-			public void onTimePassed(final TimerHandler pTimerHandler) 
-			{   
-				mEngine.unregisterUpdateHandler(pTimerHandler);
-				GameEntity.getInstance().sceneManager.gameScene.loadResource();
-				GameEntity.getInstance().sceneManager.gameScene.loadScene();
-				GameEntity.getInstance().sceneManager.setCurrentScene(SceneType.GAME);
-				GameEntity.getInstance().sceneManager.setScene(SceneType.GAME);
-
-				
-				
-				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.play();
-				GameEntity.getInstance().userComponent.actionTime = System
-						.currentTimeMillis();
-				
-			}
-		}));
-
-		
+		GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.play();
+		GameEntity.getInstance().userComponent.actionTime = System
+				.currentTimeMillis();
 		// GameEntity.getInstance().checkUserTimeout();
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
@@ -167,13 +148,4 @@ public class SicBoGameActivity extends BaseGameActivity implements IOnSceneTouch
 		}
 	}
 
-	@Override
-	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	
-
 }
-
