@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import sicbo_networks.ConnectionHandler;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -193,5 +192,12 @@ public class ChangePassword extends BaseActivity implements OnClickListener{
 		edtConfirmPassword.setText("");
 		edtNewPassword.setText("");
 	}
-
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		this.finish();
+		super.onBackPressed();
+	}
+	
+	
 }

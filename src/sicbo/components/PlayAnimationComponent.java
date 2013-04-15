@@ -15,6 +15,7 @@ import android.graphics.Typeface;
 
 import com.example.sicbogameexample.GameEntity;
 import com.example.sicbogameexample.GameScene;
+import com.example.sicbogameexample.GameEntity.PatternType;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class PlayAnimationComponent implements IAnimationListener {
@@ -308,6 +309,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 	private void displayWinPatterns(boolean isDisplay) {
 		// Display win pattern.
+		
+		
 		for (int i = 0; i < scene.patternList.size(); i++) {
 			for (int j = 0; j < GameEntity.getInstance().currentGame.winPatterns
 					.size(); j++) {
@@ -339,12 +342,37 @@ public class PlayAnimationComponent implements IAnimationListener {
 		}
 
 	}
+	private void displayWinInLosePatterns(boolean isDisplay) {
+		// Display win pattern.
+		int size=GameEntity.getInstance().currentGame.winPatterns.size();
+		
+	    if(GameEntity.getInstance().currentGame.winPatterns.size()!=0)
+	    {
+		for (int i = 0; i < scene.patternList.size(); i++) {
+			for (int j = 0; j < size; j++) {
+				if (scene.patternList.get(i).patternType == GameEntity
+						.getInstance().currentGame.winPatterns.get(j)) {
+					if (isDisplay) {
+						scene.patternList.get(i).getSprite().setAlpha(0.5f);
+						
+						
+					} else {
+						scene.patternList.get(i).getSprite().setAlpha(1f);
+
+					}
+
+				}
+			}
+		}
+	    }
+	}
 
 	private void displayResultText() {
-
+		
 		GameEntity.getInstance().isResultDisplay = true;
 		// TODO Auto-generated method stub
 		String resultString = "You lose";
+		
 		String totalBetString = "Total money you bet : "
 				+ GameEntity.getInstance().currentGame.totalBetAmount;
 		String totalWinString;
@@ -359,6 +387,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 			// displayFireWork();
 		} else {
 			// Lose
+			displayWinInLosePatterns(true);
 			totalWinString = "Total money you lose : "
 					+ GameEntity.getInstance().currentGame.totalWinAmount;
 			scene.playLoseSound(true);

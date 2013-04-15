@@ -165,5 +165,10 @@ public class ResetPassword extends BaseActivity implements OnClickListener {
 		super.setHintEditext();
 		edtEmail.setText("");
 	}
-
+ @Override
+public void onBackPressed() {
+	// TODO Auto-generated method stub
+	 this.finish();
+	super.onBackPressed();
+}
 }
