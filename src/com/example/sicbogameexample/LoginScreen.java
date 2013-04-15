@@ -266,7 +266,6 @@ public class LoginScreen extends Activity implements OnClickListener {
 
 		@Override
 		protected void onPostExecute(Integer value) {
-			
 			if (isConnected) {
 				try {
 					// dataList = connectionHandler.parseData(responseName);
@@ -288,7 +287,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 								(String) result.get("email"),
 								result.getDouble("balance"));
 						activity.startActivity(intent);
-						//activity.finish();
+						activity.finish();
 					} else if (!isSuccess
 							&& result.has("is_allow_facebook_register")) {
 						if (result.getBoolean("is_allow_facebook_register")) {
