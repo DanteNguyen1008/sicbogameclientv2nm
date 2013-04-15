@@ -11,10 +11,9 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity;
-import com.example.sicbogameexample.LoginScreen;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class ButtonComponent extends AbItemComponent {
@@ -138,6 +137,32 @@ public class ButtonComponent extends AbItemComponent {
 						break;
 					}
 					return true;
+				}
+			});
+			break;
+		case BUTTON_MENU:
+			tiledSprite = (new TiledSprite(positionX, positionY,
+					tiledTextureRegion, engine.getVertexBufferObjectManager()) {
+				@Override
+				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+						float X, float Y) {
+					switch (pSceneTouchEvent.getAction()) {
+					case TouchEvent.ACTION_DOWN:
+						this.setScale(1.2f);
+						this.setCurrentTileIndex(0);
+						break;
+					case TouchEvent.ACTION_MOVE:
+
+						break;
+					case TouchEvent.ACTION_UP:
+						this.setScale(1f);
+						this.setCurrentTileIndex(0);
+						
+						GameEntity.getInstance().sceneManager.gameScene.displayMenu();
+						break;
+					}
+					return true;
+					
 				}
 			});
 			break;

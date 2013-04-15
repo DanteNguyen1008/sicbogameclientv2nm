@@ -418,6 +418,10 @@ public class GameScene extends MyScene implements OnShakeListener {
 				750, 3, getEngine().getTextureManager(), getActivity(),
 				getEngine(), ItemType.BUTTON_SOUND, getScene(),
 				SceneType.ANIMATION));
+		buttonList.add(new ButtonComponent(59, 50, 50, 1, 1, "menubtn.png",
+				745, 320, getEngine().getTextureManager(), getActivity(),
+				getEngine(), ItemType.BUTTON_MENU, getScene(),
+				SceneType.ANIMATION));
 
 	}
 

@@ -2,25 +2,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
+    
+
+        <RelativeLayout
         android:id="@+id/rela1"
         android:layout_width="wrap_content"
         android:layout_height="50dp" >
         
         <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="wrap_content" 
-        android:layout_height="fill_parent"
-         android:src="@drawable/btn_back"
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_back"
             android:background="#1B0A2A"
-       
-        />
+            />
 
-        <ImageButton
+        <Button
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/btn_register"
-            android:background="#1B0A2A"
+            android:layout_height="wrap_content"
+            android:text=" Change Password"
+            android:textStyle="bold"
+            android:textColor="#FAFAFA"
+            android:background="@drawable/btn_title"
             android:layout_toRightOf="@+id/btn_back" />
     </RelativeLayout>
 
@@ -33,13 +36,15 @@
 
         <EditText
             android:id="@+id/edt_username"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
             android:hint="User Name"
              android:textColor="#848484"
             android:padding="5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+              android:layout_alignParentLeft="true"
+           
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textPersonName" >
@@ -47,14 +52,16 @@
 
         <EditText
             android:id="@+id/edt_password"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
             android:hint="Password"
              android:textColor="#848484"
+             android:layout_below="@+id/edt_username"
+            android:layout_alignParentLeft="true"
             android:padding="5dp"
-            android:layout_below="@+id/edt_username"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+             android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+              
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textPassword" >
@@ -62,28 +69,31 @@
         
          <EditText
             android:id="@+id/edt_confirm_password"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
             android:layout_below="@+id/edt_password"
              android:hint="Confirm Password"
              android:textColor="#848484"
+             
             android:padding="5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+             android:layout_marginLeft="30dp"
+           android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textPassword" >
         </EditText>
           <EditText
             android:id="@+id/edt_email"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
              android:hint="Email"
              android:textColor="#848484"
             android:padding="5dp"
-            android:layout_below="@+id/edt_confirm_password"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+          
+             android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+             android:layout_marginRight="30dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textEmailAddress" >
@@ -91,14 +101,15 @@
 
         <EditText
             android:id="@+id/edt_full_name"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
              android:hint="Full name"
              android:textColor="#848484"
             android:padding="5dp"
             android:layout_below="@+id/edt_email"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+             android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             android:background="@drawable/rounded_edit_password"
             android:ems="10"
             android:inputType="textEmailAddress" >
@@ -106,11 +117,11 @@
           
           <Button
             android:id="@+id/btn_register"
-            android:layout_width="280dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/checkBox1"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+           android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-           
+            android:layout_marginBottom="20dp"
             android:background="@drawable/button_play_press"
             android:text="Register"
             android:textColor="#EFFBFB"
@@ -119,17 +130,22 @@
           <CheckBox
               android:id="@+id/checkBox1"
               android:layout_below="@+id/edt_full_name"
+            
+             android:layout_toRightOf="@+id/edt_confirm_password"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="70dp"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:layout_marginLeft="20dp"
+             
                />
           <TextView 
               android:id="@+id/txt_link_policy"
-              android:layout_marginTop="15dp"
+              
               android:layout_toRightOf="@+id/checkBox1"
               android:layout_width="wrap_content"
-              android:layout_below="@+id/edt_full_name"
+               android:layout_below="@+id/edt_full_name"
               android:layout_marginLeft="5dp"
+              android:layout_marginTop="35dp"
               android:text="Do you agree game policy"
               android:textColor="@android:color/white"
               android:layout_height="wrap_content"/>

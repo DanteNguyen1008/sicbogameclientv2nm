@@ -189,7 +189,12 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 			 checkValidPassword();
 			break;
 		case R.id.btn_back:
-			this.finish();
+
+			Intent intent2 = new Intent(RegisterScreen.this,
+					LoginScreen.class);
+			intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent2.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			startActivity(intent2);
 			break;
 		case R.id.txt_link_policy:
 			Intent intent =new Intent(RegisterScreen.this,WebviewHelpPage.class);
@@ -349,5 +354,10 @@ edtConfirmPassword.addTextChangedListener(new TextWatcher() {
 		edtUsername.setText("");
 		edtPassword.setText("");
 	}
-
+ @Override
+public void onBackPressed() {
+	// TODO Auto-generated method stub
+	 this.finish();
+	super.onBackPressed();
+}
 }

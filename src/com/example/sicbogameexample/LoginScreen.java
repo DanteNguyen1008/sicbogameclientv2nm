@@ -192,15 +192,13 @@ public class LoginScreen extends Activity implements OnClickListener {
 			finish();
 			break;
 		case R.id.btn_sign_in:
-			if(edt_password.length()!=0&&edt_username.length()!=0)
-			{
-			String username = edt_username.getText().toString().trim();
-			password = edt_password.getText().toString().trim();
-			normalLogin(new String[] { username, password });
-			}
-			else
-			{
-				Toast.makeText(getApplicationContext(), "Miss Typing", Toast.LENGTH_LONG).show();
+			if (edt_password.length() != 0 && edt_username.length() != 0) {
+				String username = edt_username.getText().toString().trim();
+				password = edt_password.getText().toString().trim();
+				normalLogin(new String[] { username, password });
+			} else {
+				Toast.makeText(getApplicationContext(), "Miss Typing",
+						Toast.LENGTH_LONG).show();
 			}
 			break;
 		case R.id.txt_forgot_password:
@@ -247,7 +245,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				activity.runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -257,7 +255,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 						finish();
 					}
 				});
-				
+
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -278,8 +276,10 @@ public class LoginScreen extends Activity implements OnClickListener {
 					boolean isSuccess = result.getBoolean("is_success");
 					if (isSuccess) {
 						if (!result.getBoolean("is_facebook_account"))
-							insertLoginPreferrences(
-									(String) result.get("username"), password);
+							if (!isAutoLogin)
+								insertLoginPreferrences(
+										(String) result.get("username"),
+										password);
 						Intent intent = new Intent(activity,
 								SicBoGameActivity.class);
 
@@ -325,8 +325,7 @@ public class LoginScreen extends Activity implements OnClickListener {
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				} catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -471,4 +470,13 @@ public class LoginScreen extends Activity implements OnClickListener {
 				additionalParams };
 		connectionAsync.execute(params);
 	}
+
+	@Override
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		this.finish();
+		super.onBackPressed();
+	}
+	
+	
 }
