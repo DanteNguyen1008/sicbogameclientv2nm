@@ -343,10 +343,14 @@ public class RegisterScreen extends BaseActivity implements OnClickListener {
 		edtPassword.setText("");
 	}
 
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		this.finish();
-		super.onBackPressed();
-	}
+ @Override
+public void onBackPressed() {
+	// TODO Auto-generated method stub
+	 Intent intent = new Intent(RegisterScreen.this,
+				LoginScreen.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		startActivity(intent);
+	super.onBackPressed();
+}
 }

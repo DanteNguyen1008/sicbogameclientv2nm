@@ -220,11 +220,12 @@ containing a value of this type.
         public static final int gradient_bg=0x7f020029;
         public static final int ic_launcher=0x7f02002a;
         public static final int press_button=0x7f02002b;
-        public static final int rounded_btn_sign_in=0x7f02002c;
-        public static final int rounded_btn_sign_in_press=0x7f02002d;
-        public static final int rounded_edit_password=0x7f02002e;
-        public static final int sicbologon=0x7f02002f;
-        public static final int wood_bg=0x7f020030;
+        public static final int rounded_btn_back=0x7f02002c;
+        public static final int rounded_btn_sign_in=0x7f02002d;
+        public static final int rounded_btn_sign_in_press=0x7f02002e;
+        public static final int rounded_edit_password=0x7f02002f;
+        public static final int sicbologon=0x7f020030;
+        public static final int wood_bg=0x7f020031;
     }
     public static final class id {
         public static final int ScrollView11=0x7f050038;
@@ -232,6 +233,7 @@ containing a value of this type.
         public static final int btn_about_bitcoin=0x7f05000c;
         public static final int btn_about_game=0x7f05000b;
         public static final int btn_back=0x7f050005;
+        public static final int btn_back_webview=0x7f05003b;
         public static final int btn_bitcoin=0x7f050016;
         public static final int btn_change_password=0x7f050015;
         public static final int btn_load_history=0x7f050037;
@@ -313,7 +315,8 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment=0x7f030016;
         public static final int menu_option=0x7f030017;
         public static final int table_history=0x7f030018;
-        public static final int webview_help=0x7f030019;
+        public static final int test=0x7f030019;
+        public static final int webview_help=0x7f03001a;
     }
     public static final class string {
         public static final int app_id=0x7f060021;
