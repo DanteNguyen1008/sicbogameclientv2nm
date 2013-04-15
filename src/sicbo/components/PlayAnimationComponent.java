@@ -10,12 +10,11 @@ import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.color.Color;
 
 import sicbo.components.AbItemComponent.ItemType;
-
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity;
 import com.example.sicbogameexample.GameScene;
-import com.example.sicbogameexample.GameEntity.PatternType;
 import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class PlayAnimationComponent implements IAnimationListener {
@@ -23,9 +22,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 	GameScene scene;
 	public ItemComponent background;
 	public List<TextComponent> displayTextList;
-	public ArrayList<ButtonComponent> buttonAnimatedList;
 	public ArrayList<AnimationComponent> animatedItemList;
-
+    public boolean showBackgroundResult=false;
 	public PlayAnimationComponent(GameScene scene) {
 		this.scene = scene;
 
@@ -64,18 +62,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public void loadResource() {
 		// TODO Auto-generated method stub
 		// Load background
-
+  
 		background = new ItemComponent(1, 401, 250, "resultbg.png", -800, -480,
 				scene.getEngine().getTextureManager(), scene.getActivity(),
 				scene.getEngine(), ItemType.NORMAL_ITEM);
 		loadText();
-		buttonAnimatedList = new ArrayList<ButtonComponent>();
-		buttonAnimatedList.add(new ButtonComponent(59, 203, 50, 2, 1,
-				"btnTiledNext.png", -GameEntity.CAMERA_WIDTH,
-				-GameEntity.CAMERA_HEIGHT, scene.getEngine()
-						.getTextureManager(), scene.getActivity(), scene
-						.getEngine(), ItemType.BUTTON_NEXT, scene.getScene(),
-				SceneType.GAME));
+		
 
 		// Load animation component
 		animatedItemList = new ArrayList<AnimationComponent>();
@@ -194,6 +186,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 						.getTextureManager(), scene.getActivity(), scene
 						.getEngine(), ItemType.DICE_RIGHT, scene.getScene(),
 				null));
+	  
 	}
 
 	public void loadAniamtionScene() {
@@ -207,8 +200,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 			background.getSprite().attachChild(displayTextList.get(i).text);
 		}
 
-		background.getSprite().attachChild(
-				buttonAnimatedList.get(0).tiledSprite);
+		/*background.getSprite().attachChild(
+				buttonAnimatedList.get(0).tiledSprite);*/
 	}
 
 	public void playAnimation() {
@@ -236,7 +229,10 @@ public class PlayAnimationComponent implements IAnimationListener {
 		background.getSprite().setPosition(199, 100);
 		background.getSprite().setZIndex(999);
 		background.getSprite().getParent().sortChildren();
-
+		showBackgroundResult=true;
+		
+		GameEntity.getInstance().sceneManager.gameScene
+		.enableAllTouch();
 	}
 
 	public void stopAnimation() {
@@ -295,11 +291,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 						-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT);
 			}
 		}
-		buttonAnimatedList.get(0).tiledSprite.setPosition(
-				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT);
-
-		scene.getScene().unregisterTouchArea(
-				buttonAnimatedList.get(0).tiledSprite);
+		
 		background.getSprite().setZIndex(0);
 		background.getSprite().getParent().sortChildren();
 
@@ -354,6 +346,20 @@ public class PlayAnimationComponent implements IAnimationListener {
 						.getInstance().currentGame.winPatterns.get(j)) {
 					if (isDisplay) {
 						scene.patternList.get(i).getSprite().setAlpha(0.5f);
+						GameEntity.getInstance().createFireWork(
+								scene.patternList.get(i).getPositionX()
+										+ scene.patternList.get(i).getiWidth()
+										/ 2,
+								scene.patternList.get(i).getPositionY()
+										+ scene.patternList.get(i).getiHeight()
+										/ 2, 32, 32, Color.RED, 20, 2);
+						GameEntity.getInstance().createFireWork(
+								scene.patternList.get(i).getPositionX()
+										+ scene.patternList.get(i).getiWidth()
+										/ 2,
+								scene.patternList.get(i).getPositionY()
+										+ scene.patternList.get(i).getiHeight()
+										/ 2, 32, 32, Color.YELLOW, 20, 2);
 						
 						
 					} else {
@@ -409,9 +415,6 @@ public class PlayAnimationComponent implements IAnimationListener {
 			}
 		}
 
-		buttonAnimatedList.get(0).tiledSprite.setPosition(160, 195);
-		scene.getScene().registerTouchArea(
-				buttonAnimatedList.get(0).tiledSprite);
 
 	}
 
