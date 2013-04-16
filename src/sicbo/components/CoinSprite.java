@@ -96,7 +96,8 @@ public class CoinSprite extends GenericPool<Sprite> {
 					if (mGrabbed) {
 						mGrabbed = false;
 						this.setScale(1.2f);
-						GameEntity.getInstance().currentCoint = coinComponent.getCoinID();
+						GameEntity.getInstance().currentCoint = coinComponent
+								.getCoinID();
 						specifyDragOnItem(pSceneTouchEvent.getX(),
 								pSceneTouchEvent.getY(), pSceneTouchEvent,
 								TouchEvent.ACTION_DOWN);
@@ -161,21 +162,18 @@ public class CoinSprite extends GenericPool<Sprite> {
 								.get(i).getPositionY() + GameEntity
 								.getInstance().sceneManager.gameScene.patternList
 								.get(i).getiHeight()))) {
+					/*
+					 * GameEntity.getInstance().sceneManager.gameScene.patternList
+					 * .get(i) .getSprite() .onAreaTouched( TouchEvent.obtain(X,
+					 * Y, touchEventType, 0, pSceneTouchEvent.getMotionEvent()),
+					 * X, Y);
+					 * GameEntity.getInstance().sceneManager.gameScene.patternList
+					 * .get(i) .getSprite() .onAreaTouched( TouchEvent.obtain(X,
+					 * Y, TouchEvent.ACTION_UP, 0,
+					 * pSceneTouchEvent.getMotionEvent()), X, Y);
+					 */
 					GameEntity.getInstance().sceneManager.gameScene.patternList
-							.get(i)
-							.getSprite()
-							.onAreaTouched(
-									TouchEvent.obtain(X, Y, touchEventType, 0,
-											pSceneTouchEvent.getMotionEvent()),
-									X, Y);
-					GameEntity.getInstance().sceneManager.gameScene.patternList
-							.get(i)
-							.getSprite()
-							.onAreaTouched(
-									TouchEvent.obtain(X, Y,
-											TouchEvent.ACTION_UP, 0,
-											pSceneTouchEvent.getMotionEvent()),
-									X, Y);
+							.get(i).bet();
 				}
 			}
 		}
