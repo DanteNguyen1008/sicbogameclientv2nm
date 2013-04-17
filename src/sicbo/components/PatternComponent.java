@@ -45,33 +45,13 @@ public class PatternComponent extends AbItemComponent {
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_DOWN:
 					this.setAlpha(0.5f);
-<<<<<<< HEAD
-					if(GameEntity.getInstance().sceneManager.gameScene.
-		            		playAnimationComponent.showBackgroundResult==true)
-		            {
-		            	GameEntity.getInstance().sceneManager.gameScene
-						.buttonPlaySound();
-				GameEntity.getInstance().updateAfterBet();
-				GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
-						.stopAnimation();
-				GameEntity.getInstance().sceneManager.gameScene.
-        		playAnimationComponent.resetEntityPosition();
-				GameEntity.getInstance().sceneManager.gameScene.
-        		playAnimationComponent.removeRectWin();
-				GameEntity.getInstance().sceneManager.gameScene.
-        		playAnimationComponent.showBackgroundResult=false;
-				
-		            }
-					GameEntity.getInstance().bet(getPositionX() + getiWidth() / 2
-							- GameEntity.miniCoiWidth / 2, getPositionY()
-							+ getiHeight() / 2 - GameEntity.miniCoinHeight / 2, PatternComponent.this);
+
 					
-=======
 					if(System.currentTimeMillis() - systemTime1 < 300)
 					{
 						bet();
 					}
->>>>>>> upstream/master
+
 					break;
 				case TouchEvent.ACTION_MOVE:
 					Log.d("Touch Event", "Touch to ID : " + getiID());

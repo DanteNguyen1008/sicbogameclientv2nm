@@ -41,7 +41,7 @@ public class RectangleLine {
 		  for(int i=0;i<4;i++)
 		  {
 			  lRect[i].setColor(Color.RED);
-			  lRect[i].setLineWidth(2f);
+			  lRect[i].setLineWidth(3f);
 			  scene.attachChild(lRect[i]);
 		  }
 	  }
@@ -53,5 +53,9 @@ public class RectangleLine {
 			lRect[i].dispose();
 			lRect[i]=null;
 		}
+	}
+	public void animation()
+	{
+		
 	}
 }

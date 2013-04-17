@@ -651,6 +651,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.resetEntityPosition();
 		GameEntity.getInstance().sceneManager.gameScene.
 		playAnimationComponent.showBackgroundResult=false;
+		this.enableAllTouch();
             }
     }
    

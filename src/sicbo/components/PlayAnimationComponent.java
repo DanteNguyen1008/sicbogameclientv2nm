@@ -430,7 +430,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 		// TODO Auto-generated method stub
 		displayResultText();
 		
-		
+		scene.disableAllTouch();
 		
 		setEntityTextPosition();
        
