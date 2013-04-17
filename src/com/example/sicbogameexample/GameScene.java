@@ -647,7 +647,9 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 		GameEntity.getInstance().updateAfterBet();
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 				.stopAnimation();
+
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.removeRectWin();
+
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.resetEntityPosition();
 		GameEntity.getInstance().sceneManager.gameScene.
 		playAnimationComponent.showBackgroundResult=false;
@@ -658,5 +660,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
     return true;
 		
 	}
+
 	
+
 }
