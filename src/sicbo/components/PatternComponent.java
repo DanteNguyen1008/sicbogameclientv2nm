@@ -52,7 +52,12 @@ public class PatternComponent extends AbItemComponent {
 				GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 						.stopAnimation();
 				GameEntity.getInstance().sceneManager.gameScene.
+        		playAnimationComponent.resetEntityPosition();
+				GameEntity.getInstance().sceneManager.gameScene.
+        		playAnimationComponent.removeRectWin();
+				GameEntity.getInstance().sceneManager.gameScene.
         		playAnimationComponent.showBackgroundResult=false;
+				
 		            }
 					GameEntity.getInstance().bet(getPositionX() + getiWidth() / 2
 							- GameEntity.miniCoiWidth / 2, getPositionY()
