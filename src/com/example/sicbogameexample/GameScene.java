@@ -8,12 +8,14 @@ import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveModifier;
+import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
@@ -67,6 +69,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 	MyMenuScene menuScene;
 
 	TextComponent runableText;
+	 public VertexBufferObjectManager getVertextBuffer;
 
 	public GameScene(Engine engine, Camera camera, BaseGameActivity activity) {
 		super(engine, camera, activity);
@@ -79,6 +82,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 		textList = new ArrayList<TextComponent>();
 		betList = new ArrayList<BetComponent>();
 		fireworkList = new ArrayList<ParticleSystemComponent>();
+		getVertextBuffer=activity.getVertexBufferObjectManager();
 		GameEntity.getInstance().mSensorListener.setOnShakeListener(this);
 
 	}
@@ -496,8 +500,10 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 
 		// load animation
 		playAnimationComponent.loadAniamtionScene();
+		getScene().attachChild(playAnimationComponent.diceEntity);
+		getScene().attachChild(playAnimationComponent.textEntity);
 
-		getScene().attachChild(playAnimationComponent.background.getSprite());
+		//getScene().attachChild(playAnimationComponent.background.getSprite());
 		// load Dialog
 		getScene().attachChild(confirmDialog.getSprite());
 		getScene().attachChild(confirmErrorDialog.getSprite());
@@ -641,6 +647,9 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 		GameEntity.getInstance().updateAfterBet();
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 				.stopAnimation();
+		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.removeRectWin();
+		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.resetEntityPosition();
+		GameEntity.getInstance().sceneManager.gameScene.
 		playAnimationComponent.showBackgroundResult=false;
             }
     }
@@ -648,5 +657,5 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
     return true;
 		
 	}
-
+	
 }

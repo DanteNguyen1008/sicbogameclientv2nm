@@ -3,6 +3,9 @@ package sicbo.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.andengine.entity.Entity;
+import org.andengine.entity.primitive.Line;
+import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.opengl.font.Font;
@@ -11,21 +14,25 @@ import org.andengine.util.color.Color;
 
 import sicbo.components.AbItemComponent.ItemType;
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.example.sicbogameexample.GameEntity;
 import com.example.sicbogameexample.GameScene;
-import com.example.sicbogameexample.SceneManager.SceneType;
 
 public class PlayAnimationComponent implements IAnimationListener {
 
 	GameScene scene;
-	public ItemComponent background;
+	//public ItemComponent background;
+	public Entity diceEntity;
+	public Entity textEntity;
 	public List<TextComponent> displayTextList;
 	public ArrayList<AnimationComponent> animatedItemList;
+	ArrayList<RectangleLine> rectWinList;
     public boolean showBackgroundResult=false;
 	public PlayAnimationComponent(GameScene scene) {
 		this.scene = scene;
+		diceEntity=new Entity();
+		textEntity=new Entity();
+		rectWinList=new ArrayList<RectangleLine>();
 
 	}
 
@@ -45,27 +52,27 @@ public class PlayAnimationComponent implements IAnimationListener {
 		displayTextList.add(new TextComponent(1, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
 						.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.TEXT, 1, Color.WHITE,
+				scene.getEngine(), ItemType.TEXT, 0.6f, Color.BLACK,
 				mChangableFont));
 		// 200 100
 		displayTextList.add(new TextComponent(2, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
 						.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE, smallFont));
+				scene.getEngine(), ItemType.TEXT, 0.6f, Color.BLACK, smallFont));
 		// 200 150
 		displayTextList.add(new TextComponent(3, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
 						.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.TEXT, 1f, Color.WHITE, smallFont));
+				scene.getEngine(), ItemType.TEXT, 0.6f, Color.BLACK, smallFont));
 	}
 
 	public void loadResource() {
 		// TODO Auto-generated method stub
 		// Load background
   
-		background = new ItemComponent(1, 401, 250, "resultbg.png", -800, -480,
+	/*	background = new ItemComponent(1, 401, 250, "resultbg.png", -800, -480,
 				scene.getEngine().getTextureManager(), scene.getActivity(),
-				scene.getEngine(), ItemType.NORMAL_ITEM);
+				scene.getEngine(), ItemType.NORMAL_ITEM);*/
 		loadText();
 		
 
@@ -192,18 +199,168 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public void loadAniamtionScene() {
 		// attach all to background
 		for (int i = 0; i < animatedItemList.size(); i++) {
-			background.getSprite().attachChild(
-					animatedItemList.get(i).animatedSprite);
+			/*background.getSprite().attachChild(
+					animatedItemList.get(i).animatedSprite);*/
+			//scene.getScene().attachChild(animatedItemList.get(i).animatedSprite);
+			diceEntity.attachChild(animatedItemList.get(i).animatedSprite);
+			
+				if(i<3)
+				{
+					textEntity.attachChild(displayTextList.get(i).text);
+				}
+			
+			
 		}
+		
 
-		for (int i = 0; i < displayTextList.size(); i++) {
-			background.getSprite().attachChild(displayTextList.get(i).text);
-		}
-
-		/*background.getSprite().attachChild(
-				buttonAnimatedList.get(0).tiledSprite);*/
 	}
-
+	 public void removeRectWin()
+	 {
+		 int rectWinSize=rectWinList.size();
+		 for(int i=0;i<rectWinSize;i++)
+		 {
+			 rectWinList.get(i).removeRect();
+		 }
+		 rectWinList=null;
+		 rectWinList=new ArrayList<RectangleLine>();
+	 }
+     void setEntityTextPosition()
+     {
+    	 textEntity.getChildByIndex(0).setPosition(GameEntity.CAMERA_WIDTH-3*GameEntity.CAMERA_WIDTH/5+50, -10);
+    	 textEntity.getChildByIndex(1).setPosition(GameEntity.CAMERA_WIDTH-3*GameEntity.CAMERA_WIDTH/5, 20);
+    	 textEntity.getChildByIndex(2).setPosition(GameEntity.CAMERA_WIDTH-3*GameEntity.CAMERA_WIDTH/5, 40);
+     }
+     public void resetEntityPosition()
+     {
+    	 int size=scene.patternList.size();
+     	int size1=scene.buttonList.size();
+     	int coinDragSize=scene.dragList.size();
+     	
+      
+     	for(int i=0;i<size;i++)
+     		
+     	{  
+     		if(i<4)
+     		{
+     			scene.itemList.get(i).getSprite().setPosition(scene.itemList.get(i).getSprite().getX()
+     					,scene.itemList.get(i).getSprite().getY()-70);
+     			if(i<2)
+    			{
+    				scene.textList.get(i).text.setPosition(scene.textList.get(i).text.getX(),
+    						scene.textList.get(i).text.getY()-70);
+    			}
+     		}
+     		
+     		scene.patternList.get(i).getSprite().setPosition(scene.patternList.get(i).getSprite().getX(),
+     			
+     				scene.patternList.get(i).getSprite().getY()-70);
+     		for(int m = 0;m<scene.patternList.get(i).coinList.size();m++)
+     		{
+     			scene.patternList.get(i).coinList.get(m).getSprite().setPosition(scene.patternList.get(i).coinList.get(m).getSprite().getX(),
+     					scene.patternList.get(i).coinList.get(m).getSprite().getY()-70);
+     		}
+     		
+     	}
+     	
+        for(int j=0;j<size1;j++)
+        {  
+     	   if(j>=4)
+     	   {
+     	   if(j==4)
+     	   {
+     		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+     				   scene.buttonList.get(j).tiledSprite.getY()+50);
+     	   }
+     	   else if(j==5)
+     	   {
+     		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+     				   scene.buttonList.get(j).tiledSprite.getY()-160);
+     	   }
+     	   
+             }
+     	   else
+     	   {
+     		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+     				   scene.buttonList.get(j).tiledSprite.getY()-50);
+     	   }
+     	   
+     	  
+     	   
+        }
+        for(int n=0;n<coinDragSize;n++)
+        {
+     	   scene.dragList.get(n).tempDrag.setPosition(scene.dragList.get(n).tempDrag.getX(),
+     			   scene.dragList.get(n).tempDrag.getY()-50);
+        }
+     	   
+     }
+    void changeEntityPosition()
+    {   
+    	int size=scene.patternList.size();
+    	int size1=scene.buttonList.size();
+    	int coinDragSize=scene.dragList.size();
+    	
+     
+    	for(int i=0;i<size;i++)
+    		
+    	{  
+    		if(i<4)
+    		{
+    			scene.itemList.get(i).getSprite().setPosition(scene.itemList.get(i).getSprite().getX()
+    					,scene.itemList.get(i).getSprite().getY()+70);
+    			if(i<2)
+    			{
+    				scene.textList.get(i).text.setPosition(scene.textList.get(i).text.getX(),
+    						scene.textList.get(i).text.getY()+70);
+    			}
+    		}
+    		
+    		scene.patternList.get(i).getSprite().setPosition(scene.patternList.get(i).getSprite().getX(),
+    			
+    				scene.patternList.get(i).getSprite().getY()+70);
+    		for(int m = 0;m<scene.patternList.get(i).coinList.size();m++)
+    		{
+    			scene.patternList.get(i).coinList.get(m).getSprite().setPosition(scene.patternList.get(i).coinList.get(m).getSprite().getX(),
+    					scene.patternList.get(i).coinList.get(m).getSprite().getY()+70);
+    		}
+    		
+    	}
+    	
+       for(int j=0;j<size1;j++)
+       {  
+    	   if(j>=4)
+    	   {
+    	   if(j==4)
+    	   {
+    		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+    			
+    				   scene.buttonList.get(j).tiledSprite.getY()-50);
+    	   }
+    	   else if(j==5)
+    	   {
+    		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+    				   scene.buttonList.get(j).tiledSprite.getY()+160);
+    	   }
+    	   
+            }
+    	   else
+    	   {
+    		   scene.buttonList.get(j).tiledSprite.setPosition( scene.buttonList.get(j).tiledSprite.getX(),
+    				   scene.buttonList.get(j).tiledSprite.getY()+50);
+    	   }
+    	   
+    	  
+    	   
+       }
+       for(int n=0;n<coinDragSize;n++)
+       {
+    	   scene.dragList.get(n).tempDrag.setPosition(scene.dragList.get(n).tempDrag.getX(),
+    			   scene.dragList.get(n).tempDrag.getY()+50);
+       }
+    	   
+    }
+    
+    
 	public void playAnimation() {
 		GameEntity.getInstance().isAnimationRunning = true;
 		for (int i = 0; i < animatedItemList.size(); i++) {
@@ -226,9 +383,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 				animatedItemList.get(i).animatedSprite.setPosition(276, 110);
 			}
 		}
-		background.getSprite().setPosition(199, 100);
+		//scene.getScene().attachChild(diceEntity);
+		//diceEntity.setPosition(50,-80);
+		
+		/*background.getSprite().setPosition(199, 100);
 		background.getSprite().setZIndex(999);
-		background.getSprite().getParent().sortChildren();
+		background.getSprite().getParent().sortChildren();*/
 		showBackgroundResult=true;
 		
 		GameEntity.getInstance().sceneManager.gameScene
@@ -236,8 +396,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 	}
 
 	public void stopAnimation() {
-		background.getSprite().setPosition(-GameEntity.CAMERA_WIDTH,
-				-GameEntity.CAMERA_HEIGHT);
+		/*background.getSprite().setPosition(-GameEntity.CAMERA_WIDTH,
+				-GameEntity.CAMERA_HEIGHT);*/
 		GameEntity.getInstance().mSensorListener.registerShake();
 		hideResultText();
 	}
@@ -246,7 +406,9 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
 			int pInitialLoopCount) {
 		// TODO Auto-generated method stub
-
+		 changeEntityPosition();
+		diceEntity.setScale(0.8f);
+		diceEntity.setPosition(60,-80);
 	}
 
 	@Override
@@ -267,6 +429,11 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 		// TODO Auto-generated method stub
 		displayResultText();
+		
+		
+		
+		setEntityTextPosition();
+       
 
 	}
 
@@ -292,13 +459,10 @@ public class PlayAnimationComponent implements IAnimationListener {
 			}
 		}
 		
-		background.getSprite().setZIndex(0);
-		background.getSprite().getParent().sortChildren();
-
 		displayWinPatterns(false);
 		GameEntity.getInstance().isAnimationRunning = false;
 	}
-
+	
 	private void displayWinPatterns(boolean isDisplay) {
 		// Display win pattern.
 		
@@ -309,19 +473,22 @@ public class PlayAnimationComponent implements IAnimationListener {
 				if (scene.patternList.get(i).patternType == GameEntity
 						.getInstance().currentGame.winPatterns.get(j)) {
 					if (isDisplay) {
-						scene.patternList.get(i).getSprite().setAlpha(0.5f);
+						rectWinList.add(new RectangleLine(scene.getScene(), scene.patternList.get(i).getSprite().getX(),
+								scene.patternList.get(i).getSprite().getY(), 
+								scene.patternList.get(i).getSprite().getWidth(),
+								scene.patternList.get(i).getSprite().getHeight(),scene.getVertextBuffer));
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
 										/ 2,
-								scene.patternList.get(i).getPositionY()
+								scene.patternList.get(i).getPositionY()+70
 										+ scene.patternList.get(i).getiHeight()
 										/ 2, 32, 32, Color.RED, 20, 2);
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
 										/ 2,
-								scene.patternList.get(i).getPositionY()
+								scene.patternList.get(i).getPositionY()+70
 										+ scene.patternList.get(i).getiHeight()
 										/ 2, 32, 32, Color.YELLOW, 20, 2);
 					} else {
@@ -345,19 +512,23 @@ public class PlayAnimationComponent implements IAnimationListener {
 				if (scene.patternList.get(i).patternType == GameEntity
 						.getInstance().currentGame.winPatterns.get(j)) {
 					if (isDisplay) {
-						scene.patternList.get(i).getSprite().setAlpha(0.5f);
+						rectWinList.add(new RectangleLine(scene.getScene(), scene.patternList.get(i).getSprite().getX(),
+								scene.patternList.get(i).getSprite().getY(), 
+								scene.patternList.get(i).getSprite().getWidth(),
+								scene.patternList.get(i).getSprite().getHeight(),scene.getVertextBuffer));
+						
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
 										/ 2,
-								scene.patternList.get(i).getPositionY()
+								scene.patternList.get(i).getPositionY()+70
 										+ scene.patternList.get(i).getiHeight()
 										/ 2, 32, 32, Color.RED, 20, 2);
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
 										/ 2,
-								scene.patternList.get(i).getPositionY()
+								scene.patternList.get(i).getPositionY()+70
 										+ scene.patternList.get(i).getiHeight()
 										/ 2, 32, 32, Color.YELLOW, 20, 2);
 						
