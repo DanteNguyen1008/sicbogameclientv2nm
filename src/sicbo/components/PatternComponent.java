@@ -45,10 +45,13 @@ public class PatternComponent extends AbItemComponent {
 				switch (pSceneTouchEvent.getAction()) {
 				case TouchEvent.ACTION_DOWN:
 					this.setAlpha(0.5f);
+
+					
 					if(System.currentTimeMillis() - systemTime1 < 300)
 					{
 						bet();
 					}
+
 					break;
 				case TouchEvent.ACTION_MOVE:
 					Log.d("Touch Event", "Touch to ID : " + getiID());
