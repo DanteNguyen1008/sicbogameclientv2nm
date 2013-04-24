@@ -601,7 +601,7 @@ public class GameEntity {
 								pd.dismiss();
 							}
 						});
-				
+
 				// dataList = connectionHandler.parseData(responseName);
 				JSONObject result = connectionHandler.getResult();
 				String s = connectionHandler.getTaskID();

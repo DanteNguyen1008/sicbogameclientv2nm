@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.andengine.entity.Entity;
-import org.andengine.entity.modifier.AlphaModifier;
-import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.primitive.Line;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
-import org.andengine.util.adt.pool.EntityDetachRunnablePoolItem;
 import org.andengine.util.color.Color;
 
 import sicbo.components.AbItemComponent.ItemType;
@@ -32,15 +28,11 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public ArrayList<AnimationComponent> animatedItemList;
 	ArrayList<RectangleLine> rectWinList;
     public boolean showBackgroundResult=false;
-    public List<Integer> getWinPatterSprite;
-    LoopEntityModifier entityModifier ;
 	public PlayAnimationComponent(GameScene scene) {
 		this.scene = scene;
 		diceEntity=new Entity();
 		textEntity=new Entity();
 		rectWinList=new ArrayList<RectangleLine>();
-		getWinPatterSprite=new ArrayList<Integer>();
-		
 
 	}
 
@@ -229,10 +221,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 		 {
 			 rectWinList.get(i).removeRect();
 		 }
-		 rectWinList.clear();
-		 
-		 //rectWinList=null;
-		// rectWinList=new ArrayList<RectangleLine>();
+		 rectWinList=null;
+		 rectWinList=new ArrayList<RectangleLine>();
 	 }
      void setEntityTextPosition()
      {
@@ -393,8 +383,13 @@ public class PlayAnimationComponent implements IAnimationListener {
 				animatedItemList.get(i).animatedSprite.setPosition(276, 110);
 			}
 		}
+		//scene.getScene().attachChild(diceEntity);
+		//diceEntity.setPosition(50,-80);
 		
-		//showBackgroundResult=true;
+		/*background.getSprite().setPosition(199, 100);
+		background.getSprite().setZIndex(999);
+		background.getSprite().getParent().sortChildren();*/
+		showBackgroundResult=true;
 		
 		GameEntity.getInstance().sceneManager.gameScene
 		.enableAllTouch();
@@ -433,10 +428,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 	@Override
 	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 		// TODO Auto-generated method stub
-		entityModifier=new LoopEntityModifier(new SequenceEntityModifier(new AlphaModifier(2, 1, 0),
-				new AlphaModifier(1, 0, 1)));
 		displayResultText();
-		showBackgroundResult=true;
+		
 		scene.disableAllTouch();
 		
 		setEntityTextPosition();
@@ -484,8 +477,6 @@ public class PlayAnimationComponent implements IAnimationListener {
 								scene.patternList.get(i).getSprite().getY(), 
 								scene.patternList.get(i).getSprite().getWidth(),
 								scene.patternList.get(i).getSprite().getHeight(),scene.getVertextBuffer));
-						scene.patternList.get(i).getSprite().registerEntityModifier(entityModifier);
-						getWinPatterSprite.add(i);
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
@@ -525,8 +516,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 								scene.patternList.get(i).getSprite().getY(), 
 								scene.patternList.get(i).getSprite().getWidth(),
 								scene.patternList.get(i).getSprite().getHeight(),scene.getVertextBuffer));
-						scene.patternList.get(i).getSprite().registerEntityModifier(entityModifier);
-						getWinPatterSprite.add(i);
+						
 						GameEntity.getInstance().createFireWork(
 								scene.patternList.get(i).getPositionX()
 										+ scene.patternList.get(i).getiWidth()
@@ -598,17 +588,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 
 	}
-    public void unRegisterModifier()
-    {   
-    	int size=getWinPatterSprite.size();
-    	for(int i=0;i<size;i++)
-    	{
-    		scene.patternList.get(getWinPatterSprite.get(i)).getSprite().unregisterEntityModifier(entityModifier);
-    		//scene.patternList.get(getWinPatterSprite.get(i)).getSprite().setIgnoreUpdate(true);
-    	
-    	}
-    	getWinPatterSprite.clear();
-    }
+
 	private void displayFireWork() {
 		GameEntity.getInstance().createFireWork(50, 50, 32, 32, Color.RED, 20,
 				3);

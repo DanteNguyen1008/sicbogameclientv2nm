@@ -641,8 +641,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
     if(pSceneTouchEvent.isActionUp()) {
             if(GameEntity.getInstance().sceneManager.gameScene.
             		playAnimationComponent.showBackgroundResult==true)
-            {  
-            	
+            {
             	GameEntity.getInstance().sceneManager.gameScene
 				.buttonPlaySound();
 		GameEntity.getInstance().updateAfterBet();
@@ -650,7 +649,7 @@ public class GameScene extends MyScene implements OnShakeListener ,IOnSceneTouch
 				.stopAnimation();
 
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.removeRectWin();
-		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.unRegisterModifier();
+
 		GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.resetEntityPosition();
 		GameEntity.getInstance().sceneManager.gameScene.
 		playAnimationComponent.showBackgroundResult=false;
