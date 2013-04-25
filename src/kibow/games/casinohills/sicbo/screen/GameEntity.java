@@ -8,6 +8,8 @@ import kibow.games.casinohills.sicbo.Acitivty.ProfileActivity;
 import kibow.games.casinohills.sicbo.Acitivty.ViewHistoryActivity;
 import kibow.games.casinohills.sicbo.Acitivty.WebviewHelpPage;
 import kibow.games.casinohills.sicbo.components.BetComponent;
+import kibow.games.casinohills.sicbo.components.CharacterComponent;
+import kibow.games.casinohills.sicbo.components.CharacterComponent.CharacterAction;
 import kibow.games.casinohills.sicbo.components.CoinComponent;
 import kibow.games.casinohills.sicbo.components.GameComponent;
 import kibow.games.casinohills.sicbo.components.HistoryComponent;
@@ -96,6 +98,7 @@ public class GameEntity implements IOnNetworkHandle {
 	public boolean isMusicEnable = true;
 	public boolean isMenuDisplay = false;
 	public boolean isBackPress = false;
+	public boolean isCharacterFinishSaid = true;
 
 	// Enum
 	public enum GameAction {
@@ -179,9 +182,15 @@ public class GameEntity implements IOnNetworkHandle {
 	 */
 	public void bet(float X, float Y, PatternComponent pattern) {
 		if (userComponent.balance.balance - currentCoint < 0) {
-			displayConfirmDialog("You do not enough money", 170, 200);
+			if (!isMusicEnable)
+				displayConfirmDialog("You do not enough money", 170, 200);
+			else
+				playVoiceCharacter(CharacterAction.NO_MORE_BET);
 		} else if (betAmountRemain - currentCoint < 0) {
-			displayConfirmDialog("You can not bet over 100 zenny", 170, 200);
+			if (!isMusicEnable)
+				displayConfirmDialog("You can not bet over 100 zenny", 170, 200);
+			else
+				playVoiceCharacter(CharacterAction.NO_MORE_BET);
 		} else {
 			if (gameAction.equals(GameEntity.GameAction.RESET)) {
 				// GameEntity.sceneManager.gameScene.coinList.clear();
@@ -289,7 +298,10 @@ public class GameEntity implements IOnNetworkHandle {
 		if (gameAction.equals(GameEntity.GameAction.RESET)) {
 			double amoutUpdate = checkBalanceRebet();
 			if (userComponent.balance.balance - amoutUpdate < 0) {
-				displayConfirmDialog("You do not enough money", 170, 200);
+				if (!isMusicEnable)
+					displayConfirmDialog("You do not enough money", 170, 200);
+				else
+					playVoiceCharacter(CharacterAction.NO_MORE_BET);
 			} else {
 				int patternListSize = sceneManager.gameScene.patternList.size();
 				for (int j = 0; j < patternListSize; j++) {
@@ -358,6 +370,31 @@ public class GameEntity implements IOnNetworkHandle {
 		gameAction = GameEntity.GameAction.RESET;
 	}
 
+	public static int random(int min, int max) {
+		return min + (int) (Math.random() * ((max - min) + 1));
+	}
+
+	private void playVoiceCharacter(CharacterComponent.CharacterAction action) {
+		int charIndex = random(1, 2);
+		CharacterComponent charSay = null;
+		if (charIndex == 1) {
+			charSay = sceneManager.gameScene.characterBoy;
+		} else {
+			charSay = sceneManager.gameScene.characterGirl;
+		}
+
+		switch (action) {
+		case PLEASE_PLAY_BET:
+			charSay.say(6);
+			break;
+		case NO_MORE_BET:
+			charSay.say(0);
+			break;
+		default:
+			break;
+		}
+	}
+
 	/**
 	 * When user click start game or shake phone, this method will be call
 	 * Called from Button action click and Shake phone method on game scene
@@ -383,7 +420,10 @@ public class GameEntity implements IOnNetworkHandle {
 		}
 
 		if (!isBet) {
-			displayConfirmDialog("You must bet before start game", 170, 200);
+			if (!isMusicEnable)
+				displayConfirmDialog("You must bet before start game", 170, 200);
+			else
+				playVoiceCharacter(CharacterAction.PLEASE_PLAY_BET);
 		} else {
 			sortBetList();
 			networkHandler = new AsyncNetworkHandler();
@@ -580,8 +620,7 @@ public class GameEntity implements IOnNetworkHandle {
 
 		currentGame.setGame(isWin, game.getString("dice"),
 				point.getDouble("current"), totalBetAmount,
-				point.getDouble("current") - userComponent.balance.balance,
-				game.getString("win"));
+				point.getDouble("win"), game.getString("win"));
 		userComponent.balance.balance = GameEntity.getInstance().currentGame.newBalance;
 		// sceneManager.setScene(SceneType.ANIMATION);
 		sceneManager.gameScene.playAnimationComponent.playAnimation();

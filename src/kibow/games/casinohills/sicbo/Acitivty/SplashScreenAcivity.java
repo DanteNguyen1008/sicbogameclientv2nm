@@ -49,9 +49,9 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(),
-				100, 100, TextureOptions.NEAREST);
+				224, 200, TextureOptions.NEAREST);
 		splashTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(splashTextureAtlas, this, "logosicbo.jpg", 0, 0);
+				.createFromAsset(splashTextureAtlas, this, "sicbo_logo.png", 0, 0);
 		splashTextureAtlas.load();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
@@ -73,7 +73,7 @@ public class SplashScreenAcivity extends BaseGameActivity implements
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		// TODO Auto-generated method stub
-		mEngine.registerUpdateHandler(new TimerHandler(1f, this));
+		mEngine.registerUpdateHandler(new TimerHandler(2f, this));
 
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}

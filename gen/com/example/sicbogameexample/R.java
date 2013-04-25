@@ -34,8 +34,9 @@ public final class R {
         public static final int rounded_btn_sign_in=0x7f02000e;
         public static final int rounded_btn_sign_in_press=0x7f02000f;
         public static final int rounded_edit_password=0x7f020010;
-        public static final int sicbologon=0x7f020011;
-        public static final int wood_bg=0x7f020012;
+        public static final int sicbo_logo=0x7f020011;
+        public static final int sicbologon=0x7f020012;
+        public static final int wood_bg=0x7f020013;
     }
     public static final class id {
         public static final int ScrollView11=0x7f08001d;

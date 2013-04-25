@@ -397,18 +397,20 @@ public class PlayAnimationComponent implements IAnimationListener {
 	 */
 
 	private void updateCharacterAfterResult(boolean isWin) {
+		int index = 0;
 		if (isWin) {
-			scene.characterBoy
-					.changeSprite(CharacterComponent.CHAR_STATUS_WIN2);
-			scene.characterGirl
-					.changeSprite(CharacterComponent.CHAR_STATUS_WIN2);
+			index = GameEntity.random(CharacterComponent.CHAR_STATUS_WIN1,
+					CharacterComponent.CHAR_STATUS_WIN2);
 		} else {
-			scene.characterBoy
-					.changeSprite(CharacterComponent.CHAR_STATUS_LOSE1);
-			scene.characterGirl
-					.changeSprite(CharacterComponent.CHAR_STATUS_LOSE1);
+			index = GameEntity.random(CharacterComponent.CHAR_STATUS_LOSE1,
+					CharacterComponent.CHAR_STATUS_LOSE3);
 		}
 
+		scene.characterBoy.changeSprite(index);
+		scene.characterGirl.changeSprite(index);
+
+		CharacterComponent.playSequence(scene.characterBoy.getPlayVoice(index),
+				scene.characterGirl.getPlayVoice(index));
 	}
 
 	/*

@@ -45,6 +45,7 @@ public class MSComponent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	public MSComponent(int iID, String resourceURL, MStype type,
@@ -67,6 +68,7 @@ public class MSComponent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	public void play() {

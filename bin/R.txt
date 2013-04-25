@@ -17,8 +17,9 @@ int drawable rounded_btn_back 0x7f02000d
 int drawable rounded_btn_sign_in 0x7f02000e
 int drawable rounded_btn_sign_in_press 0x7f02000f
 int drawable rounded_edit_password 0x7f020010
-int drawable sicbologon 0x7f020011
-int drawable wood_bg 0x7f020012
+int drawable sicbo_logo 0x7f020011
+int drawable sicbologon 0x7f020012
+int drawable wood_bg 0x7f020013
 int id ScrollView11 0x7f08001d
 int id btn_about_bitcoin 0x7f080009
 int id btn_about_game 0x7f080008
