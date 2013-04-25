@@ -98,10 +98,10 @@ public class GameScene extends MyScene implements OnShakeListener,
 	private void loadCharacter() {
 		characterBoy = new CharacterComponent(1, 1757, 399, 6, 1,
 				"character_boy.png", -100, 100, getActivity(),
-				ItemType.NORMAL_ITEM);
+				ItemType.CHARACTER_BOY);
 		characterGirl = new CharacterComponent(1, 1757, 399, 6, 1,
 				"character_girl.png", 600, 100, getActivity(),
-				ItemType.NORMAL_ITEM);
+				ItemType.CHARACTER_GIRL);
 	}
 
 	/*
@@ -579,17 +579,15 @@ public class GameScene extends MyScene implements OnShakeListener,
 
 	public void playWinSound(boolean isPlay) {
 
-		winSound.play();
+		// winSound.play();
 
 	}
 
 	public void playLoseSound(boolean isPlay) {
-		if (loseSound != null) {
-			if (isPlay)
-				loseSound.play();
-			else
-				loseSound.stop();
-		}
+		/*
+		 * if (loseSound != null) { if (isPlay) loseSound.play(); else
+		 * loseSound.stop(); }
+		 */
 	}
 
 	public void displayMenu() {
@@ -626,7 +624,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		// TODO Auto-generated method stub
-		if (!GameEntity.getInstance().isAnimationRunning) {
+		if (!GameEntity.getInstance().isAnimationRunning
+				&& GameEntity.getInstance().isCharacterFinishSaid) {
 			if (pSceneTouchEvent.isActionUp()) {
 				if (GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult == true) {
 					GameEntity.getInstance().sceneManager.gameScene
@@ -634,10 +633,10 @@ public class GameScene extends MyScene implements OnShakeListener,
 					GameEntity.getInstance().updateAfterBet();
 					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 							.stopAnimation();
-					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.unregisterModifier();
+
 					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 							.removeRectWin();
-
+					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.unregisterModifier();
 					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
 							.resetEntityPosition();
 					GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult = false;
