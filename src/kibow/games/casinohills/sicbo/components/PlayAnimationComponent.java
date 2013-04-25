@@ -48,7 +48,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 	  entityModifier =new LoopEntityModifier(new SequenceEntityModifier(new
 			  AlphaModifier(1, 1, 0),new AlphaModifier(1, 0, 1)));
   }
-  public void unregisterModifier()
+ public void unregisterModifier()
   {
 	  int size=getListWinPatter.size();
 	  for(int i=0;i<size;i++)
