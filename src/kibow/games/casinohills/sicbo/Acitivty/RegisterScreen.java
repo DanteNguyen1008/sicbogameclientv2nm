@@ -1,6 +1,5 @@
 package kibow.games.casinohills.sicbo.Acitivty;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,7 +9,6 @@ import kibow.games.casinohills.sicbo.networks.ConnectionHandler;
 import kibow.games.casinohills.sicbo.networks.IOnNetworkHandle;
 import kibow.games.casinohills.sicbo.screen.GameEntity;
 
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +16,6 @@ import com.example.sicbogameexample.R;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableString;

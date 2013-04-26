@@ -52,7 +52,6 @@ import org.apache.http.protocol.HttpContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 public class ConnectionHandler {
 
 	// public static final String SERVER_ROOT_URL =
@@ -61,7 +60,8 @@ public class ConnectionHandler {
 	// "http://10.0.1.15:8084/SicbokServer/";
 
 	public static final String SERVER_ROOT_URL = "https://ch.moya.in/_kibow/dantenguyen/mobiles/";
-	public static final String SERVER_API_HISTORY_URL = "https://ch.moya.in/_api/sicbo/" + GameEntity.GAME_ID + "/history";
+	public static final String SERVER_API_HISTORY_URL = "https://ch.moya.in/_api/sicbo/"
+			+ GameEntity.GAME_ID + "/history";
 	private static final String REQUEST_KEY = "response";
 	private static final String DATA_KEY = "data";
 	private static final String TASKID_KEY = "task_title";
@@ -126,8 +126,8 @@ public class ConnectionHandler {
 		httpPost = new HttpPost(SERVER_ROOT_URL + taskName);
 		// for basic authentication
 		httpPost.addHeader(BasicScheme.authenticate(
-				new UsernamePasswordCredentials(SSL_USERNAME, SSL_PASSWORD), "UTF-8",
-				false));
+				new UsernamePasswordCredentials(SSL_USERNAME, SSL_PASSWORD),
+				"UTF-8", false));
 		setTimeouts(httpPost.getParams());
 
 		List<NameValuePair> nameValuePair = null;
@@ -151,7 +151,6 @@ public class ConnectionHandler {
 		status = request.getBoolean("status");
 
 	}
-
 
 	public List<Object> parseData(String[] paramsName) throws JSONException {
 		List<Object> dataList = new ArrayList<Object>();

@@ -1,7 +1,5 @@
 package kibow.games.casinohills.sicbo.Acitivty;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import kibow.games.casinohills.sicbo.networks.AsyncNetworkHandler;
@@ -9,7 +7,6 @@ import kibow.games.casinohills.sicbo.networks.ConnectionHandler;
 import kibow.games.casinohills.sicbo.networks.IOnNetworkHandle;
 import kibow.games.casinohills.sicbo.screen.GameEntity;
 
-import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 import org.json.JSONObject;
 

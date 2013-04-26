@@ -8,6 +8,9 @@ import kibow.games.casinohills.sicbo.screen.GameEntity;
 import kibow.games.casinohills.sicbo.screen.GameScene;
 
 import org.andengine.entity.Entity;
+import org.andengine.entity.modifier.AlphaModifier;
+import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.SequenceEntityModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.AnimatedSprite.IAnimationListener;
 import org.andengine.opengl.font.Font;
@@ -25,6 +28,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public List<TextComponent> displayTextList;
 	public ArrayList<AnimationComponent> animatedItemList;
 	ArrayList<RectangleLine> rectWinList;
+	List<Integer> getListWinPatter;
+	LoopEntityModifier entityModifier;
 	public boolean showBackgroundResult = false;
 
 	public PlayAnimationComponent(GameScene scene) {
@@ -32,7 +37,22 @@ public class PlayAnimationComponent implements IAnimationListener {
 		diceEntity = new Entity();
 		textEntity = new Entity();
 		rectWinList = new ArrayList<RectangleLine>();
+		getListWinPatter = new ArrayList<Integer>();
+		createAlphaModifier();
+	}
 
+	void createAlphaModifier() {
+		entityModifier = new LoopEntityModifier(new SequenceEntityModifier(
+				new AlphaModifier(1, 1, 0), new AlphaModifier(1, 0, 1)));
+	}
+
+	public void unregisterModifier() {
+		int size = getListWinPatter.size();
+		for (int i = 0; i < size; i++) {
+			scene.patternList.get(getListWinPatter.get(i)).sprite
+					.unregisterEntityModifier(entityModifier);
+		}
+		getListWinPatter.clear();
 	}
 
 	public void loadText() {
@@ -502,20 +522,9 @@ public class PlayAnimationComponent implements IAnimationListener {
 								scene.patternList.get(i).sprite.getWidth(),
 								scene.patternList.get(i).sprite.getHeight(),
 								scene.getVertextBuffer));
-						GameEntity.getInstance().createFireWork(
-								scene.patternList.get(i).getPositionX()
-										+ scene.patternList.get(i).getiWidth()
-										/ 2,
-								scene.patternList.get(i).getPositionY() + 70
-										+ scene.patternList.get(i).getiHeight()
-										/ 2, 32, 32, Color.RED, 20, 2);
-						GameEntity.getInstance().createFireWork(
-								scene.patternList.get(i).getPositionX()
-										+ scene.patternList.get(i).getiWidth()
-										/ 2,
-								scene.patternList.get(i).getPositionY() + 70
-										+ scene.patternList.get(i).getiHeight()
-										/ 2, 32, 32, Color.YELLOW, 20, 2);
+						scene.patternList.get(i).sprite
+								.registerEntityModifier(entityModifier);
+						getListWinPatter.add(i);
 					} else {
 						scene.patternList.get(i).sprite.setAlpha(1f);
 
@@ -547,25 +556,9 @@ public class PlayAnimationComponent implements IAnimationListener {
 											scene.patternList.get(i).sprite
 													.getHeight(),
 											scene.getVertextBuffer));
-
-							GameEntity.getInstance().createFireWork(
-									scene.patternList.get(i).getPositionX()
-											+ scene.patternList.get(i)
-													.getiWidth() / 2,
-									scene.patternList.get(i).getPositionY()
-											+ 70
-											+ scene.patternList.get(i)
-													.getiHeight() / 2, 32, 32,
-									Color.RED, 20, 2);
-							GameEntity.getInstance().createFireWork(
-									scene.patternList.get(i).getPositionX()
-											+ scene.patternList.get(i)
-													.getiWidth() / 2,
-									scene.patternList.get(i).getPositionY()
-											+ 70
-											+ scene.patternList.get(i)
-													.getiHeight() / 2, 32, 32,
-									Color.YELLOW, 20, 2);
+							scene.patternList.get(i).sprite
+									.registerEntityModifier(entityModifier);
+							getListWinPatter.add(i);
 
 						} else {
 							scene.patternList.get(i).sprite.setAlpha(1f);
