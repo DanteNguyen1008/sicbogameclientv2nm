@@ -30,6 +30,8 @@ public class CharacterComponent extends AbItemComponent {
 		NO_MORE_BET, PLEASE_PLAY_BET
 	}
 
+	private int currentIndex;
+
 	public CharacterComponent(int id, int width, int height, int colum,
 			int row, String background, float positionX, float positionY,
 			BaseGameActivity activity, ItemType itemType) {
@@ -98,6 +100,7 @@ public class CharacterComponent extends AbItemComponent {
 	}
 
 	public MSComponent getPlayVoice(int index) {
+		currentIndex = index;
 		return soundList.get(index);
 	}
 
@@ -109,28 +112,25 @@ public class CharacterComponent extends AbItemComponent {
 
 	public static void playSequence(MSComponent music1, final MSComponent music2) {
 		if (GameEntity.getInstance().isMusicEnable) {
+			music1.music.seekTo(0);
 			music1.play();
-			GameEntity.getInstance().isCharacterFinishSaid = false;
 			music1.music
 					.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
 						@Override
 						public void onCompletion(MediaPlayer mp) {
 							// TODO Auto-generated method stub
+							music2.music.seekTo(0);
 							music2.play();
-							music2.music
-									.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-
-										@Override
-										public void onCompletion(MediaPlayer mp) {
-											// TODO Auto-generated method stub
-											GameEntity.getInstance().isCharacterFinishSaid = true;
-										}
-									});
 
 						}
 					});
 		}
-
 	}
+
+	public void stopSay() {
+		if (soundList.get(currentIndex).music.isPlaying())
+			soundList.get(currentIndex).pause();
+	}
+
 }

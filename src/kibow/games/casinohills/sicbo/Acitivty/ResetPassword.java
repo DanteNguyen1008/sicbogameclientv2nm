@@ -112,4 +112,10 @@ public class ResetPassword extends BaseActivity implements OnClickListener,
 					Toast.LENGTH_LONG).show();
 		}
 	}
+
+	@Override
+	public void onNetworkError() {
+		// TODO Auto-generated method stub
+		
+	}
 }

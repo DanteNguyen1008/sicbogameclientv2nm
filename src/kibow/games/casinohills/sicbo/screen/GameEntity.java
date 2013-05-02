@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 public class GameEntity implements IOnNetworkHandle {
 	// Implement single ton
@@ -98,7 +99,6 @@ public class GameEntity implements IOnNetworkHandle {
 	public boolean isMusicEnable = true;
 	public boolean isMenuDisplay = false;
 	public boolean isBackPress = false;
-	public boolean isCharacterFinishSaid = true;
 
 	// Enum
 	public enum GameAction {
@@ -589,7 +589,10 @@ public class GameEntity implements IOnNetworkHandle {
 	 * Method called when session expire
 	 */
 	public void onSessionExpire() {
-		displayConfirmErrorDialog("Your session is expired", 170, 200);
+		Toast.makeText(sceneManager.activity, "Your session is expired",
+				Toast.LENGTH_LONG).show();
+		isLogout = true;
+		onReceiveSignout();
 	}
 
 	/**
@@ -695,25 +698,7 @@ public class GameEntity implements IOnNetworkHandle {
 		PointParticleEmitter particleEmitter = new PointParticleEmitter(posX,
 				posY);
 
-		/*
-		 * IEntityFactory<Sprite> recFact = new IEntityFactory<Sprite>() {
-		 * 
-		 * @Override public Sprite create(float pX, float pY) {
-		 * BitmapTextureAtlas atlastBig = new BitmapTextureAtlas(
-		 * sceneManager.activity.getTextureManager(), width, height,
-		 * TextureOptions.BILINEAR);
-		 * 
-		 * ITextureRegion atlasRegionBig =
-		 * BitmapTextureAtlasTextureRegionFactory .createFromAsset(atlastBig,
-		 * sceneManager.activity, fireworkBG, 0, 0);
-		 * 
-		 * Sprite sprite = new Sprite(posX, posY, atlasRegionBig,
-		 * sceneManager.activity .getEngine().getVertexBufferObjectManager());
-		 * 
-		 * atlastBig.load(); return sprite; }
-		 * 
-		 * };
-		 */
+		
 		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
 
 			@Override
@@ -754,6 +739,12 @@ public class GameEntity implements IOnNetworkHandle {
 					}
 				}));
 
+	}
+
+	@Override
+	public void onNetworkError() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

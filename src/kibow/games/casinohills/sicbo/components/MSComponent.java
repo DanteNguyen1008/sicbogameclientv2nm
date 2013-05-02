@@ -56,7 +56,6 @@ public class MSComponent {
 		this.mEngine = mEngine;
 		this.context = context;
 
-		
 		try {
 			this.music = MusicFactory.createMusicFromAsset(
 					mEngine.getMusicManager(), context, resourceURL);
@@ -68,13 +67,13 @@ public class MSComponent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 	public void play() {
 		if (GameEntity.getInstance().isMusicEnable) {
 			switch (type) {
 			case MUSIC:
+				
 				music.play();
 				break;
 			case SOUND:

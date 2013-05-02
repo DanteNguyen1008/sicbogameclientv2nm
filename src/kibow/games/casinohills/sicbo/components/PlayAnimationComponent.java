@@ -31,6 +31,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 	List<Integer> getListWinPatter;
 	LoopEntityModifier entityModifier;
 	public boolean showBackgroundResult = false;
+	public ItemComponent diceAnimationBg;
 
 	public PlayAnimationComponent(GameScene scene) {
 		this.scene = scene;
@@ -59,28 +60,28 @@ public class PlayAnimationComponent implements IAnimationListener {
 		displayTextList = new ArrayList<TextComponent>();
 		Font mChangableFont = FontFactory.create(scene.getEngine()
 				.getFontManager(), scene.getEngine().getTextureManager(), 512,
-				512, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32,
+				512, Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 25,
 				Color.WHITE_ABGR_PACKED_INT);
 		mChangableFont.load();
 		Font smallFont = FontFactory.create(scene.getEngine().getFontManager(),
 				scene.getEngine().getTextureManager(), 512, 512,
-				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 25,
+				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 20,
 				Color.WHITE_ABGR_PACKED_INT);
 		smallFont.load();
 		// 300 50
 		displayTextList.add(new TextComponent(1, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
-						.getActivity(), ItemType.TEXT, 0.6f, Color.BLACK,
+						.getActivity(), ItemType.TEXT, 1f, Color.BLACK,
 				mChangableFont));
 		// 200 100
 		displayTextList.add(new TextComponent(2, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
-						.getActivity(), ItemType.TEXT, 0.6f, Color.BLACK,
+						.getActivity(), ItemType.TEXT, 1f, Color.BLACK,
 				smallFont));
 		// 200 150
 		displayTextList.add(new TextComponent(3, 512, 512, "",
 				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT, scene
-						.getActivity(), ItemType.TEXT, 0.6f, Color.BLACK,
+						.getActivity(), ItemType.TEXT, 1f, Color.BLACK,
 				smallFont));
 	}
 
@@ -100,93 +101,92 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 		// Load dice
 		// Left dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
-				"dice1.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(1, 1900, 98, 64, 64, 25, 1,
+				"dices_center_1.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
-				"dice2.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(2, 1900, 98, 64, 64, 25, 1,
+				"dices_center_2.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
-				"dice3.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(3, 1900, 98, 64, 64, 25, 1,
+				"dices_center_3.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
-				"dice4.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(4, 1900, 98, 64, 64, 25, 1,
+				"dices_center_4.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
-				"dice5.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(5, 1900, 98, 64, 64, 25, 1,
+				"dices_center_5.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
-				"dice6.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(6, 1900, 98, 64, 64, 25, 1,
+				"dices_center_6.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_LEFT, scene.getScene(), null));
 
 		// Middle dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
-				"dice1.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(1, 1900, 98, 64, 64, 25, 1,
+				"dices_center_1.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
-				"dice2.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(2, 1900, 98, 64, 64, 25, 1,
+				"dices_center_2.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
-				"dice3.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(3, 1900, 98, 64, 64, 25, 1,
+				"dices_center_3.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
-				"dice4.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(4, 1900, 98, 64, 64, 25, 1,
+				"dices_center_4.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
-				"dice5.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(5, 1900, 98, 64, 64, 25, 1,
+				"dices_center_5.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
-				"dice6.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(6, 1900, 98, 64, 64, 25, 1,
+				"dices_center_6.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_MIDDLE, scene.getScene(), null));
 
 		// Right dice
-		animatedItemList.add(new AnimationComponent(1, 84, 426, 64, 64, 1, 6,
-				"dice1.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(1, 1900, 98, 64, 64, 25, 1,
+				"dices_center_1.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(2, 84, 426, 64, 64, 1, 6,
-				"dice2.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(2, 1900, 98, 64, 64, 25, 1,
+				"dices_center_2.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(3, 84, 426, 64, 64, 1, 6,
-				"dice3.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(3, 1900, 98, 64, 64, 25, 1,
+				"dices_center_3.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(4, 84, 426, 64, 64, 1, 6,
-				"dice4.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(4, 1900, 98, 64, 64, 25, 1,
+				"dices_center_4.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(5, 84, 426, 64, 64, 1, 6,
-				"dice5.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(5, 1900, 98, 64, 64, 25, 1,
+				"dices_center_5.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
-		animatedItemList.add(new AnimationComponent(6, 84, 426, 64, 64, 1, 6,
-				"dice6.png", -GameEntity.CAMERA_WIDTH,
+		animatedItemList.add(new AnimationComponent(6, 1900, 98, 64, 64, 25, 1,
+				"dices_center_6.png", -GameEntity.CAMERA_WIDTH,
 				-GameEntity.CAMERA_HEIGHT, scene.getActivity(),
 				ItemType.DICE_RIGHT, scene.getScene(), null));
+
+		diceAnimationBg = new ItemComponent(1, 406, 406, "dice_background.png",
+				-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT,
+				scene.getActivity(), ItemType.NORMAL_ITEM);
 
 	}
 
 	public void loadAniamtionScene() {
 		// attach all to background
 		for (int i = 0; i < animatedItemList.size(); i++) {
-			/*
-			 * background.sprite.attachChild(
-			 * animatedItemList.get(i).animatedSprite);
-			 */
-			// scene.getScene().attachChild(animatedItemList.get(i).animatedSprite);
 			diceEntity.attachChild(animatedItemList.get(i).animatedSprite);
 
 			if (i < 3) {
@@ -194,6 +194,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 			}
 
 		}
+
+		scene.getScene().attachChild(diceAnimationBg.sprite);
 
 	}
 
@@ -207,12 +209,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 	void setEntityTextPosition() {
 		textEntity.getChildByIndex(0).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50,
-				-10);
+				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 100,
+				0);
 		textEntity.getChildByIndex(1).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5, 20);
+				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50, 30);
 		textEntity.getChildByIndex(2).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5, 40);
+				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50, 50);
 	}
 
 	public void resetEntityPosition() {
@@ -348,53 +350,43 @@ public class PlayAnimationComponent implements IAnimationListener {
 
 		scene.hudItem.sprite.setPosition(scene.hudItem.getPositionX(),
 				scene.hudItem.getPositionY() + 100);
-		// Stop and change position of runnable text
-		// scene.runableText.text
-		// .unregisterEntityModifier(scene.loopEntityModifier);
-		// scene.runableText.text.setPosition(scene.runableText.getPositionX(),
-		// scene.runableText.getPositionY() + 100);
 	}
 
 	public void playAnimation() {
+
 		GameEntity.getInstance().isAnimationRunning = true;
 		for (int i = 0; i < animatedItemList.size(); i++) {
 			if (animatedItemList.get(i).getiItemType() == ItemType.DICE_MIDDLE
 					&& animatedItemList.get(i).getiID() == GameEntity
 							.getInstance().currentGame.dice2) {
-				animatedItemList.get(i).animatedSprite.animate(200, 0, this);
-				animatedItemList.get(i).animatedSprite.setPosition(160, 110);
+				animatedItemList.get(i).animatedSprite.animate(100, 0, this);
+				animatedItemList.get(i).animatedSprite.setPosition(200, 110);
 			} else if (animatedItemList.get(i).getiItemType() == ItemType.DICE_LEFT
 					&& animatedItemList.get(i).getiID() == GameEntity
 							.getInstance().currentGame.dice1) {
-				animatedItemList.get(i).animatedSprite.animate(200, false);
+				animatedItemList.get(i).animatedSprite.animate(100, false);
 
-				animatedItemList.get(i).animatedSprite.setPosition(46, 110);
+				animatedItemList.get(i).animatedSprite.setPosition(100, 110);
 			} else if (animatedItemList.get(i).getiItemType() == ItemType.DICE_RIGHT
 					&& animatedItemList.get(i).getiID() == GameEntity
 							.getInstance().currentGame.dice3) {
-				animatedItemList.get(i).animatedSprite.animate(200, false);
+				animatedItemList.get(i).animatedSprite.animate(100, false);
 
-				animatedItemList.get(i).animatedSprite.setPosition(276, 110);
+				animatedItemList.get(i).animatedSprite.setPosition(300, 110);
 			}
 		}
-		// scene.getScene().attachChild(diceEntity);
-		// diceEntity.setPosition(50,-80);
-
-		/*
-		 * background.sprite.setPosition(199, 100);
-		 * background.sprite.setZIndex(999);
-		 * background.sprite.getParent().sortChildren();
-		 */
+		changeEntityPosition();
+		diceAnimationBg.sprite.setPosition(200, 80);
+		diceEntity.setPosition(160, 120);
+		diceEntity.setZIndex(9999);
+		diceAnimationBg.sprite.setZIndex(9998);
+		scene.getScene().sortChildren();
+		updateCharacter();
 		showBackgroundResult = true;
-
 		GameEntity.getInstance().sceneManager.gameScene.enableAllTouch();
 	}
 
 	public void stopAnimation() {
-		/*
-		 * background.sprite.setPosition(-GameEntity.CAMERA_WIDTH,
-		 * -GameEntity.CAMERA_HEIGHT);
-		 */
 		GameEntity.getInstance().mSensorListener.registerShake();
 		hideResultText();
 		resetCharacter();
@@ -450,10 +442,9 @@ public class PlayAnimationComponent implements IAnimationListener {
 	public void onAnimationStarted(AnimatedSprite pAnimatedSprite,
 			int pInitialLoopCount) {
 		// TODO Auto-generated method stub
-		changeEntityPosition();
-		updateCharacter();
-		diceEntity.setScale(0.8f);
-		diceEntity.setPosition(60, -80);
+
+		// diceEntity.setScale(0.8f);
+		// diceEntity.setPosition(60, -80);
 	}
 
 	@Override
@@ -473,12 +464,19 @@ public class PlayAnimationComponent implements IAnimationListener {
 	@Override
 	public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
 		// TODO Auto-generated method stub
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		diceEntity.setScale(0.8f);
 		displayResultText();
 
 		scene.disableAllTouch();
 
 		setEntityTextPosition();
-
+		diceEntity.setPosition(60, -90);
 	}
 
 	private void hideResultText() {
@@ -502,9 +500,11 @@ public class PlayAnimationComponent implements IAnimationListener {
 						-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT);
 			}
 		}
-
+		
+		scene.characterBoy.stopSay();
+		scene.characterGirl.stopSay();
 		displayWinPatterns(false);
-
+		diceEntity.setScale(1f);
 	}
 
 	private void displayWinPatterns(boolean isDisplay) {
@@ -609,6 +609,8 @@ public class PlayAnimationComponent implements IAnimationListener {
 				displayTextList.get(i).text.setPosition(46, 70);
 			}
 		}
+		diceAnimationBg.sprite.setPosition(diceAnimationBg.getPositionX(),
+				diceAnimationBg.getPositionY());
 		GameEntity.getInstance().isAnimationRunning = false;
 	}
 }

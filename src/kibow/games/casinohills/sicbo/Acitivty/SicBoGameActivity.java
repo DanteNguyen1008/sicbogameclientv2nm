@@ -14,10 +14,8 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
-
 import android.os.Bundle;
 import android.view.KeyEvent;
-
 
 /**
  * @author Matim Development
@@ -29,16 +27,16 @@ public class SicBoGameActivity extends BaseGameActivity {
 
 	private Camera camera;
 	public UserComponent userComponent;
-	
+
 	// shake phone object
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//createProgressDialog();
+		// createProgressDialog();
 		GameEntity.getInstance().mSensorListener = new ShakeEventListener(this);
 	}
-	
+
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		// TODO Auto-generated method stub
@@ -48,7 +46,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(),
 				camera);
-		//engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+		// engineOptions.getTouchOptions().setNeedsMultiTouch(true);
 		engineOptions.getAudioOptions().setNeedsMusic(true);
 		engineOptions.getAudioOptions().setNeedsSound(true);
 		return engineOptions;
@@ -65,13 +63,14 @@ public class SicBoGameActivity extends BaseGameActivity {
 						.resume();
 			} else {
 				/*
-				MusicFactory.setAssetBasePath("mfx/");
-				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic = new MSComponent(
-						1, "themesong.mp3", MStype.MUSIC, getEngine(), this,
-						true);
-				GameEntity.getInstance().sceneManager.gameScene.backgroundMusic
-						.play();
-						*/
+				 * MusicFactory.setAssetBasePath("mfx/");
+				 * GameEntity.getInstance(
+				 * ).sceneManager.gameScene.backgroundMusic = new MSComponent(
+				 * 1, "themesong.mp3", MStype.MUSIC, getEngine(), this, true);
+				 * GameEntity
+				 * .getInstance().sceneManager.gameScene.backgroundMusic
+				 * .play();
+				 */
 			}
 		}
 	}
@@ -92,16 +91,16 @@ public class SicBoGameActivity extends BaseGameActivity {
 	public void onCreateResources(
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws Exception {
-		//createProgressDialog();
+		// createProgressDialog();
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		GameEntity.getInstance().sceneManager = new SceneManager(this, mEngine,
 				camera);
 		if (GameEntity.getInstance().sceneManager.setGameScene()) {
-         
+
 			pOnCreateResourcesCallback.onCreateResourcesFinished();
-			
-			//progressDialog.dismiss();
+
+			// progressDialog.dismiss();
 		} else {
 			Exception ex = new Exception("Loading resource Error");
 			ex.printStackTrace();
@@ -145,8 +144,11 @@ public class SicBoGameActivity extends BaseGameActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (!GameEntity.getInstance().isMenuDisplay && !GameEntity.getInstance().isAnimationRunning) {
-			GameEntity.getInstance().sceneManager.gameScene.onBackButtonPress(true);
+		if (!GameEntity.getInstance().isMenuDisplay
+				&& !GameEntity.getInstance().isAnimationRunning
+				&& !GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult) {
+			GameEntity.getInstance().sceneManager.gameScene
+					.onBackButtonPress(true);
 		}
 	}
 

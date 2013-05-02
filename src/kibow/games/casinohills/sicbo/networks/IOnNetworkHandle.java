@@ -9,4 +9,5 @@ public interface IOnNetworkHandle {
 	public void onNetwokrHandle(JSONObject result,
 			ConnectionHandler connectionHandler, Activity activity)
 			throws JSONException;
+	public void onNetworkError();
 }

@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.example.sicbogameexample.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -83,7 +84,8 @@ public class ChangePassword extends BaseActivity implements OnClickListener,
 					paramsValue.add(edtCurrentPassword.getText().toString()
 							.trim());
 					paramsValue.add(edtNewPassword.getText().toString().trim());
-					paramsValue.add(edtConfirmPassword.getText().toString().trim());
+					paramsValue.add(edtConfirmPassword.getText().toString()
+							.trim());
 					Object[] params = {
 							GameEntity.getInstance().connectionHandler, this,
 							GameEntity.CHANGE_PASSWORD_TASK, paramsName,
@@ -105,6 +107,9 @@ public class ChangePassword extends BaseActivity implements OnClickListener,
 			ConnectionHandler connectionHandler, Activity activity)
 			throws JSONException {
 		// TODO Auto-generated method stub
+		if (connectionHandler.getTaskID().equals("res_session_expire")) {
+			onSessionExpire();
+		}
 		if (result != null) {
 			if (connectionHandler.status) {
 				createDialog(result.getString("message"));
@@ -116,6 +121,14 @@ public class ChangePassword extends BaseActivity implements OnClickListener,
 			Toast.makeText(ChangePassword.this,
 					"Error network!Please try again", Toast.LENGTH_LONG).show();
 		}
+	}
+
+	public void onSessionExpire() {
+		Toast.makeText(this, "Your session is expired", Toast.LENGTH_LONG)
+				.show();
+		Intent intent = new Intent(this, LoginScreen.class);
+		startActivity(intent);
+		finish();
 	}
 
 	void missTyping() {
@@ -152,6 +165,12 @@ public class ChangePassword extends BaseActivity implements OnClickListener,
 		// TODO Auto-generated method stub
 		this.finish();
 		super.onBackPressed();
+	}
+
+	@Override
+	public void onNetworkError() {
+		// TODO Auto-generated method stub
+
 	}
 
 }

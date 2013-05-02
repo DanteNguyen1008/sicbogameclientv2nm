@@ -99,16 +99,16 @@ public class WebviewHelpPage extends Activity implements OnClickListener {
 		switch (id) {
 		case 0:
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "tutorial");
+			mWebView.loadUrl("file:///android_asset/webview/tutorial/index.html");
 
 			break;
 		case 1:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "help");
+			mWebView.loadUrl("file:///android_asset/webview/help/index.html");
 			break;
 		case 2:
 			break;
 		case 3:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL + "policy");
+			mWebView.loadUrl("file:///android_asset/webview/policy/index.html");
 			break;
 		case 4:
 			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL
@@ -124,7 +124,6 @@ public class WebviewHelpPage extends Activity implements OnClickListener {
 					+ "?user_id=" + GameEntity.getInstance().userComponent.id
 					+ "&token=" + GameEntity.getInstance().userComponent.token,
 					headers);
-
 			break;
 		}
 	}

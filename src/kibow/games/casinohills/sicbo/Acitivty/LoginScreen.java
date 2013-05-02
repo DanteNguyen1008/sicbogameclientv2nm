@@ -213,4 +213,10 @@ public class LoginScreen extends Activity implements OnClickListener,
 		super.onBackPressed();
 	}
 
+	@Override
+	public void onNetworkError() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

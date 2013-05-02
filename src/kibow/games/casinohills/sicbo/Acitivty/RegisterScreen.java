@@ -319,4 +319,10 @@ public class RegisterScreen extends BaseActivity implements OnClickListener,
 		super.onBackPressed();
 	}
 
+	@Override
+	public void onNetworkError() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -99,26 +99,10 @@ public class GameScene extends MyScene implements OnShakeListener,
 		characterBoy = new CharacterComponent(1, 1757, 399, 6, 1,
 				"character_boy.png", -100, 100, getActivity(),
 				ItemType.CHARACTER_BOY);
-		characterGirl = new CharacterComponent(1, 1757, 399, 6, 1,
+		characterGirl = new CharacterComponent(1, 1752, 399, 6, 1,
 				"character_girl.png", 600, 100, getActivity(),
 				ItemType.CHARACTER_GIRL);
 	}
-
-	/*
-	 * private void loadRunableText() { Font mSmallFont =
-	 * FontFactory.create(getEngine().getFontManager(),
-	 * getEngine().getTextureManager(), 512, 512,
-	 * Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 22,
-	 * Color.WHITE_ABGR_PACKED_INT); mSmallFont.load(); runableText = new
-	 * TextComponent(1, 800, 30, GameEntity.getInstance().runableTextContent,
-	 * -GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT,
-	 * getActivity().getTextureManager(), getActivity(), getEngine(),
-	 * ItemType.TEXT, 1, Color.BLUE, mSmallFont);
-	 * 
-	 * move = new MoveModifier(20, 800, -800, 415, 415); loopEntityModifier =
-	 * new LoopEntityModifier(move);
-	 * runableText.text.registerEntityModifier(loopEntityModifier); }
-	 */
 
 	private void loadDialog() {
 		Font mFont = FontFactory.create(getEngine().getFontManager(),
@@ -189,16 +173,13 @@ public class GameScene extends MyScene implements OnShakeListener,
 	private void loadMusicAndSound() {
 		SoundFactory.setAssetBasePath("mfx/");
 		MusicFactory.setAssetBasePath("mfx/");
-		backgroundMusic = new MSComponent(1, "themesong.mp3", MStype.MUSIC,
+		backgroundMusic = new MSComponent(1, "sicbo_bg_music.mp3", MStype.MUSIC,
 				getEngine(), getActivity(), true);
 		betSound = new MSComponent(2, "betcoin.wav", MStype.SOUND, getEngine(),
 				getActivity());
 		releaseBetSound = new MSComponent(3, "pickcoin.mp3", MStype.SOUND,
 				getEngine(), getActivity());
-		winSound = new MSComponent(4, "cheer.mp3", MStype.SOUND, getEngine(),
-				getActivity());
-		loseSound = new MSComponent(5, "fail.mp3", MStype.SOUND, getEngine(),
-				getActivity());
+		
 	}
 
 	private void loadResourceItemList() {
@@ -624,8 +605,7 @@ public class GameScene extends MyScene implements OnShakeListener,
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		// TODO Auto-generated method stub
-		if (!GameEntity.getInstance().isAnimationRunning
-				&& GameEntity.getInstance().isCharacterFinishSaid) {
+		if (!GameEntity.getInstance().isAnimationRunning) {
 			if (pSceneTouchEvent.isActionUp()) {
 				if (GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult == true) {
 					GameEntity.getInstance().sceneManager.gameScene
