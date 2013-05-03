@@ -55,6 +55,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		GameEntity.getInstance().mSensorListener.registerShake();
 		if (GameEntity.getInstance().sceneManager != null) {
 			if (!GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.music
@@ -96,25 +97,19 @@ public class SicBoGameActivity extends BaseGameActivity {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		GameEntity.getInstance().sceneManager = new SceneManager(this, mEngine,
 				camera);
-		if (GameEntity.getInstance().sceneManager.setGameScene()) {
-
-			pOnCreateResourcesCallback.onCreateResourcesFinished();
-
-			// progressDialog.dismiss();
-		} else {
-			Exception ex = new Exception("Loading resource Error");
-			ex.printStackTrace();
-		}
-
+		GameEntity.getInstance().sceneManager.loadScene(SceneType.LOADING);
+		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
 	@Override
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 			throws Exception {
 		// TODO Auto-generated method stub
-		GameEntity.getInstance().sceneManager.setCurrentScene(SceneType.GAME);
+		// GameEntity.getInstance().sceneManager.setScene(SceneType.LOADING);
+		GameEntity.getInstance().sceneManager
+				.setCurrentScene(SceneType.LOADING);
 		pOnCreateSceneCallback
-				.onCreateSceneFinished(GameEntity.getInstance().sceneManager.gameScene
+				.onCreateSceneFinished(GameEntity.getInstance().sceneManager.loadingScene
 						.getScene());
 	}
 
@@ -122,21 +117,27 @@ public class SicBoGameActivity extends BaseGameActivity {
 	public void onPopulateScene(Scene pScene,
 			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		// TODO Auto-generated method stub
-		GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.play();
-		GameEntity.getInstance().userComponent.actionTime = System
-				.currentTimeMillis();
+		/*
+		 * GameEntity.getInstance().userComponent.actionTime = System
+		 * .currentTimeMillis();
+		 */
+
+		GameEntity.getInstance().sceneManager.asyncLoadNextScene();
 		// GameEntity.getInstance().checkUserTimeout();
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			onBackPressed();
-		} else if (keyCode == KeyEvent.KEYCODE_MENU) {
-			if (!GameEntity.getInstance().isAnimationRunning
-					&& !GameEntity.getInstance().isBackPress) {
-				GameEntity.getInstance().sceneManager.gameScene.displayMenu();
+		if (GameEntity.getInstance().sceneManager.getCurrentScene() == SceneType.GAME) {
+			if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+				onBackPressed();
+			} else if (keyCode == KeyEvent.KEYCODE_MENU) {
+				if (!GameEntity.getInstance().isAnimationRunning
+						&& !GameEntity.getInstance().isBackPress) {
+					GameEntity.getInstance().sceneManager.gameScene
+							.displayMenu();
+				}
 			}
 		}
 		return super.onKeyDown(keyCode, event);
@@ -144,12 +145,13 @@ public class SicBoGameActivity extends BaseGameActivity {
 
 	@Override
 	public void onBackPressed() {
-		if (!GameEntity.getInstance().isMenuDisplay
-				&& !GameEntity.getInstance().isAnimationRunning
-				&& !GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult) {
-			GameEntity.getInstance().sceneManager.gameScene
-					.onBackButtonPress(true);
+		if (GameEntity.getInstance().sceneManager.getCurrentScene() == SceneType.GAME) {
+			if (!GameEntity.getInstance().isMenuDisplay
+					&& !GameEntity.getInstance().isAnimationRunning
+					&& !GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent.showBackgroundResult) {
+				GameEntity.getInstance().sceneManager.gameScene
+						.onBackButtonPress(true);
+			}
 		}
 	}
-
 }

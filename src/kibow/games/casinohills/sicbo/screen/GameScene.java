@@ -409,17 +409,34 @@ public class GameScene extends MyScene implements OnShakeListener,
 		// TODO Auto-generated method stub
 		getScene().registerUpdateHandler(new FPSLogger());
 		// getScene().setBackground(new Background(1f, 1f, 1f));
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.2f);
 		getScene().setBackgroundEnabled(false);
 		getScene().setOnAreaTouchTraversalFrontToBack();
-
+		
 		loadResourceItemList();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("30%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.3f);
 		loadResourceDragList();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("33%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.33f);
 		loadResourcePatternList();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("35%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.35f);
 		loadResourceButtonList();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("40%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.4f);
 		loadText();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("45%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.45f);
 		loadMusicAndSound();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("60%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.6f);
 		playAnimationComponent.loadResource();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("70%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.7f);
 		loadMenuScene();
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("75%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.75f);
 		// loadRunableText();
 		loadCharacter();
 	}
@@ -428,6 +445,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 	public void loadScene() {
 		// TODO Auto-generated method stub
 		// load background
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("80%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.8f);
 		getScene().setOnSceneTouchListener(this);
 
 		getScene().attachChild(background.sprite);
@@ -442,7 +461,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 			getScene().registerTouchArea(patternList.get(i).sprite);
 			getScene().attachChild(patternList.get(i).sprite);
 		}
-
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("90%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.9f);
 		// load Game item
 		for (int i = 0; i < itemList.size(); i++) {
 			getScene().attachChild(itemList.get(i).sprite);
@@ -490,7 +510,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 
 		menuScene.registerTouch(getScene());
 		// getScene().attachChild(runableText.text);
-
+		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("95%");
+		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.95f);
 	}
 
 	@Override

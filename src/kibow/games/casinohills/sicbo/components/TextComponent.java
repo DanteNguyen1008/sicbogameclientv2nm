@@ -19,8 +19,13 @@ public class TextComponent extends AbItemComponent {
 		text = new Text(positionX, positionY, mFont, content, 100,
 				new TextOptions(HorizontalAlign.LEFT), activity.getEngine()
 						.getVertexBufferObjectManager());
-		text.setColor(textColor);
+		//text.setColor(textColor);
 		text.setScale(textSize);
+	}
+	
+	public void updateText(String content)
+	{
+		text.setText(content);
 	}
 
 	public Text text;

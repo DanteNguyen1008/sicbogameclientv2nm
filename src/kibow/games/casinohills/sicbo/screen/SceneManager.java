@@ -11,10 +11,9 @@ import org.andengine.ui.activity.BaseGameActivity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-
 public class SceneManager {
 	public enum SceneType {
-		GAME, ANIMATION, HISTORY, HELP
+		GAME, LOADING, ANIMATION, HISTORY, HELP
 	}
 
 	private SceneType currentScene;
@@ -24,6 +23,8 @@ public class SceneManager {
 	private ProgressDialog pd = null;
 
 	public GameScene gameScene;
+	public LoadingScene loadingScene;
+
 	// public AnimationScene animationScene;
 
 	public SceneManager(BaseGameActivity activity, Engine engine, Camera camera) {
@@ -31,7 +32,9 @@ public class SceneManager {
 		this.engine = engine;
 		this.camera = camera;
 		GameEntity.getInstance().currentGame = new GameComponent();
+		loadingScene = new LoadingScene(engine, camera, activity);
 		gameScene = new GameScene(engine, camera, activity);
+
 	}
 
 	public SceneType getCurrentScene() {
@@ -57,11 +60,40 @@ public class SceneManager {
 		return false;
 	}
 
+	public void loadScene(SceneType sceneType) {
+		switch (sceneType) {
+		case LOADING:
+			loadingScene.loadResource();
+			loadingScene.loadScene();
+			break;
+		case GAME:
+			gameScene.loadResource();
+			gameScene.loadScene();
+			break;
+		default:
+			break;
+		}
+	}
+
+	public void asyncLoadNextScene() {
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				LoadingAsync loading = new LoadingAsync();
+				loading.execute();
+			}
+		});
+	}
+
 	public void setScene(SceneType nextScene) {
 		// Clear current scene
 		switch (getCurrentScene()) {
 		case GAME:
 			// May be clear all bet
+			break;
+		case LOADING:
+			loadingScene.unLoadScene();
 			break;
 		default:
 			break;
@@ -73,11 +105,8 @@ public class SceneManager {
 		case GAME:
 			engine.setScene(gameScene.getScene());
 			break;
-		case HISTORY:
-
-			break;
-		case HELP:
-
+		case LOADING:
+			engine.setScene(loadingScene.getScene());
 			break;
 		default:
 			break;
@@ -87,34 +116,26 @@ public class SceneManager {
 	class LoadingAsync extends AsyncTask<Object, String, Boolean> {
 		@Override
 		protected void onPreExecute() {
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					pd = ProgressDialog.show(activity, "Loading data..",
-							"Please wait....", true, false);
-				}
-			});
 
 		}
+
 		@Override
 		protected Boolean doInBackground(Object... arg0) {
 			// TODO Auto-generated method stub
-			gameScene.loadResource();
-			gameScene.loadScene();
+			// gameScene.loadResource();
+			// gameScene.loadScene();
+			loadingScene.bar.updateBar(0.1f);
+			loadingScene.percentText.updateText("10%");
+			loadScene(SceneType.GAME);
+			loadingScene.bar.updateBar(1f);
+			loadingScene.percentText.updateText("100%");
 			return true;
 		}
 
 		@Override
 		protected void onPostExecute(Boolean _result) {
-			activity.runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					pd.dismiss();
-				}
-			});
-
+			setScene(SceneType.GAME);
+			GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.play();
 		}
 	}
 }
