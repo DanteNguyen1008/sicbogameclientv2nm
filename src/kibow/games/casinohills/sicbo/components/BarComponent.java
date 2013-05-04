@@ -2,10 +2,10 @@ package kibow.games.casinohills.sicbo.components;
 
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.color.Color;
 
 public class BarComponent extends AbItemComponent {
 	public Rectangle bar;
+
 	public BarComponent(int id, int width, int height, String background,
 			float positionX, float positionY, BaseGameActivity activity,
 			ItemType itemType) {
@@ -15,9 +15,8 @@ public class BarComponent extends AbItemComponent {
 		bar = new Rectangle(positionX, positionY, 0, height,
 				activity.getVertexBufferObjectManager());
 	}
-	
-	public void updateBar(float percent)
-	{
+
+	public void updateBar(float percent) {
 		bar.setWidth(getiWidth() * percent);
 	}
 }

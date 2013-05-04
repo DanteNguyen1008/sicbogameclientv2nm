@@ -1,6 +1,5 @@
 package kibow.games.casinohills.sicbo.Acitivty;
 
-import kibow.games.casinohills.sicbo.components.ShakeEventListener;
 import kibow.games.casinohills.sicbo.components.UserComponent;
 import kibow.games.casinohills.sicbo.screen.GameEntity;
 import kibow.games.casinohills.sicbo.screen.SceneManager;
@@ -34,7 +33,8 @@ public class SicBoGameActivity extends BaseGameActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// createProgressDialog();
-		GameEntity.getInstance().mSensorListener = new ShakeEventListener(this);
+		// GameEntity.getInstance().mSensorListener = new
+		// ShakeEventListener(this);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 	protected void onResume() {
 		super.onResume();
 
-		GameEntity.getInstance().mSensorListener.registerShake();
+		// GameEntity.getInstance().mSensorListener.registerShake();
 		if (GameEntity.getInstance().sceneManager != null) {
 			if (!GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.music
 					.isReleased()) {
@@ -79,7 +79,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 	@Override
 	protected void onPause() {
 		super.onStop();
-		GameEntity.getInstance().mSensorListener.stopRegisterShake();
+		// GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		if (GameEntity.getInstance().sceneManager != null)
 			if (!GameEntity.getInstance().sceneManager.gameScene.backgroundMusic.music
 					.isReleased())
@@ -135,7 +135,7 @@ public class SicBoGameActivity extends BaseGameActivity {
 			} else if (keyCode == KeyEvent.KEYCODE_MENU) {
 				if (!GameEntity.getInstance().isAnimationRunning
 						&& !GameEntity.getInstance().isBackPress) {
-					GameEntity.getInstance().sceneManager.gameScene
+					GameEntity.getInstance().sceneManager.gameScene.menuScene
 							.displayMenu();
 				}
 			}

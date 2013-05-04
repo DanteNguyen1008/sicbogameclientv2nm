@@ -2,12 +2,14 @@ package kibow.games.casinohills.sicbo.screen;
 
 import java.util.ArrayList;
 
+import kibow.games.casinohills.sicbo.components.AbItemComponent;
 import kibow.games.casinohills.sicbo.components.BetComponent;
 import kibow.games.casinohills.sicbo.components.ButtonComponent;
 import kibow.games.casinohills.sicbo.components.CharacterComponent;
 import kibow.games.casinohills.sicbo.components.CoinComponent;
 import kibow.games.casinohills.sicbo.components.DialogComponent;
 import kibow.games.casinohills.sicbo.components.DragComponent;
+import kibow.games.casinohills.sicbo.components.IOnItemClick;
 import kibow.games.casinohills.sicbo.components.ItemComponent;
 import kibow.games.casinohills.sicbo.components.MSComponent;
 import kibow.games.casinohills.sicbo.components.MyMenuScene;
@@ -19,7 +21,6 @@ import kibow.games.casinohills.sicbo.components.AbItemComponent.ItemType;
 import kibow.games.casinohills.sicbo.components.MSComponent.MStype;
 import kibow.games.casinohills.sicbo.components.ShakeEventListener.OnShakeListener;
 import kibow.games.casinohills.sicbo.screen.GameEntity.GameAction;
-import kibow.games.casinohills.sicbo.screen.SceneManager.SceneType;
 
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.SoundFactory;
@@ -38,7 +39,7 @@ import org.andengine.util.color.Color;
 import android.graphics.Typeface;
 
 public class GameScene extends MyScene implements OnShakeListener,
-		IOnSceneTouchListener {
+		IOnSceneTouchListener, IOnItemClick {
 
 	public ItemComponent background;
 	public DialogComponent confirmDialog;
@@ -64,7 +65,7 @@ public class GameScene extends MyScene implements OnShakeListener,
 
 	// DialogComponent loadingDialog;
 	// Menu
-	MyMenuScene menuScene;
+	public MyMenuScene menuScene;
 
 	// public TextComponent runableText;
 	public VertexBufferObjectManager getVertextBuffer;
@@ -88,7 +89,7 @@ public class GameScene extends MyScene implements OnShakeListener,
 		betList = new ArrayList<BetComponent>();
 		fireworkList = new ArrayList<ParticleSystemComponent>();
 		getVertextBuffer = activity.getVertexBufferObjectManager();
-		GameEntity.getInstance().mSensorListener.setOnShakeListener(this);
+		//GameEntity.getInstance().mSensorListener.setOnShakeListener(this);
 
 	}
 
@@ -153,33 +154,28 @@ public class GameScene extends MyScene implements OnShakeListener,
 		menuScene = new MyMenuScene(1, 800, 480, "dialogbackground.png", 0, 0,
 				getActivity(), ItemType.NORMAL_ITEM);
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "resume.jpg",
-				300, 50, getActivity(), ItemType.MENU_RESUME, getScene(),
-				SceneType.GAME));
+				300, 50, getActivity(), ItemType.MENU_RESUME, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "profile.jpg",
-				300, 120, getActivity(), ItemType.MENU_PROFILE, getScene(),
-				SceneType.GAME));
+				300, 120, getActivity(), ItemType.MENU_PROFILE, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "help.jpg",
-				300, 190, getActivity(), ItemType.MENU_HELP, getScene(),
-				SceneType.GAME));
+				300, 190, getActivity(), ItemType.MENU_HELP, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "logout.jpg",
-				300, 260, getActivity(), ItemType.MENU_LOGOUT, getScene(),
-				SceneType.GAME));
+				300, 260, getActivity(), ItemType.MENU_LOGOUT, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "exit.jpg",
-				300, 330, getActivity(), ItemType.MENU_EXIT, getScene(),
-				SceneType.GAME));
+				300, 330, getActivity(), ItemType.MENU_EXIT, menuScene));
 
 	}
 
 	private void loadMusicAndSound() {
 		SoundFactory.setAssetBasePath("mfx/");
 		MusicFactory.setAssetBasePath("mfx/");
-		backgroundMusic = new MSComponent(1, "sicbo_bg_music.mp3", MStype.MUSIC,
-				getEngine(), getActivity(), true);
+		backgroundMusic = new MSComponent(1, "sicbo_bg_music.mp3",
+				MStype.MUSIC, getEngine(), getActivity(), true);
 		betSound = new MSComponent(2, "betcoin.wav", MStype.SOUND, getEngine(),
 				getActivity());
 		releaseBetSound = new MSComponent(3, "pickcoin.mp3", MStype.SOUND,
 				getEngine(), getActivity());
-		
+
 	}
 
 	private void loadResourceItemList() {
@@ -371,28 +367,21 @@ public class GameScene extends MyScene implements OnShakeListener,
 		// Button - Bottom
 
 		buttonList.add(new ButtonComponent(59, 134, 63, 1, 1, "btn_start.png",
-				663, 370, getActivity(), ItemType.BUTTON_ROLL, getScene(),
-				SceneType.ANIMATION));
+				663, 370, getActivity(), ItemType.BUTTON_ROLL, this));
 		buttonList.add(new ButtonComponent(59, 68, 30, 1, 1, "btn_rebet.png",
-				583, 445, getActivity(), ItemType.BUTTON_REBET, getScene(),
-				SceneType.ANIMATION));
+				583, 445, getActivity(), ItemType.BUTTON_REBET, this));
 		buttonList.add(new ButtonComponent(59, 68, 30, 1, 1, "btn_reset.png",
-				653, 445, getActivity(), ItemType.BUTTON_CLEAR, getScene(),
-				SceneType.ANIMATION));
+				653, 445, getActivity(), ItemType.BUTTON_CLEAR, this));
 		buttonList.add(new ButtonComponent(59, 67, 30, 1, 1, "btn_exit.png",
-				724, 445, getActivity(), ItemType.BUTTON_EXIT, getScene(),
-				SceneType.ANIMATION));
+				724, 445, getActivity(), ItemType.BUTTON_EXIT, this));
 		buttonList.add(new ButtonComponent(59, 93, 34, 1, 1, "btn_history.png",
-				5, 395, getActivity(), ItemType.BUTTON_HISTORY, getScene(),
-				SceneType.ANIMATION));
+				5, 395, getActivity(), ItemType.BUTTON_HISTORY, this));
 
 		// Button - top
 		buttonList.add(new ButtonComponent(59, 160, 40, 4, 1, "btnsound.png",
-				750, 3, getActivity(), ItemType.BUTTON_SOUND, getScene(),
-				SceneType.ANIMATION));
+				750, 3, getActivity(), ItemType.BUTTON_SOUND, this));
 		buttonList.add(new ButtonComponent(59, 50, 50, 1, 1, "menubtn.png",
-				745, 320, getActivity(), ItemType.BUTTON_MENU, getScene(),
-				SceneType.ANIMATION));
+				745, 320, getActivity(), ItemType.BUTTON_MENU, this));
 
 		// Load HUD
 
@@ -412,30 +401,38 @@ public class GameScene extends MyScene implements OnShakeListener,
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.2f);
 		getScene().setBackgroundEnabled(false);
 		getScene().setOnAreaTouchTraversalFrontToBack();
-		
+
 		loadResourceItemList();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("30%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("30%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.3f);
 		loadResourceDragList();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("33%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("33%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.33f);
 		loadResourcePatternList();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("35%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("35%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.35f);
 		loadResourceButtonList();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("40%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("40%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.4f);
 		loadText();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("45%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("45%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.45f);
 		loadMusicAndSound();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("60%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("60%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.6f);
 		playAnimationComponent.loadResource();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("70%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("70%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.7f);
 		loadMenuScene();
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("75%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("75%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.75f);
 		// loadRunableText();
 		loadCharacter();
@@ -445,7 +442,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 	public void loadScene() {
 		// TODO Auto-generated method stub
 		// load background
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("80%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("80%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.8f);
 		getScene().setOnSceneTouchListener(this);
 
@@ -461,7 +459,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 			getScene().registerTouchArea(patternList.get(i).sprite);
 			getScene().attachChild(patternList.get(i).sprite);
 		}
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("90%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("90%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.9f);
 		// load Game item
 		for (int i = 0; i < itemList.size(); i++) {
@@ -510,7 +509,8 @@ public class GameScene extends MyScene implements OnShakeListener,
 
 		menuScene.registerTouch(getScene());
 		// getScene().attachChild(runableText.text);
-		GameEntity.getInstance().sceneManager.loadingScene.percentText.updateText("95%");
+		GameEntity.getInstance().sceneManager.loadingScene.percentText
+				.updateText("95%");
 		GameEntity.getInstance().sceneManager.loadingScene.bar.updateBar(0.95f);
 	}
 
@@ -579,46 +579,16 @@ public class GameScene extends MyScene implements OnShakeListener,
 			releaseBetSound.play();
 	}
 
-	public void playWinSound(boolean isPlay) {
-
-		// winSound.play();
-
-	}
-
-	public void playLoseSound(boolean isPlay) {
-		/*
-		 * if (loseSound != null) { if (isPlay) loseSound.play(); else
-		 * loseSound.stop(); }
-		 */
-	}
-
-	public void displayMenu() {
-		disableAllTouch();
-		GameEntity.getInstance().isMenuDisplay = true;
-		GameEntity.getInstance().mSensorListener.stopRegisterShake();
-		menuScene.displayMenu();
-		if (GameEntity.getInstance().isResultDisplay) {
-			GameEntity.getInstance().updateAfterBet();
-			playAnimationComponent.stopAnimation();
-		}
-
-	}
-
-	public void hideMenu() {
-		enableAllTouch();
-		GameEntity.getInstance().isMenuDisplay = false;
-		GameEntity.getInstance().mSensorListener.registerShake();
-		menuScene.hideMenu();
-	}
+	
 
 	public void onBackButtonPress(boolean isDisplay) {
 		if (isDisplay) {
 			GameEntity.getInstance().displayYesNoDialog("Do you want to exit?",
 					200, 300);
-			GameEntity.getInstance().mSensorListener.stopRegisterShake();
+			//GameEntity.getInstance().mSensorListener.stopRegisterShake();
 			GameEntity.getInstance().isBackPress = true;
 		} else {
-			GameEntity.getInstance().mSensorListener.registerShake();
+			//GameEntity.getInstance().mSensorListener.registerShake();
 			GameEntity.getInstance().isBackPress = false;
 		}
 	}
@@ -648,6 +618,48 @@ public class GameScene extends MyScene implements OnShakeListener,
 
 		return true;
 
+	}
+
+	@Override
+	public void onClick(AbItemComponent component) {
+		// TODO Auto-generated method stub
+		ButtonComponent button = (ButtonComponent) component;
+		buttonPlaySound();
+		switch (button.getiItemType()) {
+		case BUTTON_ROLL:
+			GameEntity.getInstance().startGame();
+			break;
+		case BUTTON_CLEAR:
+			GameEntity.getInstance().clearBet();
+			break;
+		case BUTTON_REBET:
+			GameEntity.getInstance().rebet();
+			break;
+		case BUTTON_HISTORY:
+			GameEntity.getInstance().viewHistory();
+			break;
+		case BUTTON_MENU:
+			menuScene.displayMenu();
+			break;
+		/*
+		 * case BUTTON_NEXT: GameEntity.getInstance().updateAfterBet();
+		 * playAnimationComponent .stopAnimation(); enableAllTouch(); break;
+		 */
+		case BUTTON_SOUND:
+			GameEntity.getInstance().enableMusic();
+			if (GameEntity.getInstance().isMusicEnable)
+				button.tiledSprite.setCurrentTileIndex(0);
+			else
+				button.tiledSprite.setCurrentTileIndex(2);
+			break;
+		case BUTTON_EXIT:
+			yesnoDialog.displayDialog(
+					GameEntity.getInstance().sceneManager.gameScene,
+					"Do you want to exit?", 200, 300);
+			break;
+		default:
+			break;
+		}
 	}
 
 }

@@ -14,8 +14,6 @@ import kibow.games.casinohills.sicbo.components.CoinComponent;
 import kibow.games.casinohills.sicbo.components.GameComponent;
 import kibow.games.casinohills.sicbo.components.HistoryComponent;
 import kibow.games.casinohills.sicbo.components.PatternComponent;
-import kibow.games.casinohills.sicbo.components.ShakeEventListener;
-import kibow.games.casinohills.sicbo.components.TimoutCheckAsyns;
 import kibow.games.casinohills.sicbo.components.UserComponent;
 import kibow.games.casinohills.sicbo.components.AbItemComponent.ItemType;
 import kibow.games.casinohills.sicbo.networks.AsyncNetworkHandler;
@@ -143,14 +141,7 @@ public class GameEntity implements IOnNetworkHandle {
 		}
 	}
 
-	public ShakeEventListener mSensorListener;
-
-	// Game auto action
-	public void checkUserTimeout() {
-		TimoutCheckAsyns checkTimeOut = new TimoutCheckAsyns();
-		Object[] params = { sceneManager.gameScene.getActivity() };
-		checkTimeOut.execute(params);
-	}
+	//public ShakeEventListener mSensorListener;
 
 	/**
 	 * User acction
@@ -401,7 +392,7 @@ public class GameEntity implements IOnNetworkHandle {
 	 */
 	public void startGame() {
 		boolean isBet = false;
-		GameEntity.getInstance().mSensorListener.stopRegisterShake();
+		//GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		int patternListSize = sceneManager.gameScene.patternList.size();
 		for (int i = 0; i < patternListSize; i++) {
 			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0
@@ -455,7 +446,7 @@ public class GameEntity implements IOnNetworkHandle {
 					sceneManager.gameScene.getActivity(),
 					GameEntity.STARTGAME_TASK, paramsName, paramsValue, this };
 			sceneManager.gameScene.disableAllTouch();
-			mSensorListener.stopRegisterShake();
+			//mSensorListener.stopRegisterShake();
 			networkHandler.execute(params);
 		}
 

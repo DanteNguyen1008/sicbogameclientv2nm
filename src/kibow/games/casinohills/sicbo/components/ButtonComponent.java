@@ -1,9 +1,5 @@
 package kibow.games.casinohills.sicbo.components;
 
-import kibow.games.casinohills.sicbo.screen.GameEntity;
-import kibow.games.casinohills.sicbo.screen.SceneManager.SceneType;
-
-import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.TiledSprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
@@ -13,15 +9,15 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 public class ButtonComponent extends AbItemComponent {
+	
+	IOnItemClick onItemClick;
 
 	public ButtonComponent(int id, int width, int height, int colum, int row,
 			String background, float positionX, float positionY,
-			BaseGameActivity activity, ItemType itemType, Scene scene,
-			SceneType nextScene) {
+			BaseGameActivity activity, ItemType itemType, final IOnItemClick onItemClick) {
 		super(id, width, height, background, positionX, positionY, activity,
 				itemType);
-		this.scene = scene;
-		this.nextScene = nextScene;
+		this.onItemClick = onItemClick;
 		BitmapTextureAtlas atlastBig = new BitmapTextureAtlas(
 				activity.getTextureManager(), width, height,
 				TextureOptions.BILINEAR);
@@ -29,390 +25,33 @@ public class ButtonComponent extends AbItemComponent {
 		ITiledTextureRegion tiledTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(atlastBig, activity, background, 0, 0,
 						colum, row);
+		
+		tiledSprite = (new TiledSprite(positionX, positionY,
+				tiledTextureRegion, activity.getVertexBufferObjectManager()) {
+			@Override
+			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+					float X, float Y) {
+				switch (pSceneTouchEvent.getAction()) {
+				case TouchEvent.ACTION_DOWN:
+					this.setScale(1.2f);
+					this.setCurrentTileIndex(0);
+					break;
+				case TouchEvent.ACTION_MOVE:
 
-		switch (getiItemType()) {
-		case BUTTON_ROLL:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().startGame();
-
-						break;
-					}
-					return true;
+					break;
+				case TouchEvent.ACTION_UP:
+					this.setScale(1f);
+					this.setCurrentTileIndex(0);
+					onItemClick.onClick(ButtonComponent.this);
+					break;
 				}
+				return true;
+			}
 
-			});
-			break;
-		case BUTTON_CLEAR:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().buttonPlaySoudEffect();
-						GameEntity.getInstance().clearBet();
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case BUTTON_REBET:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().rebet();
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case BUTTON_HISTORY:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().viewHistory();
-
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case BUTTON_MENU:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-
-						GameEntity.getInstance().sceneManager.gameScene
-								.displayMenu();
-						break;
-					}
-					return true;
-
-				}
-			});
-			break;
-		case BUTTON_NEXT:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().updateAfterBet();
-						GameEntity.getInstance().sceneManager.gameScene.playAnimationComponent
-								.stopAnimation();
-						GameEntity.getInstance().sceneManager.gameScene
-								.enableAllTouch();
-						// GameEntity.getInstance().mSensorListener.registerShake();
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case BUTTON_SOUND:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						if (GameEntity.getInstance().isMusicEnable)
-							this.setCurrentTileIndex(1);
-						else
-							this.setCurrentTileIndex(3);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().enableMusic();
-						if (GameEntity.getInstance().isMusicEnable)
-							this.setCurrentTileIndex(0);
-						else
-							this.setCurrentTileIndex(2);
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case BUTTON_EXIT:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						// ConfigClass.sceneManager.gameScene.getActivity()
-						// .finish();
-						GameEntity.getInstance().sceneManager.gameScene.yesnoDialog
-								.displayDialog(
-										GameEntity.getInstance().sceneManager.gameScene,
-										"Do you want to exit?", 200, 300);
-						// ConfigClass.sceneManager.gameScene.exitGame();
-
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case MENU_RESUME:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().sceneManager.gameScene
-								.hideMenu();
-
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case MENU_HELP:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().sceneManager.gameScene
-								.hideMenu();
-						GameEntity.getInstance().viewHelp();
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case MENU_PROFILE:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().sceneManager.gameScene
-								.hideMenu();
-						GameEntity.getInstance().viewProfile();
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case MENU_EXIT:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().sceneManager.gameScene
-								.hideMenu();
-						GameEntity.getInstance().displayYesNoDialog(
-								"Do you want to exit?", 200, 300);
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		case MENU_LOGOUT:
-			tiledSprite = (new TiledSprite(positionX, positionY,
-					tiledTextureRegion, activity.getVertexBufferObjectManager()) {
-				@Override
-				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
-						float X, float Y) {
-					switch (pSceneTouchEvent.getAction()) {
-					case TouchEvent.ACTION_DOWN:
-						this.setScale(1.2f);
-						this.setCurrentTileIndex(0);
-						break;
-					case TouchEvent.ACTION_MOVE:
-
-						break;
-					case TouchEvent.ACTION_UP:
-						this.setScale(1f);
-						this.setCurrentTileIndex(0);
-						GameEntity.getInstance().sceneManager.gameScene
-								.buttonPlaySound();
-						GameEntity.getInstance().sceneManager.gameScene
-								.hideMenu();
-						GameEntity.getInstance().logout();
-
-						break;
-					}
-					return true;
-				}
-			});
-			break;
-		default:
-			break;
-		}
-
+		});
 		tiledSprite.setCurrentTileIndex(0);
 		atlastBig.load();
 	}
-
-	public Scene scene;
-
-	public SceneType nextScene;
 
 	public TiledSprite tiledSprite;
 }

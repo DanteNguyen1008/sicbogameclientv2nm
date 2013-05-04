@@ -208,13 +208,16 @@ public class PlayAnimationComponent implements IAnimationListener {
 	}
 
 	void setEntityTextPosition() {
-		textEntity.getChildByIndex(0).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 100,
-				0);
+		textEntity.getChildByIndex(0)
+				.setPosition(
+						GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH
+								/ 5 + 100, 0);
 		textEntity.getChildByIndex(1).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50, 30);
+				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50,
+				30);
 		textEntity.getChildByIndex(2).setPosition(
-				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50, 50);
+				GameEntity.CAMERA_WIDTH - 3 * GameEntity.CAMERA_WIDTH / 5 + 50,
+				50);
 	}
 
 	public void resetEntityPosition() {
@@ -387,7 +390,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 	}
 
 	public void stopAnimation() {
-		GameEntity.getInstance().mSensorListener.registerShake();
+		// GameEntity.getInstance().mSensorListener.registerShake();
 		hideResultText();
 		resetCharacter();
 	}
@@ -500,7 +503,7 @@ public class PlayAnimationComponent implements IAnimationListener {
 						-GameEntity.CAMERA_WIDTH, -GameEntity.CAMERA_HEIGHT);
 			}
 		}
-		
+
 		scene.characterBoy.stopSay();
 		scene.characterGirl.stopSay();
 		displayWinPatterns(false);
@@ -584,14 +587,12 @@ public class PlayAnimationComponent implements IAnimationListener {
 						.getInstance().currentGame.totalWinAmount / 100 : 0);
 		if (GameEntity.getInstance().currentGame.isWin) {
 			// Win
-			scene.playWinSound(true);
 			resultString = "You win";
 			displayWinPatterns(true);
 			// displayFireWork();
 		} else {
 			// Lose
 			displayWinInLosePatterns(true);
-			scene.playLoseSound(true);
 		}
 		updateCharacterAfterResult(GameEntity.getInstance().currentGame.isWin);
 
