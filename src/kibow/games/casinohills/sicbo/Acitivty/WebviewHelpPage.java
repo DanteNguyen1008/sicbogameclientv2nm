@@ -3,24 +3,21 @@ package kibow.games.casinohills.sicbo.Acitivty;
 import java.util.HashMap;
 import java.util.Map;
 
-import kibow.games.casinohills.sicbo.networks.ConnectionHandler;
 import kibow.games.casinohills.sicbo.screen.GameEntity;
-
-import com.example.sicbogameexample.R;
-
+import kibow.networkmanagement.network.ConnectionHandler;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.HttpAuthHandler;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.webkit.SslErrorHandler;
-import android.net.http.SslError;
-import android.webkit.HttpAuthHandler;
 
 ;
 
@@ -95,11 +92,11 @@ public class WebviewHelpPage extends Activity implements OnClickListener {
 		String authHeader = "Basic " + authEncoded;
 		Map<String, String> headers = new HashMap<String, String>();
 		headers.put("Authorization", authHeader);
+
 		switch (id) {
 		case 0:
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 			mWebView.loadUrl("file:///android_asset/webview/tutorial/index.html");
-
 			break;
 		case 1:
 			mWebView.loadUrl("file:///android_asset/webview/help/index.html");
@@ -110,21 +107,16 @@ public class WebviewHelpPage extends Activity implements OnClickListener {
 			mWebView.loadUrl("file:///android_asset/webview/policy/index.html");
 			break;
 		case 4:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL
-					+ "payment/withdrawal.jsp");
-			break;
-		case 5:
-			mWebView.loadUrl(ConnectionHandler.SERVER_ROOT_URL
-					+ "payment/SendDeposit.jsp");
-			break;
-		case 6:
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-			mWebView.loadUrl(ConnectionHandler.SERVER_API_HISTORY_URL
-					+ "?user_id=" + GameEntity.getInstance().userComponent.id
-					+ "&token=" + GameEntity.getInstance().userComponent.token,
-					headers);
+			mWebView.loadUrl("https://ch.moya.in/_api/roulette/"
+					+ GameEntity.GAME_ID + "/history?user_id="
+					+ GameEntity.getInstance().userComponent.id + "&token="
+					+ GameEntity.getInstance().userComponent.token);
+			break;
+		default:
 			break;
 		}
+
 	}
 
 	@Override

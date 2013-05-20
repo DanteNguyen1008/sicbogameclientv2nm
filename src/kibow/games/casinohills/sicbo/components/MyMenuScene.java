@@ -87,9 +87,6 @@ public class MyMenuScene extends AbItemComponent implements IOnItemClick {
 		case MENU_HELP:
 			GameEntity.getInstance().viewHelp();
 			break;
-		case MENU_PROFILE:
-			GameEntity.getInstance().viewProfile();
-			break;
 		case MENU_LOGOUT:
 			GameEntity.getInstance().logout();
 			break;

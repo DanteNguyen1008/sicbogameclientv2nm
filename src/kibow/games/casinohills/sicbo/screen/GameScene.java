@@ -155,14 +155,12 @@ public class GameScene extends MyScene implements OnShakeListener,
 				getActivity(), ItemType.NORMAL_ITEM);
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "resume.jpg",
 				300, 50, getActivity(), ItemType.MENU_RESUME, menuScene));
-		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "profile.jpg",
-				300, 120, getActivity(), ItemType.MENU_PROFILE, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "help.jpg",
-				300, 190, getActivity(), ItemType.MENU_HELP, menuScene));
+				300, 120, getActivity(), ItemType.MENU_HELP, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "logout.jpg",
-				300, 260, getActivity(), ItemType.MENU_LOGOUT, menuScene));
+				300, 190, getActivity(), ItemType.MENU_LOGOUT, menuScene));
 		menuScene.addItem(new ButtonComponent(1, 200, 36, 1, 1, "exit.jpg",
-				300, 330, getActivity(), ItemType.MENU_EXIT, menuScene));
+				300, 260, getActivity(), ItemType.MENU_EXIT, menuScene));
 
 	}
 

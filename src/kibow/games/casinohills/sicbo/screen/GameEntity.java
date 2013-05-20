@@ -3,22 +3,19 @@ package kibow.games.casinohills.sicbo.screen;
 import java.util.ArrayList;
 
 import kibow.games.casinohills.sicbo.Acitivty.HelpActivity;
-import kibow.games.casinohills.sicbo.Acitivty.LoginScreen;
-import kibow.games.casinohills.sicbo.Acitivty.ProfileActivity;
-import kibow.games.casinohills.sicbo.Acitivty.ViewHistoryActivity;
+import kibow.games.casinohills.sicbo.Acitivty.SplashScreenAcivity;
 import kibow.games.casinohills.sicbo.Acitivty.WebviewHelpPage;
+import kibow.games.casinohills.sicbo.components.AbItemComponent.ItemType;
 import kibow.games.casinohills.sicbo.components.BetComponent;
 import kibow.games.casinohills.sicbo.components.CharacterComponent;
 import kibow.games.casinohills.sicbo.components.CharacterComponent.CharacterAction;
 import kibow.games.casinohills.sicbo.components.CoinComponent;
 import kibow.games.casinohills.sicbo.components.GameComponent;
-import kibow.games.casinohills.sicbo.components.HistoryComponent;
 import kibow.games.casinohills.sicbo.components.PatternComponent;
 import kibow.games.casinohills.sicbo.components.UserComponent;
-import kibow.games.casinohills.sicbo.components.AbItemComponent.ItemType;
-import kibow.games.casinohills.sicbo.networks.AsyncNetworkHandler;
-import kibow.games.casinohills.sicbo.networks.ConnectionHandler;
-import kibow.games.casinohills.sicbo.networks.IOnNetworkHandle;
+import kibow.networkmanagement.network.AsyncNetworkHandler;
+import kibow.networkmanagement.network.ConnectionHandler;
+import kibow.networkmanagement.network.IOnNetworkHandle;
 
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -60,7 +57,7 @@ public class GameEntity implements IOnNetworkHandle {
 	public final static int CAMERA_WIDTH = 800;
 	public final static int CAMERA_HEIGHT = 480;
 
-	public final static String GAME_ID = "29498045139779584";
+	public static String GAME_ID = "29498045139779584";
 
 	public final static String SIGNIN_TASK = "login";
 	public final static String SIGNUP_TASK = "signup";
@@ -141,7 +138,7 @@ public class GameEntity implements IOnNetworkHandle {
 		}
 	}
 
-	//public ShakeEventListener mSensorListener;
+	// public ShakeEventListener mSensorListener;
 
 	/**
 	 * User acction
@@ -392,7 +389,7 @@ public class GameEntity implements IOnNetworkHandle {
 	 */
 	public void startGame() {
 		boolean isBet = false;
-		//GameEntity.getInstance().mSensorListener.stopRegisterShake();
+		// GameEntity.getInstance().mSensorListener.stopRegisterShake();
 		int patternListSize = sceneManager.gameScene.patternList.size();
 		for (int i = 0; i < patternListSize; i++) {
 			if (sceneManager.gameScene.patternList.get(i).coinList.size() > 0
@@ -444,9 +441,10 @@ public class GameEntity implements IOnNetworkHandle {
 
 			Object[] params = { connectionHandler,
 					sceneManager.gameScene.getActivity(),
-					GameEntity.STARTGAME_TASK, paramsName, paramsValue, this };
+					GameEntity.STARTGAME_TASK, paramsName, paramsValue, this,
+					true };
 			sceneManager.gameScene.disableAllTouch();
-			//mSensorListener.stopRegisterShake();
+			// mSensorListener.stopRegisterShake();
 			networkHandler.execute(params);
 		}
 
@@ -473,26 +471,10 @@ public class GameEntity implements IOnNetworkHandle {
 	 * Button Action click - button component class
 	 */
 	public void viewHistory() {
-		/*
-		 * AsyncNetworkHandler networkHandler = new AsyncNetworkHandler();
-		 * Object[] params = { connectionHandler,
-		 * sceneManager.gameScene.getActivity(), GameEntity.VIEW_HISTORY, null,
-		 * null, this }; networkHandler.execute(params);
-		 */
 		// Go to Webview
 		Intent intent = new Intent(sceneManager.activity, WebviewHelpPage.class);
 		intent.putExtra("idButton", 6);
 		sceneManager.activity.startActivity(intent);
-	}
-
-	/**
-	 * Go to profile activity
-	 */
-	public void viewProfile() {
-		Intent intent1 = new Intent(sceneManager.gameScene.getActivity(),
-				ProfileActivity.class);
-
-		sceneManager.gameScene.getActivity().startActivity(intent1);
 	}
 
 	/**
@@ -517,7 +499,7 @@ public class GameEntity implements IOnNetworkHandle {
 		networkHandler = new AsyncNetworkHandler();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
-				null, null, this };
+				null, null, this, false };
 		networkHandler.execute(params);
 		betAmountRemain = GameEntity.REMAIN_FIXED;
 	}
@@ -531,7 +513,7 @@ public class GameEntity implements IOnNetworkHandle {
 		networkHandler = new AsyncNetworkHandler();
 		Object[] params = { connectionHandler,
 				sceneManager.gameScene.getActivity(), GameEntity.SIGNOUT_TASK,
-				null, null, this };
+				null, null, this, false };
 		networkHandler.execute(params);
 
 	}
@@ -564,9 +546,6 @@ public class GameEntity implements IOnNetworkHandle {
 			} else {
 				Log.d("Bet error", "Something wrong???");
 			}
-
-		} else if (connectionHandler.getTaskID().equals("res_view_history")) {
-			onReceiveViewHistory(result, activity);
 
 		} else if (connectionHandler.getTaskID().equals("res_log_out")) {
 			onReceiveSignout();
@@ -620,43 +599,14 @@ public class GameEntity implements IOnNetworkHandle {
 		sceneManager.gameScene.playAnimationComponent.playAnimation();
 	}
 
-	/**
-	 * @param result
-	 * @param activity
-	 * @throws JSONException
-	 *             This method called when receive history list from server
-	 */
-	public void onReceiveViewHistory(JSONObject result, Activity activity)
-			throws JSONException {
-		int numOfItem = result.getInt("num_of_item");
-		userComponent.historyList = new ArrayList<HistoryComponent>();
-		if (numOfItem > 0) {
-			for (int i = 0; i < numOfItem; i++) {
-				userComponent.historyList.add(new HistoryComponent(result
-						.getJSONObject(i + "").getBoolean("iswin"), result
-						.getJSONObject(i + "").getString("betdate"), result
-						.getJSONObject(i + "").getDouble("balance"), result
-						.getJSONObject(i + "").getString("dices"), result
-						.getJSONObject(i + "").getString("bet_spots")));
-
-			}
-
-			Intent intent = new Intent(activity, ViewHistoryActivity.class);
-			activity.startActivity(intent);
-
-		} else {
-			displayConfirmDialog("Your history is blank!", 170, 200);
-		}
-
-	}
-
 	public void onReceiveSignout() {
 		if (!isLogout) {
 			sceneManager.activity.finish();
 			sceneManager = null;
 			System.exit(1);
 		} else {
-			Intent intent = new Intent(sceneManager.activity, LoginScreen.class);
+			Intent intent = new Intent(sceneManager.activity,
+					SplashScreenAcivity.class);
 			sceneManager.activity.startActivity(intent);
 			sceneManager.activity.finish();
 			sceneManager = null;
@@ -689,7 +639,6 @@ public class GameEntity implements IOnNetworkHandle {
 		PointParticleEmitter particleEmitter = new PointParticleEmitter(posX,
 				posY);
 
-		
 		IEntityFactory<Rectangle> recFact = new IEntityFactory<Rectangle>() {
 
 			@Override
@@ -735,7 +684,7 @@ public class GameEntity implements IOnNetworkHandle {
 	@Override
 	public void onNetworkError() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
